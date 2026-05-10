@@ -1,0 +1,3992 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام تقييم المخاطر المهنية</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ══════════════════════════════════════════
+   ROOT VARIABLES
+══════════════════════════════════════════ */
+    :root {
+      --bg: #060c1a;
+      --navy: #0b1428;
+      --steel: #111e35;
+      --panel: #131f38;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #e8611a;
+      --accent2: #f97316;
+      --blue: #2563eb;
+      --blue2: #3b82f6;
+      --gold: #f59e0b;
+      --green: #16a34a;
+      --yellow: #ca8a04;
+      --red: #dc2626;
+      --darkred: #7f1d1d;
+      --text: #dde4f0;
+      --muted: #6b7fa3;
+      --card: rgba(255, 255, 255, 0.03);
+      --glow: rgba(232, 97, 26, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 10%, rgba(232, 97, 26, .07) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 85% 85%, rgba(37, 99, 235, .07) 0%, transparent 65%);
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(6, 12, 26, .95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(232, 97, 26, .25);
+    }
+
+    .header-strip {
+      background: linear-gradient(90deg, var(--accent), #f97316, var(--accent));
+      height: 3px;
+    }
+
+    .header-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 18px rgba(232, 97, 26, .45);
+    }
+
+    .header-text h1 {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .header-text p {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .header-badge {
+      margin-right: auto;
+      background: rgba(232, 97, 26, .12);
+      border: 1px solid rgba(232, 97, 26, .28);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.66rem;
+      color: var(--accent2);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ── PROGRESS ── */
+    .progress-bar {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 14px 20px 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .steps {
+      display: flex;
+      align-items: center;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      border: 2px solid var(--border);
+      background: var(--steel);
+      color: var(--muted);
+      transition: all .4s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-circle.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(232, 97, 26, .55);
+    }
+
+    .step-circle.done {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      transition: background .4s;
+    }
+
+    .step-line.done {
+      background: var(--green);
+    }
+
+    .step-labels {
+      display: flex;
+      margin-top: 5px;
+      padding: 0 17px;
+    }
+
+    .step-lbl {
+      flex: 1;
+      text-align: center;
+      font-size: 0.58rem;
+      color: var(--muted);
+      transition: color .3s;
+    }
+
+    .step-lbl.active {
+      color: var(--accent2);
+    }
+
+    .step-lbl.done {
+      color: #4ade80;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .wrap {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 18px 20px 32px;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      display: none;
+      animation: fadeUp .35s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(8px);
+      transition: border-color .3s;
+    }
+
+    .card:hover {
+      border-color: rgba(232, 97, 26, .18);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    /* ── FORMS ── */
+    .fg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .fg.c1 {
+      grid-template-columns: 1fr;
+    }
+
+    .fg.c3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .f {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .f.s2 {
+      grid-column: span 2;
+    }
+
+    .f.s3 {
+      grid-column: span 3;
+    }
+
+    label {
+      font-size: 0.73rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    label .req {
+      color: var(--accent);
+      margin-right: 2px;
+    }
+
+    input,
+    textarea,
+    select {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.82rem;
+      padding: 9px 12px;
+      outline: none;
+      width: 100%;
+      transition: border-color .3s, box-shadow .3s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(232, 97, 26, .14);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    select option {
+      background: #0d1526;
+    }
+
+    /* ── MEMBERS ── */
+    .member-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .mtag {
+      background: rgba(37, 99, 235, .14);
+      border: 1px solid rgba(59, 130, 246, .28);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.76rem;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mtag button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 0;
+      transition: color .2s;
+    }
+
+    .mtag button:hover {
+      color: #f87171;
+    }
+
+    .add-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .add-row input {
+      flex: 1;
+    }
+
+    .btn-add {
+      background: rgba(37, 99, 235, .18);
+      border: 1px solid rgba(59, 130, 246, .28);
+      border-radius: 8px;
+      padding: 8px 16px;
+      color: #93c5fd;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.78rem;
+      transition: all .2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-add:hover {
+      background: rgba(37, 99, 235, .32);
+    }
+
+    /* ── MATRIX SELECTOR ── */
+    .matrix-selector {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .mx-opt {
+      border: 2px solid var(--border);
+      border-radius: 13px;
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--card);
+      transition: all .3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mx-opt:hover {
+      border-color: rgba(232, 97, 26, .4);
+      transform: translateY(-2px);
+    }
+
+    .mx-opt.sel {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(232, 97, 26, .3);
+    }
+
+    .mx-num {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .mx-tag {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .mx-tick {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: absolute;
+      top: 7px;
+      left: 7px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #fff;
+    }
+
+    .mx-opt.sel .mx-tick {
+      display: flex;
+    }
+
+    /* ── HAZARD ROW ── */
+    .hrow {
+      background: rgba(255, 255, 255, .025);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 10px;
+      border-right: 3px solid var(--accent);
+      transition: border-color .3s;
+    }
+
+    .hrow:hover {
+      border-color: rgba(232, 97, 26, .35);
+    }
+
+    .hrow-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hnum {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .btn-rm {
+      background: rgba(220, 38, 38, .12);
+      border: 1px solid rgba(220, 38, 38, .22);
+      border-radius: 6px;
+      padding: 4px 10px;
+      color: #f87171;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.72rem;
+      transition: all .2s;
+    }
+
+    .btn-rm:hover {
+      background: rgba(220, 38, 38, .28);
+    }
+
+    .rv-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, .04);
+      border-radius: 8px;
+      padding: 9px 13px;
+    }
+
+    .rv-formula {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .rbadge {
+      padding: 3px 11px;
+      border-radius: 20px;
+      font-size: 0.73rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .rb-low {
+      background: rgba(22, 163, 74, .18);
+      border: 1px solid rgba(22, 163, 74, .4);
+      color: #4ade80;
+    }
+
+    .rb-mod {
+      background: rgba(202, 138, 4, .18);
+      border: 1px solid rgba(202, 138, 4, .4);
+      color: #fbbf24;
+    }
+
+    .rb-high {
+      background: rgba(220, 38, 38, .18);
+      border: 1px solid rgba(220, 38, 38, .4);
+      color: #f87171;
+    }
+
+    .rb-crit {
+      background: rgba(127, 29, 29, .4);
+      border: 1px solid rgba(220, 38, 38, .55);
+      color: #fca5a5;
+    }
+
+    .add-hrow {
+      width: 100%;
+      background: rgba(232, 97, 26, .08);
+      border: 1px dashed rgba(232, 97, 26, .3);
+      border-radius: 10px;
+      padding: 12px;
+      color: var(--accent2);
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.83rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all .2s;
+      margin-top: 6px;
+    }
+
+    .add-hrow:hover {
+      background: rgba(232, 97, 26, .18);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      border-radius: 9px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      transition: all .25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .btn-p {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(232, 97, 26, .38);
+    }
+
+    .btn-p:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(232, 97, 26, .52);
+    }
+
+    .btn-s {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .btn-s:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, .2);
+    }
+
+    .btn-print {
+      background: linear-gradient(135deg, #1d4ed8, var(--blue2));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(29, 78, 216, .38);
+    }
+
+    .btn-print:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(29, 78, 216, .52);
+    }
+
+    /* ── PAGE TITLE ── */
+    .ptitle {
+      padding: 16px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .ptitle h2 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .ptitle span {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── INTRO ── */
+    .intro-hero {
+      background: linear-gradient(135deg, rgba(232, 97, 26, .09), rgba(37, 99, 235, .07));
+      border: 1px solid rgba(232, 97, 26, .18);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .intro-hero h2 {
+      font-size: 1.7rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .intro-hero .sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 22px;
+      line-height: 1.85;
+    }
+
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .feat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 10px;
+    }
+
+    .feat .ico {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .feat p {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* ── KEY TABLE ── */
+    .key-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.73rem;
+    }
+
+    .key-table th,
+    .key-table td {
+      border: 1px solid rgba(255, 255, 255, .1);
+      padding: 5px 9px;
+      text-align: right;
+    }
+
+    .key-table th {
+      background: rgba(255, 255, 255, .06);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat .n {
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .stat .l {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── MATRIX VISUAL ── */
+    .mx-vis-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    .mx-visual-table {
+      border-collapse: collapse;
+      font-size: 0.72rem;
+    }
+
+    .mx-visual-table th,
+    .mx-visual-table td {
+      border: 1px solid rgba(255, 255, 255, .12);
+      padding: 5px 10px;
+      text-align: center;
+      min-width: 52px;
+    }
+
+    .mx-visual-table th {
+      background: rgba(255, 255, 255, .06);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    /* ══════════════════════════════════════════
+   REPORT STYLES
+══════════════════════════════════════════ */
+    .report-header-box {
+      border: 2px solid rgba(232, 97, 26, .35);
+      background: linear-gradient(135deg, rgba(232, 97, 26, .07), rgba(37, 99, 235, .04));
+      border-radius: 13px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .report-org {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .report-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .report-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .meta-cell {
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 12px;
+    }
+
+    .meta-cell .lbl {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .meta-cell .val {
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .meta-cell.span3 {
+      grid-column: span 3;
+    }
+
+    .concl {
+      border-right: 4px solid var(--accent);
+      background: rgba(232, 97, 26, .05);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 18px;
+    }
+
+    .concl h3 {
+      color: var(--accent2);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .concl p {
+      font-size: 0.83rem;
+      line-height: 1.95;
+      color: var(--text);
+    }
+
+    /* ── RISK TABLE (exact image match) ── */
+    .ra-wrap {
+      overflow-x: auto;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+
+    /* Matrix key table */
+    .rk-table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 820px;
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      font-size: 0.76rem;
+    }
+
+    .rk-table th,
+    .rk-table td {
+      border: 2px solid #8898aa;
+      padding: 5px 7px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .rk-head-main {
+      background: #2a4480;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      border-color: #8898aa;
+    }
+
+    .rk-head-sub {
+      background: #3a5cb0;
+      color: #e0e8ff;
+      font-weight: 700;
+      font-size: 0.74rem;
+    }
+
+    .rk-val-cell {
+      background: #1c3060;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    .rk-desc-cell {
+      background: #22386e;
+      color: #c8d8ff;
+      font-size: 0.7rem;
+      text-align: right;
+      padding: 4px 8px;
+    }
+
+    .rotate-lbl {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      background: #1a2e5c;
+      color: #93b4e8;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 22px;
+      padding: 6px 4px;
+      white-space: nowrap;
+    }
+
+    /* Matrix cells */
+    .mc-g {
+      background: #16a34a !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .mc-y {
+      background: #ca8a04 !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .mc-o {
+      background: #ea580c !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .mc-r {
+      background: #dc2626 !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .mc-dr {
+      background: #7f1d1d !important;
+      color: #fca5a5;
+      font-weight: 800;
+    }
+
+    /* Legend cells */
+    .rl-g {
+      background: #16a34a;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .rl-y {
+      background: #ca8a04;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .rl-r {
+      background: #dc2626;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .rl-e {
+      background: transparent;
+    }
+
+    /* Hazard data table */
+    .rd-table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 820px;
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      font-size: 0.76rem;
+      margin-top: -2px;
+      /* join visually to matrix table */
+    }
+
+    .rd-table th,
+    .rd-table td {
+      border: 2px solid #8898aa;
+      padding: 6px 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .rd-head-main {
+      background: #2a4480;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.78rem;
+    }
+
+    .rd-head-sub {
+      background: #3a5cb0;
+      color: #e0e8ff;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .rd-data td {
+      background: #0e1b34;
+      color: var(--text);
+      font-size: 0.75rem;
+    }
+
+    .rd-data:nth-child(even) td {
+      background: #0b1628;
+    }
+
+    .rd-data td[class*="mc-"] {
+      color: #fff;
+    }
+
+    /* RV colored data cells */
+    .dmc-g {
+      background: #16a34a !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .dmc-y {
+      background: #ca8a04 !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .dmc-o {
+      background: #ea580c !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .dmc-r {
+      background: #dc2626 !important;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .dmc-dr {
+      background: #7f1d1d !important;
+      color: #fca5a5;
+      font-weight: 800;
+    }
+
+    /* ── Section divider ── */
+    .ra-section-sep {
+      border-top: 4px solid rgba(232, 97, 26, .6);
+    }
+
+    /* ── SAVE/LOAD TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(22, 163, 74, .92);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
+      z-index: 9999;
+      opacity: 0;
+      transition: all .35s cubic-bezier(.34, 1.56, .64, 1);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.error {
+      background: rgba(220, 38, 38, .92);
+    }
+
+    .toast.info {
+      background: rgba(37, 99, 235, .92);
+    }
+
+    /* ── SAVE INDICATOR in header ── */
+    .save-indicator {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.62rem;
+      color: var(--muted);
+      margin-right: auto;
+    }
+
+    .save-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+      transition: background .3s;
+    }
+
+    .save-dot.saved {
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .4;
+      }
+    }
+
+    /* ── SAVED DATA BANNER ── */
+    .saved-banner {
+      background: linear-gradient(135deg, rgba(22, 163, 74, .12), rgba(22, 163, 74, .06));
+      border: 1px solid rgba(22, 163, 74, .28);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .saved-banner-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .saved-banner-text h4 {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #4ade80;
+      margin-bottom: 2px;
+    }
+
+    .saved-banner-text p {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .saved-banner-actions {
+      display: flex;
+      gap: 8px;
+      margin-right: auto;
+    }
+
+    .btn-restore {
+      background: rgba(22, 163, 74, .18);
+      border: 1px solid rgba(22, 163, 74, .35);
+      border-radius: 8px;
+      padding: 7px 16px;
+      color: #4ade80;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 800;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-restore:hover {
+      background: rgba(22, 163, 74, .32);
+    }
+
+    .btn-discard {
+      background: rgba(220, 38, 38, .12);
+      border: 1px solid rgba(220, 38, 38, .22);
+      border-radius: 8px;
+      padding: 7px 14px;
+      color: #f87171;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      transition: all .2s;
+    }
+
+    .btn-discard:hover {
+      background: rgba(220, 38, 38, .25);
+    }
+
+    /* ── SAVE BUTTON in nav (now hidden — auto-save only) ── */
+    /* ── SAVE BUTTON (auto-save only — button removed from UI) ── */
+    .btn-save {
+      display: none !important;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(135deg, rgba(8, 14, 30, 0.99), rgba(14, 24, 46, 0.99));
+      border-top: 1px solid rgba(232, 97, 26, .2);
+      padding: 16px 20px;
+    }
+
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .footer-made {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+
+    .footer-made-text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      transition: color .25s;
+    }
+
+    .footer-made:hover .footer-made-text {
+      color: #fff;
+    }
+
+    .footer-icon-wrap {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .footer-icon-core {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-icon-ring {
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 2px solid rgba(232, 97, 26, .5);
+      animation: iconRingPulse 2.2s ease-in-out infinite;
+    }
+
+    .footer-icon-ring2 {
+      position: absolute;
+      inset: -7px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(232, 97, 26, .2);
+      animation: iconRingPulse 2.2s ease-in-out infinite .5s;
+    }
+
+    @keyframes iconRingPulse {
+
+      0%,
+      100% {
+        opacity: .8;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0;
+        transform: scale(1.35);
+      }
+    }
+
+    .footer-pulse-green {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 2;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #22c55e;
+      border: 2px solid rgba(8, 14, 30, 1);
+      animation: greenDot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes greenDot {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.4);
+      }
+    }
+
+    /* ══════════════════════════════════════════
+   RESPONSIVE — Professional Mobile Design
+══════════════════════════════════════════ */
+    @media(max-width:900px) {
+      .feat-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .matrix-selector {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .meta-cell.span3 {
+        grid-column: span 2;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .fg.c3 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .fg.c3 .f.s3,
+      .f.s2 {
+        grid-column: span 2;
+      }
+    }
+
+    @media(max-width:700px) {
+      .footer-contact-card {
+        padding: 12px 16px;
+        gap: 12px;
+      }
+
+      .footer-avatar-ring {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+      }
+
+      .footer-contact-info {
+        text-align: center;
+      }
+
+      .footer-contact-links {
+        justify-content: center;
+      }
+
+      .footer-brand {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+      }
+    }
+
+    @media(max-width:600px) {
+
+      /* ─ Header ─ */
+      .header-inner {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+
+      .header-text h1 {
+        font-size: 0.78rem;
+        line-height: 1.3;
+      }
+
+      .header-text p {
+        display: none;
+      }
+
+      .header-badge {
+        display: none;
+      }
+
+      .logo {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        border-radius: 9px;
+      }
+
+      .save-indicator {
+        margin-right: 0;
+        margin-left: auto;
+      }
+
+      /* ─ Progress ─ */
+      .progress-bar {
+        padding: 8px 10px 4px;
+      }
+
+      .step-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 0.65rem;
+        border-width: 1.5px;
+      }
+
+      .step-circle.active {
+        box-shadow: 0 0 10px rgba(232, 97, 26, .5);
+      }
+
+      .step-labels {
+        display: none;
+      }
+
+      .step-line {
+        height: 1.5px;
+      }
+
+      /* ─ Wrap ─ */
+      .wrap {
+        padding: 8px 10px 80px;
+      }
+
+      /* ─ Intro Hero ─ */
+      .intro-hero {
+        padding: 22px 14px 18px;
+        border-radius: 14px;
+      }
+
+      .intro-hero h2 {
+        font-size: 1.25rem;
+        margin-bottom: 6px;
+      }
+
+      .intro-hero .sub {
+        font-size: 0.76rem;
+        margin-bottom: 16px;
+      }
+
+      .feat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+        margin-bottom: 16px;
+      }
+
+      .feat {
+        padding: 12px 8px;
+        border-radius: 9px;
+      }
+
+      .feat .ico {
+        font-size: 1.4rem;
+        margin-bottom: 4px;
+      }
+
+      .feat p {
+        font-size: 0.68rem;
+      }
+
+      .intro-hero>div[style*="display:flex"] {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .intro-hero .btn,
+      .intro-hero .btn-history {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* ─ Page title ─ */
+      .ptitle {
+        padding: 10px 0 6px;
+      }
+
+      .ptitle h2 {
+        font-size: 0.92rem;
+      }
+
+      .ptitle span {
+        font-size: 0.7rem;
+      }
+
+      .ptitle[style*="justify-content:space-between"] {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .ptitle>div {
+        width: 100%;
+      }
+
+      .ptitle>div button {
+        flex: 1;
+        justify-content: center;
+      }
+
+      /* ─ Cards ─ */
+      .card {
+        padding: 13px 12px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+
+      .card-title {
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+      }
+
+      .card-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+        border-radius: 7px;
+      }
+
+      /* ─ Forms ─ */
+      label {
+        font-size: 0.72rem;
+      }
+
+      input,
+      textarea,
+      select {
+        font-size: 0.82rem;
+        padding: 10px 12px;
+        border-radius: 8px;
+      }
+
+      .fg,
+      .fg.c3 {
+        grid-template-columns: 1fr;
+      }
+
+      .f.s2,
+      .f.s3 {
+        grid-column: span 1;
+      }
+
+      /* ─ Matrix Selector ─ */
+      .matrix-selector {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+      }
+
+      .mx-opt {
+        padding: 13px 8px;
+        border-radius: 11px;
+      }
+
+      .mx-num {
+        font-size: 1.5rem;
+      }
+
+      .mx-tag {
+        font-size: 0.65rem;
+      }
+
+      .mx-tick {
+        width: 18px;
+        height: 18px;
+        font-size: 9px;
+      }
+
+      /* ─ Members ─ */
+      .add-row {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .btn-add {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        text-align: center;
+        justify-content: center;
+      }
+
+      .mtag {
+        font-size: 0.73rem;
+        padding: 5px 11px;
+      }
+
+      /* ─ Hazard row ─ */
+      .hrow {
+        padding: 13px 11px;
+        border-radius: 11px;
+        margin-bottom: 9px;
+      }
+
+      .hrow>div[style*="grid-template-columns:1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      .hnum {
+        width: 24px;
+        height: 24px;
+        font-size: 0.65rem;
+      }
+
+      .btn-rm {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+      }
+
+      .rv-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 8px 11px;
+      }
+
+      .rv-formula {
+        font-size: 0.72rem;
+      }
+
+      .rbadge {
+        font-size: 0.72rem;
+        padding: 3px 10px;
+      }
+
+      .add-hrow {
+        padding: 13px;
+        font-size: 0.8rem;
+        border-radius: 9px;
+      }
+
+      /* ─ Buttons ─ */
+      .btn-row {
+        flex-direction: row;
+        gap: 7px;
+        margin-top: 12px;
+        flex-wrap: nowrap;
+      }
+
+      .btn-row .btn-s {
+        flex: 0 0 auto;
+        padding: 10px 14px;
+      }
+
+      .btn-row .btn-p {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 12px;
+      }
+
+      .btn-row .btn-save {
+        flex: 0 0 auto;
+        padding: 10px 12px;
+      }
+
+      .btn {
+        font-size: 0.78rem;
+        padding: 10px 14px;
+        border-radius: 8px;
+      }
+
+      .btn-p {
+        box-shadow: 0 3px 10px rgba(232, 97, 26, .35);
+      }
+
+      /* ─ Stats ─ */
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+      }
+
+      .stat {
+        padding: 13px 10px;
+        border-radius: 10px;
+      }
+
+      .stat .n {
+        font-size: 1.9rem;
+      }
+
+      .stat .l {
+        font-size: 0.68rem;
+      }
+
+      /* ─ Meta Grid ─ */
+      .meta-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .meta-cell.span3 {
+        grid-column: span 2;
+      }
+
+      .meta-cell {
+        padding: 8px 10px;
+        border-radius: 7px;
+      }
+
+      .meta-cell .lbl {
+        font-size: 0.62rem;
+      }
+
+      .meta-cell .val {
+        font-size: 0.78rem;
+      }
+
+      /* ─ Report Header ─ */
+      .report-header-box {
+        padding: 16px 12px;
+        border-radius: 11px;
+      }
+
+      .report-title {
+        font-size: 1.15rem;
+      }
+
+      .report-org {
+        font-size: 0.63rem;
+      }
+
+      .report-sub {
+        font-size: 0.72rem;
+      }
+
+      /* ─ Report action bar ─ */
+      .report-action-bar {
+        top: 58px;
+        border-radius: 10px;
+      }
+
+      .report-action-bar-inner {
+        padding: 10px 12px;
+        gap: 8px;
+      }
+
+      .rab-msg {
+        font-size: 0.75rem;
+      }
+
+      .rab-btns {
+        width: 100%;
+        gap: 7px;
+      }
+
+      .rab-btns .btn,
+      .rab-btns .btn-history {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.76rem;
+        padding: 9px 8px;
+      }
+
+      /* ─ Key table ─ */
+      .key-table th,
+      .key-table td {
+        font-size: 0.66rem;
+        padding: 4px 6px;
+      }
+
+      #keyTablesWrap>div>div:first-child {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* ─ Matrix visual ─ */
+      .mx-visual-table th,
+      .mx-visual-table td {
+        padding: 4px 6px;
+        font-size: 0.68rem;
+        min-width: 42px;
+      }
+
+      /* ─ History modal ─ */
+      .modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+      }
+
+      .modal-box {
+        border-radius: 20px 20px 0 0;
+        max-height: 85vh;
+        max-width: 100%;
+      }
+
+      .modal-head {
+        padding: 14px 16px;
+      }
+
+      .modal-head h3 {
+        font-size: 0.9rem;
+      }
+
+      .modal-body {
+        padding: 10px 12px;
+      }
+
+      .hist-item {
+        padding: 12px 12px;
+        gap: 8px;
+        border-radius: 10px;
+      }
+
+      .hist-title {
+        font-size: 0.82rem;
+      }
+
+      .hist-sub {
+        font-size: 0.62rem;
+      }
+
+      .hist-badge {
+        font-size: 0.6rem;
+        padding: 2px 7px;
+      }
+
+      .hist-actions {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .hist-btn-load {
+        font-size: 0.72rem;
+        padding: 7px 12px;
+      }
+
+      .hist-btn-del {
+        font-size: 0.75rem;
+        padding: 7px 10px;
+      }
+
+      /* ─ Saved banner ─ */
+      .saved-banner {
+        padding: 12px 14px;
+        border-radius: 10px;
+        gap: 8px;
+      }
+
+      .saved-banner-text h4 {
+        font-size: 0.78rem;
+      }
+
+      .saved-banner-text p {
+        font-size: 0.66rem;
+      }
+
+      .saved-banner-actions {
+        flex-direction: row;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .btn-restore,
+      .btn-discard {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+        padding: 8px 10px;
+        font-size: 0.73rem;
+      }
+
+      /* ─ Toast ─ */
+      .toast {
+        bottom: 16px;
+        font-size: 0.74rem;
+        padding: 9px 16px;
+        max-width: 90vw;
+        white-space: normal;
+        text-align: center;
+      }
+
+      /* ─ ra-wrap / tables ─ */
+      .ra-wrap {
+        overflow-x: auto;
+        border-radius: 8px;
+      }
+
+      .concl {
+        padding: 12px 14px;
+        border-right-width: 3px;
+      }
+
+      .concl h3 {
+        font-size: 0.85rem;
+      }
+
+      .concl p {
+        font-size: 0.78rem;
+        line-height: 1.85;
+      }
+
+      /* ─ Footer ─ */
+      .footer-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+      }
+
+      .footer-copy {
+        font-size: 0.63rem;
+      }
+    }
+
+    @media(max-width:380px) {
+      .header-text h1 {
+        font-size: 0.72rem;
+      }
+
+      .matrix-selector {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .feat-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .btn {
+        font-size: 0.74rem;
+        padding: 9px 10px;
+      }
+
+      .intro-hero h2 {
+        font-size: 1.1rem;
+      }
+
+      .wrap {
+        padding: 6px 8px 80px;
+      }
+    }
+
+    /* ══════════════════════════════════════════
+   PRINT STYLES — Professional B&W Edition
+══════════════════════════════════════════ */
+    @media print {
+
+      /* ── Reset & Page Setup ── */
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      @page {
+        margin: 1.2cm 1cm 2.2cm 1cm;
+        size: A4 landscape;
+      }
+
+      /* ── Hide everything except the report ── */
+      header,
+      footer,
+      .progress-bar,
+      .btn-row,
+      .btn-print,
+      .btn,
+      #sIntro,
+      #sInfo,
+      #sHazards,
+      #sMatrix,
+      .screen:not(#sReport),
+      .ptitle>div,
+      .ptitle h2+* {
+        display: none !important;
+      }
+
+      /* ── Show report screen cleanly ── */
+      #sReport {
+        display: block !important;
+      }
+
+      .ptitle {
+        display: none !important;
+      }
+
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        font-family: 'Cairo', 'Tajawal', sans-serif;
+      }
+
+      body::before {
+        display: none !important;
+      }
+
+      main {
+        overflow: visible !important;
+        padding: 0 !important;
+      }
+
+      .wrap {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+
+      /* ── Report Header Box ── */
+      .report-header-box {
+        background: #fff !important;
+        border: 2.5px solid #222 !important;
+        border-radius: 0 !important;
+        color: #000 !important;
+        padding: 16px 20px !important;
+        margin-bottom: 14px !important;
+        page-break-after: avoid;
+        position: relative;
+      }
+
+      .report-header-box::before {
+        content: '';
+        display: block;
+        height: 4px;
+        background: #000;
+        margin-bottom: 12px;
+      }
+
+      .report-header-box::after {
+        content: '';
+        display: block;
+        height: 4px;
+        background: #000;
+        margin-top: 12px;
+      }
+
+      .report-title {
+        color: #000 !important;
+        font-size: 1.3rem !important;
+      }
+
+      .report-org {
+        color: #333 !important;
+        font-size: 0.72rem !important;
+      }
+
+      .report-sub {
+        color: #444 !important;
+        font-size: 0.75rem !important;
+      }
+
+      /* ── Cards ── */
+      .card {
+        background: #fff !important;
+        border: 1px solid #bbb !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        margin-bottom: 14px !important;
+        padding: 14px 16px !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .card-title {
+        color: #000 !important;
+        border-bottom: 1.5px solid #bbb !important;
+        padding-bottom: 8px !important;
+        margin-bottom: 12px !important;
+        font-size: 0.85rem !important;
+      }
+
+      .card-icon {
+        background: #333 !important;
+        color: #fff !important;
+      }
+
+      /* ── Meta Grid (B&W) ── */
+      .meta-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+
+      .meta-cell {
+        background: #f3f3f3 !important;
+        border: 1px solid #bbb !important;
+        border-radius: 0 !important;
+      }
+
+      .meta-cell .lbl {
+        color: #555 !important;
+        font-size: 0.65rem !important;
+      }
+
+      .meta-cell .val {
+        color: #000 !important;
+        font-size: 0.82rem !important;
+      }
+
+      .meta-cell.span3 {
+        grid-column: span 3 !important;
+      }
+
+      /* ── Intro card text ── */
+      .card p {
+        color: #000 !important;
+      }
+
+      /* ── Stats — hidden (shown as table summary instead) ── */
+      .stats {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 8px !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .stat {
+        background: #f3f3f3 !important;
+        border: 1.5px solid #888 !important;
+        border-radius: 0 !important;
+      }
+
+      .stat .n {
+        color: #000 !important;
+        font-size: 1.6rem !important;
+      }
+
+      .stat .l {
+        color: #444 !important;
+      }
+
+      /* ══ TABLES — Professional Print Edition ══ */
+
+      /* Matrix Key Table */
+      .ra-wrap {
+        overflow: visible !important;
+        margin: 0 !important;
+      }
+
+      .rk-table,
+      .rd-table {
+        min-width: 0 !important;
+        width: 100% !important;
+        border-collapse: collapse !important;
+        font-size: 0.65rem !important;
+      }
+
+      .rk-table th,
+      .rk-table td,
+      .rd-table th,
+      .rd-table td {
+        border: 1.5px solid #555 !important;
+        padding: 4px 6px !important;
+        font-size: 0.65rem !important;
+        vertical-align: middle !important;
+      }
+
+      /* Matrix key table headers — WHITE background, dark text */
+      .rk-head-main {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 0.72rem !important;
+        font-weight: 900 !important;
+        border: 1.5px solid #333 !important;
+      }
+
+      .rk-head-sub {
+        background: #f0f0f0 !important;
+        color: #000 !important;
+        font-size: 0.66rem !important;
+        font-weight: 700 !important;
+        border: 1.5px solid #333 !important;
+      }
+
+      .rk-val-cell {
+        background: #f8f8f8 !important;
+        color: #000 !important;
+        font-weight: 800 !important;
+        border: 1.5px solid #333 !important;
+      }
+
+      .rk-desc-cell {
+        background: #fff !important;
+        color: #222 !important;
+        font-size: 0.62rem !important;
+        border: 1.5px solid #555 !important;
+      }
+
+      .rotate-lbl {
+        background: #eee !important;
+        color: #000 !important;
+        font-size: 0.62rem !important;
+        border: 1.5px solid #555 !important;
+      }
+
+      /* ══ MATRIX CELLS — FULL COLOR (not B&W) ══ */
+      .mc-g {
+        background: #16a34a !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .mc-y {
+        background: #ca8a04 !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .mc-o {
+        background: #ea580c !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .mc-r {
+        background: #dc2626 !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .mc-dr {
+        background: #7f1d1d !important;
+        color: #fca5a5 !important;
+        font-weight: 800 !important;
+      }
+
+      /* Legend cells — FULL COLOR */
+      .rl-g {
+        background: #16a34a !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+      }
+
+      .rl-y {
+        background: #ca8a04 !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+      }
+
+      .rl-r {
+        background: #dc2626 !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+      }
+
+      .rl-e {
+        background: transparent !important;
+      }
+
+      /* Hazard Data Table headers — WHITE background, dark text */
+      .rd-head-main {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 0.7rem !important;
+        font-weight: 900 !important;
+        border: 1.5px solid #333 !important;
+      }
+
+      .rd-head-sub {
+        background: #f0f0f0 !important;
+        color: #000 !important;
+        font-size: 0.66rem !important;
+        font-weight: 700 !important;
+        border: 1.5px solid #333 !important;
+      }
+
+      /* Data rows — clean white */
+      .rd-data td {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 0.65rem !important;
+      }
+
+      .rd-data:nth-child(even) td {
+        background: #f9f9f9 !important;
+      }
+
+      /* ══ RV cells in hazard table — FULL COLOR ══ */
+      .dmc-g {
+        background: #16a34a !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .dmc-y {
+        background: #ca8a04 !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .dmc-o {
+        background: #ea580c !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .dmc-r {
+        background: #dc2626 !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+      }
+
+      .dmc-dr {
+        background: #7f1d1d !important;
+        color: #fca5a5 !important;
+        font-weight: 800 !important;
+      }
+
+      /* Orange separator */
+      .ra-wrap>div[style*="gradient"] {
+        background: linear-gradient(90deg, #e8611a, #f97316, #e8611a) !important;
+      }
+
+      /* ── Conclusion Card ── */
+      .concl {
+        background: #f8f8f8 !important;
+        border-right: 4px solid #222 !important;
+        border-radius: 0 !important;
+      }
+
+      .concl h3 {
+        color: #222 !important;
+      }
+
+      .concl p {
+        color: #000 !important;
+        line-height: 1.9 !important;
+        font-size: 0.8rem !important;
+      }
+
+      /* ── Page break rules ── */
+      .card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .card.ra-card {
+        page-break-before: always;
+        break-before: always;
+      }
+
+      #reportOut>.card:first-child {
+        page-break-before: avoid;
+        break-before: avoid;
+      }
+
+      #reportOut>.card:nth-child(2) {
+        page-break-before: avoid;
+        break-before: avoid;
+      }
+
+      /* Each section starts on its own page if needed */
+      .ra-wrap {
+        page-break-inside: auto;
+        break-inside: auto;
+      }
+
+      .rk-table {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .rd-table {
+        page-break-inside: auto;
+        break-inside: auto;
+      }
+
+      tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      /* ── Print Footer — injected via ::after on body ── */
+      #sReport::after {
+        content: '';
+        display: block;
+        height: 2px;
+        background: #222;
+        margin: 20px 0 8px;
+      }
+
+      /* Custom print footer element */
+      .print-footer-bar {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 3px double #333;
+        padding: 8px 4px 0;
+        margin-top: 18px;
+        font-size: 0.65rem;
+        color: #333;
+        page-break-inside: avoid;
+      }
+
+      .print-footer-bar .pf-logo {
+        font-weight: 900;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        color: #000;
+      }
+
+      .print-footer-bar .pf-center {
+        text-align: center;
+        color: #444;
+        font-size: 0.62rem;
+        line-height: 1.6;
+      }
+
+      .print-footer-bar .pf-contact {
+        text-align: left;
+        font-size: 0.62rem;
+        color: #333;
+        line-height: 1.7;
+      }
+
+      .print-footer-bar .pf-dot {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #333;
+        margin-left: 4px;
+        vertical-align: middle;
+      }
+
+      /* Hide runtime footer (web footer) */
+      footer {
+        display: none !important;
+      }
+
+      .toast,
+      .save-indicator,
+      .saved-banner,
+      .btn-save,
+      .report-action-bar {
+        display: none !important;
+      }
+
+      /* ── Report bottom note ── */
+      #reportOut>div:last-child {
+        color: #444 !important;
+        font-size: 0.62rem !important;
+        border-top: 1px solid #bbb !important;
+      }
+    }
+
+    /* ── REPORT ACTION BAR ── */
+    .report-action-bar {
+      position: sticky;
+      top: 70px;
+      z-index: 100;
+      background: rgba(22, 163, 74, .10);
+      border: 1px solid rgba(22, 163, 74, .28);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      backdrop-filter: blur(14px);
+      animation: fadeUp .35s ease;
+    }
+
+    .report-action-bar-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px 18px;
+    }
+
+    .rab-msg {
+      flex: 1;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #4ade80;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .rab-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ── HISTORY BUTTON ── */
+    .btn-history {
+      background: rgba(37, 99, 235, .14);
+      border: 1px solid rgba(59, 130, 246, .28);
+      border-radius: 9px;
+      padding: 10px 22px;
+      color: #93c5fd;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      transition: all .25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .btn-history:hover {
+      background: rgba(37, 99, 235, .28);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+
+    /* ── HISTORY MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(0, 0, 0, .75);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-box {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .6);
+      transform: translateY(20px);
+      transition: transform .3s;
+    }
+
+    .modal-overlay.open .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .modal-head h3 {
+      font-size: 1rem;
+      font-weight: 900;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-head-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .modal-btn-clear {
+      background: rgba(220, 38, 38, .12);
+      border: 1px solid rgba(220, 38, 38, .22);
+      border-radius: 7px;
+      padding: 5px 12px;
+      color: #f87171;
+      font-size: 0.72rem;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      transition: all .2s;
+    }
+
+    .modal-btn-clear:hover {
+      background: rgba(220, 38, 38, .25);
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 5px 10px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all .2s;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    .modal-body {
+      overflow-y: auto;
+      padding: 14px 16px;
+      flex: 1;
+    }
+
+    .hist-item {
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      transition: border-color .25s;
+    }
+
+    .hist-item:hover {
+      border-color: rgba(232, 97, 26, .3);
+    }
+
+    .hist-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hist-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hist-sub {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .hist-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .hist-badge {
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-size: 0.62rem;
+      font-weight: 700;
+    }
+
+    .hist-badge.total {
+      background: rgba(232, 97, 26, .15);
+      color: var(--accent2);
+      border: 1px solid rgba(232, 97, 26, .25);
+    }
+
+    .hist-badge.low {
+      background: rgba(22, 163, 74, .15);
+      color: #4ade80;
+      border: 1px solid rgba(22, 163, 74, .25);
+    }
+
+    .hist-badge.high {
+      background: rgba(220, 38, 38, .15);
+      color: #f87171;
+      border: 1px solid rgba(220, 38, 38, .25);
+    }
+
+    .hist-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .hist-btn-load {
+      background: rgba(37, 99, 235, .16);
+      border: 1px solid rgba(59, 130, 246, .28);
+      border-radius: 7px;
+      padding: 6px 14px;
+      color: #93c5fd;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+
+    .hist-btn-load:hover {
+      background: rgba(37, 99, 235, .3);
+      color: #fff;
+    }
+
+    .hist-btn-del {
+      background: rgba(220, 38, 38, .1);
+      border: 1px solid rgba(220, 38, 38, .2);
+      border-radius: 7px;
+      padding: 6px 10px;
+      color: #f87171;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all .2s;
+    }
+
+    .hist-btn-del:hover {
+      background: rgba(220, 38, 38, .25);
+    }
+
+    @media print {
+      .modal-overlay {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="header-strip"></div>
+    <div class="header-inner">
+      <div class="logo">&#9888;</div>
+      <div class="header-text">
+        <h1>نظام تقييم وإدارة المخاطر المهنية</h1>
+        <p>Occupational Risk Assessment System · NIOSH Egypt</p>
+      </div>
+      <div class="save-indicator" id="saveIndicator">
+        <div class="save-dot" id="saveDot"></div>
+        <span id="saveLabel">حفظ تلقائي</span>
+      </div>
+      <div class="header-badge">ISO 45001 &middot; قانون العمل ١٢/٢٠٠٣</div>
+    </div>
+  </header>
+
+  <!-- ══ TOAST ══ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ══ PROGRESS ══ -->
+  <div class="progress-bar">
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-circle active" id="sc1">١</div>
+        <div class="step-line" id="sl1"></div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" id="sc2">٢</div>
+        <div class="step-line" id="sl2"></div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" id="sc3">٣</div>
+        <div class="step-line" id="sl3"></div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" id="sc4">٤</div>
+        <div class="step-line" id="sl4"></div>
+      </div>
+      <div class="step-circle" id="sc5">٥</div>
+    </div>
+    <div class="step-labels">
+      <div class="step-lbl active" id="lb1">البداية</div>
+      <div class="step-lbl" id="lb2">بيانات البحث</div>
+      <div class="step-lbl" id="lb3">المخاطر</div>
+      <div class="step-lbl" id="lb4">المصفوفة</div>
+      <div class="step-lbl" id="lb5">التقرير</div>
+    </div>
+  </div>
+
+  <main>
+    <div class="wrap">
+
+      <!-- ════ SCREEN 1: INTRO ════ -->
+      <div class="screen active" id="sIntro">
+        <!-- Saved data banner (shown if data exists) -->
+        <div class="saved-banner" id="savedBanner" style="display:none;">
+          <div class="saved-banner-icon">💾</div>
+          <div class="saved-banner-text">
+            <h4>يوجد تقرير محفوظ مسبقاً</h4>
+            <p id="savedBannerDesc">تم العثور على بيانات تقييم سابقة. هل تريد استكمالها؟</p>
+          </div>
+          <div class="saved-banner-actions">
+            <button class="btn-restore" onclick="loadSaved()">&#128260; استكمال التقرير</button>
+            <button class="btn-discard" onclick="discardSaved()">&#128465; حذف</button>
+          </div>
+        </div>
+
+        <div class="intro-hero">
+          <h2>&#128737; تقييم مخاطر بيئة العمل</h2>
+          <p class="sub">منظومة متكاملة لتحليل وتقييم المخاطر المهنية وفق منهجية الخمس خطوات المعتمدة دولياً. ادخل
+            بياناتك واحصل على تقرير احترافي مطابق للنموذج القياسي مع جداول ومصفوفات تفاعلية قابلة للطباعة.</p>
+          <div class="feat-grid">
+            <div class="feat">
+              <div class="ico">&#128269;</div>
+              <p>تحديد مصادر الخطر</p>
+            </div>
+            <div class="feat">
+              <div class="ico">&#128202;</div>
+              <p>مصفوفة التقييم</p>
+            </div>
+            <div class="feat">
+              <div class="ico">&#128295;</div>
+              <p>تدابير السيطرة</p>
+            </div>
+            <div class="feat">
+              <div class="ico">&#128203;</div>
+              <p>تقرير قابل للطباعة</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+            <button class="btn btn-p" onclick="goTo('sInfo',1)">ابدأ التقييم الآن &#9664;</button>
+            <button class="btn btn-history" onclick="openHistory()">&#128196; سجل التقارير</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ SCREEN 2: INFO ════ -->
+      <div class="screen" id="sInfo">
+        <div class="ptitle">
+          <h2>&#128221; معلومات البحث والمنشأة</h2><span>أدخل البيانات الأساسية للتقرير</span>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#128208;</div>اختر نوع مصفوفة تقييم المخاطر
+          </div>
+          <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;">حدد حجم المصفوفة التي ستُستخدم لتقييم
+            الاحتمالية والشدة.</p>
+          <div class="matrix-selector">
+            <div class="mx-opt" id="mx33" onclick="selMatrix(3)">
+              <div class="mx-tick">&#10003;</div>
+              <div class="mx-num">3&times;3</div>
+              <div class="mx-tag">بسيطة / Simple</div>
+              <div style="display:flex;justify-content:center;margin-top:10px;">
+                <div style="display:inline-grid;grid-template-columns:repeat(3,12px);gap:2px;">
+                  <div style="width:12px;height:12px;border-radius:2px;background:#16a34a"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#ca8a04"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#dc2626"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#16a34a"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#ca8a04"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#dc2626"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#ca8a04"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#dc2626"></div>
+                  <div style="width:12px;height:12px;border-radius:2px;background:#7f1d1d"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mx-opt sel" id="mx55" onclick="selMatrix(5)">
+              <div class="mx-tick">&#10003;</div>
+              <div class="mx-num">5&times;5</div>
+              <div class="mx-tag">قياسية / Standard</div>
+              <div style="display:flex;justify-content:center;margin-top:10px;" id="prev55"></div>
+            </div>
+            <div class="mx-opt" id="mx66" onclick="selMatrix(6)">
+              <div class="mx-tick">&#10003;</div>
+              <div class="mx-num">6&times;6</div>
+              <div class="mx-tag">متقدمة / Advanced</div>
+              <div style="display:flex;justify-content:center;margin-top:10px;" id="prev66"></div>
+            </div>
+            <div class="mx-opt" id="mx88" onclick="selMatrix(8)">
+              <div class="mx-tick">&#10003;</div>
+              <div class="mx-num">8&times;8</div>
+              <div class="mx-tag">احترافية / Pro</div>
+              <div style="display:flex;justify-content:center;margin-top:10px;" id="prev88"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#128204;</div>عنوان البحث والبيانات الأساسية
+          </div>
+          <div class="fg">
+            <div class="f s2"><label><span class="req">*</span>عنوان البحث / التقرير</label><input id="rTitle"
+                type="text" placeholder="مثال: تقييم مخاطر بيئة العمل في مصنع الأثاث الخشبي" onblur="saveDraft()"></div>
+            <div class="f"><label><span class="req">*</span>اسم المنشأة / الموقع</label><input id="rFacility"
+                type="text" placeholder="اسم الشركة أو المنشأة" onblur="saveDraft()"></div>
+            <div class="f"><label>القطاع الصناعي</label>
+              <select id="rIndustry" onchange="saveDraft()">
+                <option value="">اختر القطاع</option>
+                <option>التصنيع والإنتاج</option>
+                <option>البناء والتشييد</option>
+                <option>الصناعات الكيميائية</option>
+                <option>صناعات غذائية</option>
+                <option>المستشفيات والرعاية الصحية</option>
+                <option>النفط والغاز</option>
+                <option>الكهرباء والطاقة</option>
+                <option>الصناعات الخشبية</option>
+                <option>الصناعات المعدنية</option>
+                <option>اللوجستيات والمستودعات</option>
+                <option>أخرى</option>
+              </select>
+            </div>
+            <div class="f"><label><span class="req">*</span>تاريخ التقييم</label><input id="rDate" type="date"
+                onchange="saveDraft()"></div>
+            <div class="f"><label>تاريخ المراجعة القادمة</label><input id="rReview" type="date" onchange="saveDraft()">
+            </div>
+            <div class="f s2"><label>وصف المكان / النشاط المُقيَّم</label><textarea id="rDesc"
+                placeholder="اكتب وصفاً مختصراً للمكان وطبيعة العمل وعدد العمال..." onblur="saveDraft()"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#128101;</div>فريق التقييم
+          </div>
+          <div class="fg">
+            <div class="f s2"><label><span class="req">*</span>قائد / مشرف التقييم</label><input id="rLead" type="text"
+                placeholder="اسم المسؤول الرئيسي" onblur="saveDraft()"></div>
+          </div>
+          <label style="font-size:0.73rem;color:var(--muted);font-weight:700;display:block;margin-top:12px;">أعضاء
+            الفريق المشاركون</label>
+          <div class="add-row">
+            <input id="mInput" type="text" placeholder="أضف اسم عضو..." onkeydown="if(event.key==='Enter')addM()">
+            <button class="btn-add" onclick="addM()">+ إضافة</button>
+          </div>
+          <div class="member-list" id="mList"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#128214;</div>مقدمة التقرير
+          </div>
+          <div class="f"><label>نص المقدمة</label><textarea id="rIntro" rows="4"
+              placeholder="يُعدّ تقييم المخاطر المهنية الركيزة الأساسية لأي منظومة سلامة وصحة مهنية فعّالة..."
+              onblur="saveDraft()"></textarea></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-s" onclick="goTo('sIntro',0)">&#9664; السابق</button>
+          <button class="btn btn-p" onclick="valInfo()">التالي: تحديد المخاطر &#9664;</button>
+        </div>
+      </div>
+
+      <!-- ════ SCREEN 3: HAZARDS ════ -->
+      <div class="screen" id="sHazards">
+        <div class="ptitle">
+          <h2>&#9888; تحديد وتقييم المخاطر</h2><span>أضف مصادر الخطر وقيّم كلاً منها</span>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#128273;</div>مفتاح التقييم المستخدم
+          </div>
+          <div id="keyTablesWrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#9888;</div>قائمة المخاطر
+          </div>
+          <div id="hList"></div>
+          <button class="add-hrow" onclick="addH()">&#10133; إضافة مصدر خطر جديد</button>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-s" onclick="goTo('sInfo',1)">&#9664; السابق</button>
+          <button class="btn btn-p" onclick="valHazards()">التالي: المصفوفة &#9664;</button>
+        </div>
+      </div>
+
+      <!-- ════ SCREEN 4: MATRIX VISUAL ════ -->
+      <div class="screen" id="sMatrix">
+        <div class="ptitle">
+          <h2>&#128202; مصفوفة تقييم المخاطر</h2><span>عرض بصري لتوزيع المخاطر</span>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#128200;</div>مصفوفة المخاطر المرئية
+          </div>
+          <div id="matrixVis"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <div class="card-icon">&#128204;</div>ملخص المخاطر
+          </div>
+          <div id="matrixSummary"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-s" onclick="goTo('sHazards',2)">&#9664; السابق</button>
+          <button class="btn btn-p" onclick="buildReport()">توليد التقرير النهائي &#9664;</button>
+        </div>
+      </div>
+
+      <!-- ════ SCREEN 5: REPORT ════ -->
+      <div class="screen" id="sReport">
+        <div class="ptitle" style="justify-content:space-between;">
+          <h2>&#128203; التقرير النهائي</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-print" onclick="doPrint()">&#128424; طباعة / PDF</button>
+            <button class="btn btn-s" onclick="goTo('sHazards',2)">&#9664; تعديل</button>
+          </div>
+        </div>
+        <!-- Action bar shown after building/opening a report -->
+        <div id="reportActionBar" class="report-action-bar" style="display:none;">
+          <div class="report-action-bar-inner">
+            <span class="rab-msg">&#9989; تم حفظ التقرير في السجل</span>
+            <div class="rab-btns">
+              <button class="btn btn-history" onclick="openHistory()">&#128196; سجل التقارير</button>
+              <button class="btn btn-p" onclick="resetAndGoHome()">&#10133; تقرير جديد</button>
+            </div>
+          </div>
+        </div>
+        <div id="reportOut"></div>
+      </div>
+
+    </div><!-- /wrap -->
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">&copy; 2025 نظام تقييم المخاطر المهنية · NIOSH Egypt</span>
+      <a class="footer-made" href="https://samermagdy1.github.io/C-V/" target="_blank" rel="noopener">
+        <span class="footer-made-text">Made by Samir Magdy</span>
+        <div class="footer-icon-wrap">
+          <div class="footer-icon-ring2"></div>
+          <div class="footer-icon-ring"></div>
+          <div class="footer-icon-core">SM</div>
+          <div class="footer-pulse-green"></div>
+        </div>
+      </a>
+    </div>
+  </footer>
+
+  <!-- ══ PRINT FOOTER — shown only in print ══ -->
+  <div id="printFooter" class="print-footer-bar" style="display:none;">
+    <div class="pf-logo">⚠ نظام تقييم المخاطر المهنية</div>
+    <div class="pf-center">
+      <strong>Occupational Risk Assessment System · NIOSH Egypt</strong><br>
+      وُثِّق هذا التقرير وفق منهجية الخمس خطوات · ISO 45001 · قانون العمل ١٢/٢٠٠٣<br>
+      <em>هذا التقرير سري ومخصص للاستخدام الداخلي للمنشأة فقط</em>
+    </div>
+    <div class="pf-contact">
+      <span class="pf-dot"></span> <strong>Samir Magdy</strong> — OSH Specialist<br>
+      <span class="pf-dot"></span> samermagdy1.github.io/C-V<br>
+      <span class="pf-dot"></span> NIOSH Egypt
+    </div>
+  </div>
+
+  <!-- ══ HISTORY MODAL ══ -->
+  <div class="modal-overlay" id="historyModal" onclick="if(event.target===this)closeHistory()">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>&#128196; سجل التقارير المحفوظة</h3>
+        <div class="modal-head-actions">
+          <button class="modal-btn-clear" onclick="clearHistory()">&#128465; مسح الكل</button>
+          <button class="modal-close" onclick="closeHistory()">&#10005;</button>
+        </div>
+      </div>
+      <div class="modal-body" id="historyList"></div>
+    </div>
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════════
+    //  STATE
+    // ══════════════════════════════════════════════
+    let mSize = 5;
+    let members = [];
+    let hazards = [];
+    let hcnt = 0;
+    let _resetTimer = null; // used to cancel auto-reset when opening from history
+
+    // ══════════════════════════════════════════════
+    //  MATRIX CONFIG
+    // ══════════════════════════════════════════════
+    const MX = {
+      3: {
+        pVals: [1, 2, 3], sVals: [1, 2, 3],
+        pLabels: { 1: 'منخفضة (١)', 2: 'متوسطة (٢)', 3: 'عالية (٣)' },
+        sLabels: { 1: 'بسيطة (١)', 2: 'متوسطة (٢)', 3: 'شديدة (٣)' },
+        pDesc: { 1: 'نادر الحدوث', 2: 'ممكن الحدوث', 3: 'مؤكد الحدوث' },
+        sDesc: { 1: 'إصابة بسيطة / إسعافات أولية', 2: 'إصابة بليغة / أيام راحة', 3: 'وفاة أو عجز دائم' },
+        legend: [{ r: '1–3', l: 'Low', cls: 'g' }, { r: '4–6', l: 'Moderate', cls: 'y' }, { r: '7–9', l: 'High', cls: 'r' }],
+        getRv(r) { return r <= 3 ? { l: 'منخفض', c: 'rb-low', code: 'T' } : r <= 6 ? { l: 'متوسط', c: 'rb-mod', code: 'A' } : { l: 'عالٍ', c: 'rb-high', code: 'M' }; },
+        getMc(r) { return r <= 3 ? 'mc-g' : r <= 6 ? 'mc-y' : 'mc-r'; },
+        getDmc(r) { return r <= 3 ? 'dmc-g' : r <= 6 ? 'dmc-y' : 'dmc-r'; },
+        ranges: '1–3 = Low · 4–6 = Moderate · 7–9 = High'
+      },
+      5: {
+        pVals: [2, 4, 6, 8, 10], sVals: [2, 4, 6, 8, 10],
+        pLabels: { 2: 'بعيد (٢)', 4: 'ممكن (٤)', 6: 'محتمل (٦)', 8: 'قريب (٨)', 10: 'مؤكد (١٠)' },
+        sLabels: { 2: 'طفيفة (٢)', 4: 'بسيطة (٤)', 6: 'بليغة (٦)', 8: 'وفاة فرد (٨)', 10: 'وفيات (١٠)' },
+        pDesc: { 2: 'نادر الحدوث جداً', 4: 'غير متوقع لكن وارد', 6: 'يحدث أحياناً', 8: 'يحدث بتكرار', 10: 'يحدث باستمرار' },
+        sDesc: { 2: 'خدوش / إسعافات أولية', 4: 'إصابة بسيطة أيام قليلة', 6: 'إصابة بليغة / كسور', 8: 'وفاة أو عجز دائم', 10: 'وفيات متعددة / كارثة' },
+        legend: [{ r: '4–12', l: 'Low', cls: 'g' }, { r: '16–48', l: 'Moderate', cls: 'y' }, { r: '60–100', l: 'High', cls: 'r' }],
+        getRv(r) { return r <= 12 ? { l: 'منخفض', c: 'rb-low', code: 'T' } : r <= 24 ? { l: 'متوسط', c: 'rb-mod', code: 'A' } : r <= 48 ? { l: 'عالٍ', c: 'rb-high', code: 'M' } : { l: 'حرج', c: 'rb-crit', code: 'I' }; },
+        getMc(r) { return r <= 12 ? 'mc-g' : r <= 24 ? 'mc-y' : r <= 48 ? 'mc-o' : 'mc-dr'; },
+        getDmc(r) { return r <= 12 ? 'dmc-g' : r <= 24 ? 'dmc-y' : r <= 48 ? 'dmc-o' : 'dmc-dr'; },
+        ranges: '4–12 = Low (T) · 16–24 = Moderate (A) · 32–48 = High (M) · 60–100 = Intolerable (I)'
+      },
+      6: {
+        pVals: [1, 2, 3, 4, 5, 6], sVals: [1, 2, 3, 4, 5, 6],
+        pLabels: { 1: 'نادر (١)', 2: 'بعيد (٢)', 3: 'ممكن (٣)', 4: 'محتمل (٤)', 5: 'مرجح (٥)', 6: 'مؤكد (٦)' },
+        sLabels: { 1: 'لا أثر (١)', 2: 'طفيفة (٢)', 3: 'بسيطة (٣)', 4: 'بليغة (٤)', 5: 'خطيرة (٥)', 6: 'كارثية (٦)' },
+        pDesc: { 1: 'ليس له احتمالية فعلية', 2: 'نادر جداً', 3: 'غير شائع', 4: 'محتمل الحدوث', 5: 'يحدث في أوقات متفاوتة', 6: 'يحدث دائماً تقريباً' },
+        sDesc: { 1: 'لا ضرر يُذكر', 2: 'إسعافات أولية فقط', 3: 'أيام راحة قليلة', 4: 'إصابة بليغة / كسور', 5: 'عجز دائم / وفاة', 6: 'وفيات متعددة' },
+        legend: [{ r: '1–5', l: 'Low', cls: 'g' }, { r: '6–15', l: 'Moderate', cls: 'y' }, { r: '16–36', l: 'High', cls: 'r' }],
+        getRv(r) { return r <= 5 ? { l: 'منخفض', c: 'rb-low', code: 'T' } : r <= 15 ? { l: 'متوسط', c: 'rb-mod', code: 'A' } : r <= 25 ? { l: 'عالٍ', c: 'rb-high', code: 'M' } : { l: 'حرج', c: 'rb-crit', code: 'I' }; },
+        getMc(r) { return r <= 5 ? 'mc-g' : r <= 15 ? 'mc-y' : r <= 25 ? 'mc-o' : 'mc-dr'; },
+        getDmc(r) { return r <= 5 ? 'dmc-g' : r <= 15 ? 'dmc-y' : r <= 25 ? 'dmc-o' : 'dmc-dr'; },
+        ranges: '1–5 = Low · 6–15 = Moderate · 16–25 = High · 26–36 = Intolerable'
+      },
+      8: {
+        pVals: [1, 2, 3, 4, 5, 6, 7, 8], sVals: [1, 2, 3, 4, 5, 6, 7, 8],
+        pLabels: { 1: 'نادر (١)', 2: 'بعيد (٢)', 3: 'غير شائع (٣)', 4: 'ممكن (٤)', 5: 'محتمل (٥)', 6: 'مرجح (٦)', 7: 'قريب (٧)', 8: 'مؤكد (٨)' },
+        sLabels: { 1: 'لا أثر (١)', 2: 'طفيفة (٢)', 3: 'بسيطة (٣)', 4: 'معتدلة (٤)', 5: 'بليغة (٥)', 6: 'خطيرة (٦)', 7: 'حرجة (٧)', 8: 'كارثية (٨)' },
+        pDesc: { 1: 'لم يحدث قط', 2: 'نادر جداً', 3: 'مرة كل سنوات', 4: 'مرة كل سنة', 5: 'مرة كل أشهر', 6: 'مرة كل أسابيع', 7: 'مرة كل أيام', 8: 'يحدث يومياً' },
+        sDesc: { 1: 'لا ضرر / أثر بيئي طفيف', 2: 'خدوش / إسعافات', 3: 'أيام راحة 1–3', 4: 'أيام راحة +3 / علاج طبي', 5: 'كسر / إصابة بليغة', 6: 'عجز جزئي دائم', 7: 'عجز كلي / وفاة', 8: 'وفيات متعددة / كارثة' },
+        legend: [{ r: '1–9', l: 'Low', cls: 'g' }, { r: '10–25', l: 'Moderate', cls: 'y' }, { r: '26–64', l: 'High', cls: 'r' }],
+        getRv(r) { return r <= 9 ? { l: 'منخفض', c: 'rb-low', code: 'T' } : r <= 25 ? { l: 'متوسط', c: 'rb-mod', code: 'A' } : r <= 40 ? { l: 'عالٍ', c: 'rb-high', code: 'M' } : { l: 'حرج', c: 'rb-crit', code: 'I' }; },
+        getMc(r) { return r <= 9 ? 'mc-g' : r <= 25 ? 'mc-y' : r <= 40 ? 'mc-o' : 'mc-dr'; },
+        getDmc(r) { return r <= 9 ? 'dmc-g' : r <= 25 ? 'dmc-y' : r <= 40 ? 'dmc-o' : 'dmc-dr'; },
+        ranges: '1–9 = Low · 10–25 = Moderate · 26–40 = High · 41–64 = Intolerable'
+      }
+    };
+
+    // ══════════════════════════════════════════════
+    //  MATRIX SELECTOR
+    // ══════════════════════════════════════════════
+    function selMatrix(n) {
+      mSize = n;
+      [3, 5, 6, 8].forEach(x => {
+        document.getElementById('mx' + x + x).classList.remove('sel');
+      });
+      document.getElementById('mx' + n + n).classList.add('sel');
+      renderKeyTables();
+      renderHazards();
+    }
+
+    // init matrix previews
+    function initPreviews() {
+      function mkGrid(rows, sz) {
+        const colors = ['#16a34a', '#ca8a04', '#dc2626', '#7f1d1d'];
+        return `<div style="display:inline-grid;grid-template-columns:repeat(${sz},${sz <= 5 ? 10 : 9}px);gap:1px;">`
+          + rows.flat().map(c => `<div style="width:${sz <= 5 ? 10 : 9}px;height:${sz <= 5 ? 10 : 9}px;border-radius:1px;background:${colors[c]};"></div>`).join('')
+          + '</div>';
+      }
+      // 5x5
+      const m5 = [[0, 0, 1, 1, 2], [0, 0, 1, 2, 2], [0, 1, 1, 2, 3], [0, 1, 2, 3, 3], [1, 2, 3, 3, 3]];
+      document.getElementById('prev55').innerHTML = mkGrid(m5, 5);
+      // 6x6
+      const m6 = [[0, 0, 0, 1, 1, 2], [0, 0, 1, 1, 2, 2], [0, 1, 1, 2, 2, 3], [0, 1, 2, 2, 3, 3], [1, 1, 2, 3, 3, 3], [1, 2, 2, 3, 3, 3]];
+      document.getElementById('prev66').innerHTML = mkGrid(m6, 6);
+      // 8x8
+      const cfg8 = MX[8]; let r8 = [];
+      for (let p = 8; p >= 1; p--) { let row = []; for (let s = 1; s <= 8; s++) { const r = p * s; row.push(r <= 9 ? 0 : r <= 25 ? 1 : r <= 40 ? 2 : 3); } r8.push(row); }
+      document.getElementById('prev88').innerHTML = mkGrid(r8, 8);
+    }
+
+    // ══════════════════════════════════════════════
+    //  NAVIGATION
+    // ══════════════════════════════════════════════
+    const screens = ['sIntro', 'sInfo', 'sHazards', 'sMatrix', 'sReport'];
+    function goTo(id, si) {
+      screens.forEach(s => document.getElementById(s).classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      updateProg(si);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Auto-save draft silently whenever user advances past intro
+      try {
+        if (si > 0) { saveDraft(); }
+      } catch (e) { }
+    }
+    function updateProg(ai) {
+      for (let i = 1; i <= 5; i++) {
+        const c = document.getElementById('sc' + i);
+        const l = document.getElementById('sl' + i);
+        const lb = document.getElementById('lb' + i);
+        c.classList.remove('active', 'done');
+        if (l) l.classList.remove('done');
+        lb.classList.remove('active', 'done');
+        if (i < ai + 1) { c.classList.add('done'); if (l) l.classList.add('done'); lb.classList.add('done'); }
+        else if (i === ai + 1) { c.classList.add('active'); lb.classList.add('active'); }
+      }
+    }
+
+    // ══════════════════════════════════════════════
+    //  MEMBERS
+    // ══════════════════════════════════════════════
+    function addM() {
+      const v = document.getElementById('mInput').value.trim();
+      if (!v) return;
+      members.push(v);
+      document.getElementById('mInput').value = '';
+      renderMembers();
+    }
+    function removeM(i) { members.splice(i, 1); renderMembers(); }
+    function renderMembers() {
+      document.getElementById('mList').innerHTML =
+        members.map((m, i) => `<div class="mtag">${m}<button onclick="removeM(${i})">&#10005;</button></div>`).join('');
+    }
+
+    // ══════════════════════════════════════════════
+    //  KEY TABLES
+    // ══════════════════════════════════════════════
+    function renderKeyTables() {
+      const cfg = MX[mSize];
+      const pRows = cfg.pVals.map(v => `<tr>
+    <td style="font-weight:800;color:#fff;text-align:center;">${v}</td>
+    <td>${cfg.pLabels[v].replace(/[()٠-٩\d]/g, '').trim()}</td>
+    <td style="color:var(--muted);">${cfg.pDesc[v]}</td>
+  </tr>`).join('');
+      const sRows = cfg.sVals.map(v => `<tr>
+    <td style="font-weight:800;color:#fff;text-align:center;">${v}</td>
+    <td>${cfg.sLabels[v].replace(/[()٠-٩\d]/g, '').trim()}</td>
+    <td style="color:var(--muted);">${cfg.sDesc[v]}</td>
+  </tr>`).join('');
+      document.getElementById('keyTablesWrap').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;overflow-x:auto;">
+      <div>
+        <div style="font-size:0.78rem;font-weight:800;color:var(--accent2);margin-bottom:7px;">الاحتمالية (P)</div>
+        <table class="key-table"><thead><tr><th>القيمة</th><th>المستوى</th><th>المعنى</th></tr></thead><tbody>${pRows}</tbody></table>
+      </div>
+      <div>
+        <div style="font-size:0.78rem;font-weight:800;color:#93c5fd;margin-bottom:7px;">الشدة (S)</div>
+        <table class="key-table"><thead><tr><th>القيمة</th><th>المستوى</th><th>المعنى</th></tr></thead><tbody>${sRows}</tbody></table>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:rgba(255,255,255,.03);border-radius:7px;padding:9px 13px;">
+      <span style="font-size:0.78rem;font-weight:800;color:var(--gold);">معادلة التقييم: </span>
+      <span style="font-size:0.78rem;color:var(--text);">R = الاحتمالية (P) &times; الشدة (S)</span>
+      <br><span style="font-size:0.72rem;color:var(--muted);">${cfg.ranges}</span>
+    </div>`;
+    }
+
+    // ══════════════════════════════════════════════
+    //  HAZARDS  — FIX: no full re-render on text input
+    // ══════════════════════════════════════════════
+    const hTypes = ['كيميائية', 'بيولوجية', 'فيزيائية', 'ميكانيكية', 'كهربائية', 'حرائق وانفجارات', 'سقوط من ارتفاع', 'ضوضاء واهتزاز', 'إجهاد حراري', 'تحميل يدوي', 'متنوعة'];
+    const cMethods = ['إزالة المصدر (Elimination)', 'استبدال المادة (Substitution)', 'تحكم هندسي (Engineering Control)', 'تحكم إداري (Administrative Control)', 'معدات وقاية شخصية (PPE)'];
+
+    function addH() {
+      hcnt++;
+      const cfg = MX[mSize];
+      const defP = cfg.pVals[0], defS = cfg.sVals[0];
+      hazards.push({ id: 'h' + hcnt, src: '', htype: '', effect: '', p: defP, s: defS, ctrl: '', resp: '', ap: defP, as_: defS });
+      renderHazards();
+    }
+    function removeH(id) { hazards = hazards.filter(x => x.id !== id); renderHazards(); }
+
+    // ── KEY FIX: Only re-render RV display for numeric changes; save text without re-render ──
+    function upH(id, k, v) {
+      const h = hazards.find(x => x.id === id);
+      if (!h) return;
+      h[k] = v;
+      // For numeric fields that affect RV badge, update only the badge (no full re-render)
+      if (['p', 's', 'ap', 'as_'].includes(k)) {
+        updateRVBadge(h);
+      }
+      // For text fields (src, effect, resp) and select (htype, ctrl) — just store, no re-render
+    }
+
+    function updateRVBadge(h) {
+      const cfg = MX[mSize];
+      const r = h.p * h.s, rl = cfg.getRv(r);
+      const ra = h.ap * h.as_, rla = cfg.getRv(ra);
+      const bEl = document.getElementById('rvb_' + h.id);
+      const aEl = document.getElementById('rva_' + h.id);
+      if (bEl) bEl.innerHTML = `<span class="rv-formula">R = ${h.p} &times; ${h.s} = <strong style="color:#fff">${r}</strong></span><span class="rbadge ${rl.c}">&#9679; ${rl.l} (${rl.code})</span>`;
+      if (aEl) aEl.innerHTML = `<span class="rv-formula">R = ${h.ap} &times; ${h.as_} = <strong style="color:#fff">${ra}</strong></span><span class="rbadge ${rla.c}">&#9679; ${rla.l} (${rla.code})</span>`;
+    }
+
+    function renderHazards() {
+      const cfg = MX[mSize];
+      const wrap = document.getElementById('hList');
+      if (!hazards.length) {
+        wrap.innerHTML = '<p style="text-align:center;color:var(--muted);padding:20px;font-size:0.83rem;">لا توجد مخاطر مُضافة بعد. اضغط الزر أدناه لإضافة مصدر خطر.</p>';
+        return;
+      }
+      wrap.innerHTML = hazards.map((h, i) => {
+        const r = h.p * h.s, rl = cfg.getRv(r);
+        const ra = h.ap * h.as_, rla = cfg.getRv(ra);
+        const pO = cfg.pVals.map(v => `<option value="${v}" ${h.p == v ? 'selected' : ''}>${cfg.pLabels[v]}</option>`).join('');
+        const sO = cfg.sVals.map(v => `<option value="${v}" ${h.s == v ? 'selected' : ''}>${cfg.sLabels[v]}</option>`).join('');
+        const apO = cfg.pVals.map(v => `<option value="${v}" ${h.ap == v ? 'selected' : ''}>${cfg.pLabels[v]}</option>`).join('');
+        const asO = cfg.sVals.map(v => `<option value="${v}" ${h.as_ == v ? 'selected' : ''}>${cfg.sLabels[v]}</option>`).join('');
+        const htOpts = hTypes.map(t => `<option ${h.htype === t ? 'selected' : ''}>${t}</option>`).join('');
+        const ctOpts = cMethods.map(t => `<option value="${t}" ${h.ctrl === t ? 'selected' : ''}>${t}</option>`).join('');
+        return `
+    <div class="hrow" id="hrow_${h.id}">
+      <div class="hrow-hdr">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div class="hnum">${i + 1}</div>
+          <span style="font-size:0.8rem;color:var(--muted);">مصدر الخطر #${i + 1}</span>
+        </div>
+        <button class="btn-rm" onclick="removeH('${h.id}')">&#128465; حذف</button>
+      </div>
+      <div class="fg c3">
+        <div class="f">
+          <label>مصدر الخطر (Source)</label>
+          <input type="text" value="${esc(h.src)}" placeholder="ماكينة، مادة كيميائية..."
+            onchange="upH('${h.id}','src',this.value)">
+        </div>
+        <div class="f">
+          <label>نوع الخطر</label>
+          <select onchange="upH('${h.id}','htype',this.value)">
+            <option value="">اختر</option>${htOpts}
+          </select>
+        </div>
+        <div class="f">
+          <label>الأثر / الإصابة المتوقعة</label>
+          <input type="text" value="${esc(h.effect)}" placeholder="جروح، حروق، اختناق..."
+            onchange="upH('${h.id}','effect',this.value)">
+        </div>
+      </div>
+ 
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:0.72rem;font-weight:800;color:#f87171;margin-bottom:7px;">&#128308; قبل التحكم (Before Control)</div>
+          <div class="fg">
+            <div class="f">
+              <label>الاحتمالية (P)</label>
+              <select onchange="upH('${h.id}','p',+this.value)">${pO}</select>
+            </div>
+            <div class="f">
+              <label>الشدة (S)</label>
+              <select onchange="upH('${h.id}','s',+this.value)">${sO}</select>
+            </div>
+          </div>
+          <div class="rv-row" id="rvb_${h.id}">
+            <span class="rv-formula">R = ${h.p} &times; ${h.s} = <strong style="color:#fff">${r}</strong></span>
+            <span class="rbadge ${rl.c}">&#9679; ${rl.l} (${rl.code})</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.72rem;font-weight:800;color:#4ade80;margin-bottom:7px;">&#128994; بعد التحكم (After Control)</div>
+          <div class="fg">
+            <div class="f">
+              <label>الاحتمالية (P)</label>
+              <select onchange="upH('${h.id}','ap',+this.value)">${apO}</select>
+            </div>
+            <div class="f">
+              <label>الشدة (S)</label>
+              <select onchange="upH('${h.id}','as_',+this.value)">${asO}</select>
+            </div>
+          </div>
+          <div class="rv-row" id="rva_${h.id}">
+            <span class="rv-formula">R = ${h.ap} &times; ${h.as_} = <strong style="color:#fff">${ra}</strong></span>
+            <span class="rbadge ${rla.c}">&#9679; ${rla.l} (${rla.code})</span>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="fg" style="margin-top:10px;">
+        <div class="f">
+          <label>وسيلة التحكم</label>
+          <select onchange="upH('${h.id}','ctrl',this.value)">
+            <option value="">اختر</option>${ctOpts}
+          </select>
+        </div>
+        <div class="f">
+          <label>الشخص المسؤول</label>
+          <input type="text" value="${esc(h.resp)}" placeholder="اسم المسؤول"
+            onchange="upH('${h.id}','resp',this.value)">
+        </div>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    function esc(s) { return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    // ══════════════════════════════════════════════
+    //  VALIDATION
+    // ══════════════════════════════════════════════
+    function valInfo() {
+      if (!document.getElementById('rTitle').value.trim()) { alert('يرجى إدخال عنوان البحث'); return; }
+      if (!document.getElementById('rFacility').value.trim()) { alert('يرجى إدخال اسم المنشأة'); return; }
+      if (!document.getElementById('rLead').value.trim()) { alert('يرجى إدخال اسم قائد التقييم'); return; }
+      renderKeyTables();
+      goTo('sHazards', 2);
+      if (!hazards.length) addH();
+    }
+    function valHazards() {
+      if (!hazards.length) { alert('يرجى إضافة مصدر خطر واحد على الأقل'); return; }
+      buildMatrix();
+      goTo('sMatrix', 3);
+    }
+
+    // ══════════════════════════════════════════════
+    //  MATRIX VISUAL
+    // ══════════════════════════════════════════════
+    function buildMatrix() {
+      const cfg = MX[mSize];
+      const pVals = [...cfg.pVals].reverse();
+      const sVals = cfg.sVals;
+      let html = `<div class="mx-vis-wrap"><table class="mx-visual-table"><thead><tr>
+    <th style="text-align:center;">P \\ S</th>
+    ${sVals.map(s => `<th>${s}<br><span style="font-size:0.58rem;color:var(--muted);">${cfg.sLabels[s].replace(/[()٠-٩\d]/g, '').trim()}</span></th>`).join('')}
+  </tr></thead><tbody>`;
+      pVals.forEach(p => {
+        html += `<tr><th style="text-align:right;white-space:nowrap;">${p} – ${cfg.pLabels[p].replace(/[()٠-٩\d]/g, '').trim()}</th>`;
+        sVals.forEach(s => {
+          const r = p * s, rl = cfg.getRv(r);
+          const match = hazards.filter(h => h.p == p && h.s == s);
+          const mc = cfg.getMc(r);
+          const dots = match.map(h => `<span title="${h.src || 'خطر'}" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.9);margin:1px;"></span>`).join('');
+          html += `<td class="${mc}">${r}(${rl.code})${dots ? '<br>' + dots : ''}</td>`;
+        });
+        html += `</tr>`;
+      });
+      html += `</tbody></table></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:0.75rem;">
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#16a34a;display:inline-block;"></span>منخفض (T)</span>
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#ca8a04;display:inline-block;"></span>متوسط (A)</span>
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#ea580c;display:inline-block;"></span>عالٍ (M)</span>
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#7f1d1d;display:inline-block;"></span>حرج (I)</span>
+    <span style="color:var(--muted);margin-right:auto;font-size:0.68rem;">${cfg.ranges}</span>
+  </div>`;
+      document.getElementById('matrixVis').innerHTML = html;
+
+      const sumHtml = hazards.map((h, i) => {
+        const r = h.p * h.s, rl = cfg.getRv(r);
+        const ra = h.ap * h.as_, rla = cfg.getRv(ra);
+        return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+      <div class="hnum">${i + 1}</div>
+      <div style="flex:1;min-width:120px;"><div style="font-size:0.84rem;font-weight:700;color:#fff;">${h.src || 'مصدر غير محدد'}</div><div style="font-size:0.68rem;color:var(--muted);">${h.htype || ''}</div></div>
+      <span style="font-size:0.74rem;color:var(--muted);">P=${h.p} &times; S=${h.s}</span>
+      <span class="rbadge ${rl.c}">قبل: R=${r} · ${rl.l}</span>
+      <span style="color:var(--muted);">&rarr;</span>
+      <span class="rbadge ${rla.c}">بعد: R=${ra} · ${rla.l}</span>
+    </div>`;
+      }).join('');
+      document.getElementById('matrixSummary').innerHTML = sumHtml || '<p style="color:var(--muted);font-size:0.8rem;text-align:center;padding:10px;">لا توجد بيانات</p>';
+    }
+
+    // ══════════════════════════════════════════════
+    //  BUILD REPORT — matches image format exactly
+    // ══════════════════════════════════════════════
+
+    // Pure render — no side effects (called by both buildReport and histLoad)
+    function _buildReportHTML() {
+      const cfg = MX[mSize];
+      const title = document.getElementById('rTitle').value || 'تقييم مخاطر بيئة العمل';
+      const indEl = document.getElementById('rIndustry');
+      const industryTxt = indEl.options[indEl.selectedIndex]?.text || '—';
+      const facility = document.getElementById('rFacility').value || '—';
+      const date = document.getElementById('rDate').value;
+      const review = document.getElementById('rReview').value;
+      const lead = document.getElementById('rLead').value || '—';
+      const intro = document.getElementById('rIntro').value || 'يهدف هذا التقييم إلى رصد وتحليل المخاطر المهنية في بيئة العمل ووضع تدابير السيطرة المناسبة لضمان بيئة عمل آمنة وفق المعايير الدولية.';
+      const desc = document.getElementById('rDesc').value || '';
+
+      const low = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'T').length;
+      const mod = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'A').length;
+      const high = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'M').length;
+      const crit = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'I').length;
+
+      const pVals = cfg.pVals;
+      const sVals = cfg.sVals;
+      const n = pVals.length;
+      const legends = cfg.legend;
+
+      // ── Build Risk Matrix key table (matching image exactly)
+      // Columns: rotate-lbl | S_val | S_desc | rotate-lbl | P_val | P_desc | s1..sn | Range | Sig
+      // Total cols = 2 + 1 + 2 + 1 + n + 2  (rotate merged with val cols in image)
+      // Simplified: val | desc | val | desc | s1..sn | Range | Sig = n+6 cols
+      const totalCols = n + 6; // S_val, S_desc, P_val, P_desc, matrix×n, Range, Sig
+
+      let matHead = `
+  <tr>
+    <th class="rk-head-main" colspan="2">الشدة (S)</th>
+    <th class="rk-head-main" colspan="2">الاحتمالية (P)</th>
+    <th class="rk-head-main" colspan="${n}">الشدة S</th>
+    <th class="rk-head-main" colspan="2">النتيجة R</th>
+  </tr>
+  <tr>
+    <th class="rk-head-sub" style="min-width:36px;">Value</th>
+    <th class="rk-head-sub" style="min-width:120px;">الوصف</th>
+    <th class="rk-head-sub" style="min-width:36px;">Value</th>
+    <th class="rk-head-sub" style="min-width:120px;">الوصف</th>
+    ${sVals.map(v => `<th class="rk-head-sub" style="min-width:36px;">${v}</th>`).join('')}
+    <th class="rk-head-sub" style="min-width:60px;">Range</th>
+    <th class="rk-head-sub" style="min-width:80px;">Significance</th>
+  </tr>`;
+
+      // Data rows: one per probability value; also show severity on same row
+      let matRows = '';
+      pVals.forEach((pv, ri) => {
+        const sv = sVals[ri];
+        const leg = legends[ri] || null;
+        const lgCls = leg ? (leg.cls === 'g' ? 'rl-g' : leg.cls === 'y' ? 'rl-y' : 'rl-r') : 'rl-e';
+        matRows += `<tr>
+      <td class="rk-val-cell">${sv !== undefined ? sv : ''}</td>
+      <td class="rk-desc-cell">${sv !== undefined ? cfg.sDesc[sv] : ''}</td>
+      <td class="rk-val-cell">${pv}</td>
+      <td class="rk-desc-cell">${cfg.pDesc[pv]}</td>
+      ${sVals.map(sv2 => { const r = pv * sv2; const mc = cfg.getMc(r); return `<td class="${mc}">${r}</td>`; }).join('')}
+      <td class="${lgCls}">${leg ? leg.r : ''}</td>
+      <td class="${lgCls}">${leg ? leg.l : ''}</td>
+    </tr>`;
+      });
+      // extra legend rows if legend has more entries than pVals
+      for (let i = pVals.length; i < legends.length; i++) {
+        const leg = legends[i];
+        const lgCls = leg.cls === 'g' ? 'rl-g' : leg.cls === 'y' ? 'rl-y' : 'rl-r';
+        matRows += `<tr><td colspan="${totalCols - 2}" style="border:0;"></td>
+      <td class="${lgCls}">${leg.r}</td>
+      <td class="${lgCls}">${leg.l}</td>
+    </tr>`;
+      }
+
+      // ── Hazard data table (10 fixed columns matching image)
+      // Source | Hazards/Effect | S_before | P_before | RV_before | Control | Responsible | S_after | P_after | RV_after
+      let dataHead = `
+  <tr>
+    <th class="rd-head-main" rowspan="2" style="min-width:110px;">Source Of Hazard<br><span style="font-size:0.65rem;font-weight:400;">مصدر الخطر</span></th>
+    <th class="rd-head-main" rowspan="2" style="min-width:130px;">Potential Hazards / Hazard Effect<br><span style="font-size:0.65rem;font-weight:400;">الأخطار المحتملة / تأثير الخطر</span></th>
+    <th class="rd-head-main" colspan="3">Risk Evaluation (Before control measures)<br><span style="font-size:0.65rem;font-weight:400;">تقييم الخطر (قبل وسائل التحكم)</span></th>
+    <th class="rd-head-main" rowspan="2" style="min-width:110px;">Method(s) of control<br><span style="font-size:0.65rem;font-weight:400;">وسائل التحكم</span></th>
+    <th class="rd-head-main" rowspan="2" style="min-width:90px;">Responsible Person(s)<br><span style="font-size:0.65rem;font-weight:400;">الشخص المسؤول</span></th>
+    <th class="rd-head-main" colspan="3">Risk Evaluation (After control measures)<br><span style="font-size:0.65rem;font-weight:400;">تقييم الخطر (بعد وسائل التحكم)</span></th>
+  </tr>
+  <tr>
+    <th class="rd-head-sub">S</th><th class="rd-head-sub">P</th><th class="rd-head-sub">R.V</th>
+    <th class="rd-head-sub">S</th><th class="rd-head-sub">P</th><th class="rd-head-sub">R.V</th>
+  </tr>`;
+
+      const minRows = Math.max(hazards.length, 3);
+      let dataRows = '';
+      for (let i = 0; i < minRows; i++) {
+        if (i < hazards.length) {
+          const h = hazards[i];
+          const r = h.p * h.s, rl = cfg.getRv(r);
+          const ra = h.ap * h.as_, rla = cfg.getRv(ra);
+          const rvCls = cfg.getDmc(r);
+          const rvaCls = cfg.getDmc(ra);
+          dataRows += `<tr class="rd-data">
+        <td style="text-align:right;">${h.src || '—'}</td>
+        <td style="text-align:right;">${h.effect || '—'}${h.htype ? '<br><span style="font-size:0.65rem;color:#aac;">(' + h.htype + ')</span>' : ''}</td>
+        <td>${h.s}</td>
+        <td>${h.p}</td>
+        <td class="${rvCls}">${r}<br><span style="font-size:0.62rem;">(${rl.code})</span></td>
+        <td style="text-align:right;font-size:0.72rem;">${h.ctrl || '—'}</td>
+        <td style="text-align:right;font-size:0.72rem;">${h.resp || '—'}</td>
+        <td>${h.as_}</td>
+        <td>${h.ap}</td>
+        <td class="${rvaCls}">${ra}<br><span style="font-size:0.62rem;">(${rla.code})</span></td>
+      </tr>`;
+        } else {
+          dataRows += `<tr class="rd-data" style="height:44px;">
+        <td></td><td></td><td></td><td></td><td></td>
+        <td></td><td></td><td></td><td></td><td></td>
+      </tr>`;
+        }
+      }
+
+      // ── Format dates
+      const fmtDate = d => { if (!d) return '—'; const [y, m, dy] = d.split('-'); return `${dy}/${m}/${y}`; };
+
+      const reportHTML = `
+  <!-- REPORT HEADER -->
+  <div class="report-header-box">
+    <div class="report-org">نظام تقييم المخاطر المهنية · Occupational Risk Assessment System · NIOSH Egypt</div>
+    <div class="report-title">${title}</div>
+    <div class="report-sub">Risk Assessment Report &mdash; مصفوفة ${mSize}&times;${mSize} &mdash; ISO 45001 &middot; قانون العمل ١٢/٢٠٠٣</div>
+  </div>
+ 
+  <!-- META CARD -->
+  <div class="card">
+    <div class="card-title"><div class="card-icon">&#128204;</div>بيانات التقرير</div>
+    <div class="meta-grid">
+      <div class="meta-cell"><div class="lbl">المنشأة / الموقع</div><div class="val">${facility}</div></div>
+      <div class="meta-cell"><div class="lbl">القطاع الصناعي</div><div class="val">${industryTxt}</div></div>
+      <div class="meta-cell"><div class="lbl">قائد التقييم</div><div class="val">${lead}</div></div>
+      <div class="meta-cell"><div class="lbl">تاريخ التقييم</div><div class="val">${fmtDate(date)}</div></div>
+      <div class="meta-cell"><div class="lbl">المراجعة القادمة</div><div class="val">${fmtDate(review)}</div></div>
+      <div class="meta-cell"><div class="lbl">نوع المصفوفة</div><div class="val">${mSize}&times;${mSize}</div></div>
+      ${members.length ? `<div class="meta-cell span3"><div class="lbl">أعضاء الفريق</div><div class="val">${members.join(' &middot; ')}</div></div>` : ''}
+    </div>
+  </div>
+ 
+  <!-- INTRO CARD -->
+  <div class="card">
+    <div class="card-title"><div class="card-icon">&#128214;</div>مقدمة &mdash; Introduction</div>
+    <p style="font-size:0.85rem;line-height:1.95;color:var(--text);">${intro}</p>
+    ${desc ? `<p style="margin-top:9px;font-size:0.8rem;line-height:1.85;color:var(--muted);">${desc}</p>` : ''}
+  </div>
+ 
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="n" style="color:var(--accent2);">${hazards.length}</div><div class="l">إجمالي المخاطر</div></div>
+    <div class="stat"><div class="n" style="color:#4ade80;">${low}</div><div class="l">منخفضة (T)</div></div>
+    <div class="stat"><div class="n" style="color:#fbbf24;">${mod}</div><div class="l">متوسطة (A)</div></div>
+    <div class="stat"><div class="n" style="color:#f87171;">${high + crit}</div><div class="l">عالية / حرجة (M/I)</div></div>
+  </div>
+ 
+  <!-- MAIN RISK ASSESSMENT TABLE — matching image exactly -->
+  <div class="card" style="padding:16px;">
+    <div class="card-title"><div class="card-icon">&#128202;</div>Risk Assessment &mdash; جدول تقييم المخاطر (${mSize}&times;${mSize})</div>
+ 
+    <div class="ra-wrap">
+      <!-- Part 1: Risk Matrix Key Table -->
+      <table class="rk-table">
+        <thead>${matHead}</thead>
+        <tbody>${matRows}</tbody>
+      </table>
+ 
+      <!-- Separator matching image orange line -->
+      <div style="height:5px;background:linear-gradient(90deg,rgba(232,97,26,.8),rgba(232,97,26,.3),rgba(232,97,26,.8));margin:0;"></div>
+ 
+      <!-- Part 2: Hazard Data Table -->
+      <table class="rd-table">
+        <thead>${dataHead}</thead>
+        <tbody>${dataRows}</tbody>
+      </table>
+    </div>
+  </div>
+ 
+  <!-- CONCLUSION -->
+  <div class="card">
+    <div class="card-title"><div class="card-icon">&#127919;</div>الخلاصة والتوصيات &mdash; Conclusion &amp; Recommendations</div>
+    <div class="concl">
+      <h3>Conclusion &amp; Recommendations</h3>
+      <p>
+        بناءً على تقييم المخاطر الذي أُجري في <strong>${facility}</strong> باستخدام مصفوفة <strong>${mSize}&times;${mSize}</strong>، تبيّن وجود <strong>${hazards.length} مصدر خطر</strong> موزعة على النحو التالي:<br>
+        &bull; <span style="color:#4ade80;">خطر منخفض (T): ${low} مصدر</span> — يُكتفى باتباع التعليمات القياسية المُعلنة في الموقع.<br>
+        &bull; <span style="color:#fbbf24;">خطر متوسط (A): ${mod} مصدر</span> — تستوجب تطبيق اشتراطات السلامة وتدريب العاملين المعرضين.<br>
+        &bull; <span style="color:#f87171;">خطر عالٍ (M): ${high} مصدر</span> — تستلزم اتخاذ إجراءات وقائية إضافية عاجلة قبل مواصلة العمل.<br>
+        ${crit ? `&bull; <span style="color:#fca5a5;">خطر حرج (I): ${crit} مصدر</span> — يُوقف العمل فوراً حتى تُعالَج أسبابها الجذرية.<br>` : ''}
+        <br>
+        <strong>التوصيات الجوهرية:</strong><br>
+        &#9312; تطبيق هرم التحكم في الخطر بدءاً من الإزالة الكاملة وصولاً إلى معدات الوقاية الشخصية.<br>
+        &#9313; إجراء مراجعة دورية لهذا التقييم ${review ? 'بتاريخ ' + fmtDate(review) : 'خلال ١٢ شهراً على الأقل'}.<br>
+        &#9314; تدريب جميع العاملين على المخاطر المحددة وإجراءاتها الوقائية وخطط الطوارئ.<br>
+        &#9315; توثيق التقرير وإرساله إلى الجهة الإدارية المختصة وفق المادة ٢١٥ من قانون العمل ١٢ لسنة ٢٠٠٣.<br>
+        &#9316; إعادة تقييم المخاطر العالية والحرجة بعد تطبيق وسائل التحكم للتحقق من كفاءتها.
+      </p>
+    </div>
+  </div>
+ 
+  <div style="text-align:center;padding:14px 0;color:var(--muted);font-size:0.68rem;border-top:1px solid var(--border);margin-top:8px;">
+    تم إعداد هذا التقرير وفق منهجية الخمس خطوات المعتمدة &middot; ISO 45001 &middot; قانون العمل ١٢/٢٠٠٣ &middot; تاريخ الإصدار: ${fmtDate(date) || new Date().toLocaleDateString('ar-EG')}
+  </div>`;
+
+      document.getElementById('reportOut').innerHTML = reportHTML;
+    } // end _buildReportHTML
+
+    // Reset form data and go to intro
+    function resetAndGoHome() {
+      mSize = 5; members = []; hazards = []; hcnt = 0;
+      selMatrix(5);
+      ['rTitle', 'rFacility', 'rIndustry', 'rReview', 'rLead', 'rDesc', 'rIntro'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+      });
+      document.getElementById('rDate').value = new Date().toISOString().split('T')[0];
+      renderMembers(); renderHazards(); renderKeyTables();
+      document.getElementById('savedBanner').style.display = 'none';
+      setSaveState(false);
+      checkSavedData();
+      goTo('sIntro', 0);
+    }
+
+    // Called from the wizard — renders and saves only; user stays on report screen
+    function buildReport() {
+      goTo('sReport', 4);
+      _buildReportHTML();
+      // Show the "new report" action bar
+      const bar = document.getElementById('reportActionBar');
+      if (bar) bar.style.display = 'flex';
+      saveReportToHistory();
+      showToast('✅ تم إنشاء التقرير وحفظه في السجل', 'success', 4000);
+    }
+
+    // ══════════════════════════════════════════════
+    //  PRINT
+    // ══════════════════════════════════════════════
+    function doPrint() {
+      const out = document.getElementById('reportOut');
+
+      // ── If reportOut is empty, try to auto-build from current in-memory data ──
+      if (!out || !out.innerHTML.trim()) {
+        if (hazards.length > 0) {
+          // Silently build the report first, then print
+          goTo('sReport', 4);
+          _buildReportHTML();
+          const bar = document.getElementById('reportActionBar');
+          if (bar) bar.style.display = 'flex';
+          // Delay print slightly so DOM updates
+          setTimeout(() => _executePrint(), 200);
+          return;
+        } else {
+          showToast('⚠ أضف مخاطر أولاً ثم ولّد التقرير', 'error', 3500);
+          return;
+        }
+      }
+
+      _executePrint();
+    }
+
+    // Actual print execution — called once report is guaranteed in DOM
+    function _executePrint() {
+      const out = document.getElementById('reportOut');
+      const footer = document.getElementById('printFooter');
+
+      // Force all screens hidden; force sReport visible via inline style
+      // (overrides .screen{display:none} reliably across all browsers)
+      document.querySelectorAll('.screen').forEach(s => {
+        s.style.display = (s.id === 'sReport') ? 'block' : 'none';
+      });
+
+      // Move print footer into reportOut so it prints at the end
+      if (footer && out) {
+        footer.style.display = 'flex';
+        out.appendChild(footer);
+      }
+
+      // Wait one animation frame so browser paints before dialog opens
+      requestAnimationFrame(() => {
+        window.print();
+      });
+
+      // Restore DOM after dialog closes
+      setTimeout(() => {
+        document.querySelectorAll('.screen').forEach(s => {
+          s.style.removeProperty('display');
+        });
+        if (footer) {
+          footer.style.display = 'none';
+          document.body.appendChild(footer);
+        }
+      }, 1500);
+    }
+
+    // ══════════════════════════════════════════════
+    //  LOCAL STORAGE — Auto-save on report + History
+    // ══════════════════════════════════════════════
+    const LS_HISTORY = 'riskHistory_v1';
+    const LS_DRAFT = 'riskDraft_v1';
+
+    function showToast(msg, type = 'success', dur = 3000) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast ' + (type === 'error' ? 'error' : type === 'info' ? 'info' : '');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), dur);
+    }
+
+    function setSaveState(saved) {
+      const dot = document.getElementById('saveDot');
+      const lbl = document.getElementById('saveLabel');
+      if (!dot || !lbl) return;
+      if (saved) {
+        dot.classList.add('saved');
+        lbl.textContent = 'تم الحفظ ✓';
+      } else {
+        dot.classList.remove('saved');
+        lbl.textContent = 'جارٍ الحفظ...';
+      }
+    }
+
+    function gatherFormData() {
+      return {
+        mSize,
+        title: document.getElementById('rTitle').value,
+        facility: document.getElementById('rFacility').value,
+        industry: document.getElementById('rIndustry').value,
+        date: document.getElementById('rDate').value,
+        review: document.getElementById('rReview').value,
+        lead: document.getElementById('rLead').value,
+        desc: document.getElementById('rDesc').value,
+        intro: document.getElementById('rIntro').value,
+        members: [...members],
+        hazards: hazards.map(h => ({ ...h })),
+        hcnt,
+        savedAt: new Date().toISOString()
+      };
+    }
+
+    // Save completed report to history list and reset to intro
+    function saveReportToHistory() {
+      try {
+        const data = gatherFormData();
+        const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+        // Add new entry at top, keep max 20
+        history.unshift(data);
+        if (history.length > 20) history.pop();
+        localStorage.setItem(LS_HISTORY, JSON.stringify(history));
+        // Clear draft
+        localStorage.removeItem(LS_DRAFT);
+        setSaveState(true);
+      } catch (e) { /* silent fail */ }
+    }
+
+    // Save draft (called on navigation and field blur)
+    let _saveDraftTimer = null;
+    function saveDraft() {
+      try {
+        setSaveState(false); // show "جارٍ الحفظ..."
+        localStorage.setItem(LS_DRAFT, JSON.stringify(gatherFormData()));
+        // Debounce the "saved" confirmation
+        if (_saveDraftTimer) clearTimeout(_saveDraftTimer);
+        _saveDraftTimer = setTimeout(() => setSaveState(true), 600);
+      } catch (e) { }
+    }
+
+    function saveData() {
+      saveDraft();
+      // silent — no toast for auto-save
+      setSaveState(true);
+    }
+
+    // Load a saved report into form
+    function loadReport(data) {
+      mSize = data.mSize || 5;
+      selMatrix(mSize);
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+      set('rTitle', data.title); set('rFacility', data.facility);
+      set('rIndustry', data.industry); set('rDate', data.date);
+      set('rReview', data.review); set('rLead', data.lead);
+      set('rDesc', data.desc); set('rIntro', data.intro);
+      members = data.members || [];
+      renderMembers();
+      hazards = (data.hazards || []).map(h => ({ ...h }));
+      hcnt = data.hcnt || hazards.length;
+      renderHazards();
+      setSaveState(true);
+    }
+
+    // Check for saved draft on page load
+    function checkSavedData() {
+      try {
+        const raw = localStorage.getItem(LS_DRAFT);
+        if (!raw) return;
+        const d = JSON.parse(raw);
+        const banner = document.getElementById('savedBanner');
+        const desc = document.getElementById('savedBannerDesc');
+        const dt = new Date(d.savedAt);
+        const fmtDt = dt.toLocaleString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        desc.textContent = `"${d.title || 'مسودة'}" — ${d.facility || '—'} — آخر حفظ: ${fmtDt}`;
+        banner.style.display = 'flex';
+        setSaveState(true);
+      } catch (e) { }
+    }
+
+    function loadSaved() {
+      try {
+        const d = JSON.parse(localStorage.getItem(LS_DRAFT) || 'null');
+        if (!d) return;
+        loadReport(d);
+        document.getElementById('savedBanner').style.display = 'none';
+        goTo('sInfo', 1);
+        showToast('📂 تم استكمال المسودة', 'info');
+      } catch (e) { showToast('❌ خطأ في التحميل', 'error'); }
+    }
+
+    function discardSaved() {
+      if (!confirm('حذف المسودة المحفوظة؟')) return;
+      localStorage.removeItem(LS_DRAFT);
+      document.getElementById('savedBanner').style.display = 'none';
+      setSaveState(false);
+      showToast('🗑 تم حذف المسودة');
+    }
+
+    // ── HISTORY MODAL ──────────────────────────────
+    function openHistory() {
+      const raw = localStorage.getItem(LS_HISTORY);
+      const history = raw ? JSON.parse(raw) : [];
+      const modal = document.getElementById('historyModal');
+      const list = document.getElementById('historyList');
+
+      if (!history.length) {
+        list.innerHTML = '<p style="text-align:center;color:var(--muted);padding:30px;font-size:0.85rem;">لا توجد تقارير محفوظة بعد.<br>سيتم الحفظ تلقائياً عند إنشاء أي تقرير.</p>';
+      } else {
+        list.innerHTML = history.map((d, i) => {
+          const dt = new Date(d.savedAt);
+          const fmtDt = dt.toLocaleString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+          const cfg = MX[d.mSize || 5];
+          const total = (d.hazards || []).length;
+          const low = (d.hazards || []).filter(h => cfg.getRv(h.p * h.s).code === 'T').length;
+          const high = (d.hazards || []).filter(h => ['M', 'I'].includes(cfg.getRv(h.p * h.s).code)).length;
+          return `<div class="hist-item">
+        <div class="hist-meta">
+          <div class="hist-title">${d.title || 'تقرير غير مسمى'}</div>
+          <div class="hist-sub">${d.facility || '—'} · ${d.mSize || 5}×${d.mSize || 5} · ${fmtDt}</div>
+          <div class="hist-badges">
+            <span class="hist-badge total">${total} خطر</span>
+            <span class="hist-badge low">${low} منخفض</span>
+            <span class="hist-badge high">${high} عالٍ/حرج</span>
+          </div>
+        </div>
+        <div class="hist-actions">
+          <button class="hist-btn-load" onclick="histLoad(${i})">📂 فتح</button>
+          <button class="hist-btn-del"  onclick="histDelete(${i})">🗑</button>
+        </div>
+      </div>`;
+        }).join('');
+      }
+      modal.classList.add('open');
+    }
+
+    function closeHistory() {
+      document.getElementById('historyModal').classList.remove('open');
+    }
+
+    function histLoad(i) {
+      const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+      if (!history[i]) return;
+      // Cancel any pending auto-reset timer
+      if (_resetTimer) { clearTimeout(_resetTimer); _resetTimer = null; }
+      loadReport(history[i]);
+      closeHistory();
+      document.getElementById('savedBanner').style.display = 'none';
+      // Go straight to the final report
+      goTo('sReport', 4);
+      _buildReportHTML();
+      // Show the action bar so user can start a new report or edit
+      const bar = document.getElementById('reportActionBar');
+      if (bar) bar.style.display = 'flex';
+      showToast('📄 تم فتح التقرير', 'info');
+    }
+
+    function histDelete(i) {
+      if (!confirm('حذف هذا التقرير من السجل؟')) return;
+      const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+      history.splice(i, 1);
+      localStorage.setItem(LS_HISTORY, JSON.stringify(history));
+      openHistory(); // refresh
+      showToast('🗑 تم الحذف');
+    }
+
+    function clearHistory() {
+      if (!confirm('حذف كل السجل؟ لا يمكن التراجع.')) return;
+      localStorage.removeItem(LS_HISTORY);
+      openHistory();
+      showToast('🗑 تم مسح السجل');
+    }
+
+    // ══════════════════════════════════════════════
+    //  INIT
+    // ══════════════════════════════════════════════
+    document.getElementById('rDate').value = new Date().toISOString().split('T')[0];
+    initPreviews();
+    renderKeyTables();
+    checkSavedData();
+  </script>
+</body>
+
+</html>
