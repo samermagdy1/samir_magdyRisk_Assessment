@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
+ 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,17 +32,17 @@
       --card: rgba(255, 255, 255, 0.03);
       --glow: rgba(232, 97, 26, 0.15);
     }
-
+ 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
+ 
     html {
       scroll-behavior: smooth;
     }
-
+ 
     body {
       background: var(--bg);
       color: var(--text);
@@ -51,7 +51,7 @@
       display: flex;
       flex-direction: column;
     }
-
+ 
     body::before {
       content: '';
       position: fixed;
@@ -62,7 +62,7 @@
         radial-gradient(ellipse 70% 50% at 15% 10%, rgba(232, 97, 26, .07) 0%, transparent 65%),
         radial-gradient(ellipse 50% 40% at 85% 85%, rgba(37, 99, 235, .07) 0%, transparent 65%);
     }
-
+ 
     /* ── HEADER ── */
     header {
       position: sticky;
@@ -72,12 +72,12 @@
       backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(232, 97, 26, .25);
     }
-
+ 
     .header-strip {
       background: linear-gradient(90deg, var(--accent), #f97316, var(--accent));
       height: 3px;
     }
-
+ 
     .header-inner {
       max-width: 1300px;
       margin: 0 auto;
@@ -87,7 +87,7 @@
       gap: 14px;
       flex-wrap: wrap;
     }
-
+ 
     .logo {
       width: 44px;
       height: 44px;
@@ -100,19 +100,19 @@
       font-size: 20px;
       box-shadow: 0 0 18px rgba(232, 97, 26, .45);
     }
-
+ 
     .header-text h1 {
       font-size: 1.05rem;
       font-weight: 900;
       color: #fff;
       line-height: 1.2;
     }
-
+ 
     .header-text p {
       font-size: 0.65rem;
       color: var(--muted);
     }
-
+ 
     .header-badge {
       margin-right: auto;
       background: rgba(232, 97, 26, .12);
@@ -124,7 +124,7 @@
       font-weight: 700;
       white-space: nowrap;
     }
-
+ 
     /* ── PROGRESS ── */
     .progress-bar {
       max-width: 1300px;
@@ -133,18 +133,18 @@
       position: relative;
       z-index: 1;
     }
-
+ 
     .steps {
       display: flex;
       align-items: center;
     }
-
+ 
     .step-item {
       display: flex;
       align-items: center;
       flex: 1;
     }
-
+ 
     .step-circle {
       width: 34px;
       height: 34px;
@@ -162,37 +162,37 @@
       position: relative;
       z-index: 1;
     }
-
+ 
     .step-circle.active {
       border-color: var(--accent);
       background: var(--accent);
       color: #fff;
       box-shadow: 0 0 14px rgba(232, 97, 26, .55);
     }
-
+ 
     .step-circle.done {
       border-color: var(--green);
       background: var(--green);
       color: #fff;
     }
-
+ 
     .step-line {
       flex: 1;
       height: 2px;
       background: var(--border);
       transition: background .4s;
     }
-
+ 
     .step-line.done {
       background: var(--green);
     }
-
+ 
     .step-labels {
       display: flex;
       margin-top: 5px;
       padding: 0 17px;
     }
-
+ 
     .step-lbl {
       flex: 1;
       text-align: center;
@@ -200,50 +200,50 @@
       color: var(--muted);
       transition: color .3s;
     }
-
+ 
     .step-lbl.active {
       color: var(--accent2);
     }
-
+ 
     .step-lbl.done {
       color: #4ade80;
     }
-
+ 
     /* ── MAIN ── */
     main {
       flex: 1;
       position: relative;
       z-index: 1;
     }
-
+ 
     .wrap {
       max-width: 1300px;
       margin: 0 auto;
       padding: 18px 20px 32px;
     }
-
+ 
     /* ── SCREENS ── */
     .screen {
       display: none;
       animation: fadeUp .35s ease;
     }
-
+ 
     .screen.active {
       display: block;
     }
-
+ 
     @keyframes fadeUp {
       from {
         opacity: 0;
         transform: translateY(16px);
       }
-
+ 
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-
+ 
     /* ── CARDS ── */
     .card {
       background: var(--card);
@@ -254,11 +254,11 @@
       backdrop-filter: blur(8px);
       transition: border-color .3s;
     }
-
+ 
     .card:hover {
       border-color: rgba(232, 97, 26, .18);
     }
-
+ 
     .card-title {
       display: flex;
       align-items: center;
@@ -270,7 +270,7 @@
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
     }
-
+ 
     .card-icon {
       width: 32px;
       height: 32px;
@@ -282,47 +282,47 @@
       justify-content: center;
       font-size: 14px;
     }
-
+ 
     /* ── FORMS ── */
     .fg {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-
+ 
     .fg.c1 {
       grid-template-columns: 1fr;
     }
-
+ 
     .fg.c3 {
       grid-template-columns: 1fr 1fr 1fr;
     }
-
+ 
     .f {
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
-
+ 
     .f.s2 {
       grid-column: span 2;
     }
-
+ 
     .f.s3 {
       grid-column: span 3;
     }
-
+ 
     label {
       font-size: 0.73rem;
       color: var(--muted);
       font-weight: 700;
     }
-
+ 
     label .req {
       color: var(--accent);
       margin-right: 2px;
     }
-
+ 
     input,
     textarea,
     select {
@@ -337,23 +337,23 @@
       width: 100%;
       transition: border-color .3s, box-shadow .3s;
     }
-
+ 
     input:focus,
     textarea:focus,
     select:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(232, 97, 26, .14);
     }
-
+ 
     textarea {
       resize: vertical;
       min-height: 70px;
     }
-
+ 
     select option {
       background: #0d1526;
     }
-
+ 
     /* ── MEMBERS ── */
     .member-list {
       display: flex;
@@ -361,7 +361,7 @@
       gap: 7px;
       margin-top: 8px;
     }
-
+ 
     .mtag {
       background: rgba(37, 99, 235, .14);
       border: 1px solid rgba(59, 130, 246, .28);
@@ -373,7 +373,7 @@
       align-items: center;
       gap: 6px;
     }
-
+ 
     .mtag button {
       background: none;
       border: none;
@@ -383,21 +383,21 @@
       padding: 0;
       transition: color .2s;
     }
-
+ 
     .mtag button:hover {
       color: #f87171;
     }
-
+ 
     .add-row {
       display: flex;
       gap: 8px;
       margin-top: 8px;
     }
-
+ 
     .add-row input {
       flex: 1;
     }
-
+ 
     .btn-add {
       background: rgba(37, 99, 235, .18);
       border: 1px solid rgba(59, 130, 246, .28);
@@ -411,11 +411,11 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
-
+ 
     .btn-add:hover {
       background: rgba(37, 99, 235, .32);
     }
-
+ 
     /* ── MATRIX SELECTOR ── */
     .matrix-selector {
       display: grid;
@@ -423,7 +423,7 @@
       gap: 12px;
       margin-top: 10px;
     }
-
+ 
     .mx-opt {
       border: 2px solid var(--border);
       border-radius: 13px;
@@ -435,29 +435,29 @@
       position: relative;
       overflow: hidden;
     }
-
+ 
     .mx-opt:hover {
       border-color: rgba(232, 97, 26, .4);
       transform: translateY(-2px);
     }
-
+ 
     .mx-opt.sel {
       border-color: var(--accent);
       box-shadow: 0 0 16px rgba(232, 97, 26, .3);
     }
-
+ 
     .mx-num {
       font-size: 1.8rem;
       font-weight: 900;
       color: #fff;
     }
-
+ 
     .mx-tag {
       font-size: 0.68rem;
       color: var(--muted);
       margin-top: 3px;
     }
-
+ 
     .mx-tick {
       width: 20px;
       height: 20px;
@@ -472,11 +472,11 @@
       font-size: 10px;
       color: #fff;
     }
-
+ 
     .mx-opt.sel .mx-tick {
       display: flex;
     }
-
+ 
     /* ── HAZARD ROW ── */
     .hrow {
       background: rgba(255, 255, 255, .025);
@@ -487,18 +487,18 @@
       border-right: 3px solid var(--accent);
       transition: border-color .3s;
     }
-
+ 
     .hrow:hover {
       border-color: rgba(232, 97, 26, .35);
     }
-
+ 
     .hrow-hdr {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
     }
-
+ 
     .hnum {
       width: 26px;
       height: 26px;
@@ -512,7 +512,7 @@
       color: #fff;
       flex-shrink: 0;
     }
-
+ 
     .btn-rm {
       background: rgba(220, 38, 38, .12);
       border: 1px solid rgba(220, 38, 38, .22);
@@ -524,11 +524,11 @@
       font-size: 0.72rem;
       transition: all .2s;
     }
-
+ 
     .btn-rm:hover {
       background: rgba(220, 38, 38, .28);
     }
-
+ 
     .rv-row {
       display: flex;
       align-items: center;
@@ -539,12 +539,12 @@
       border-radius: 8px;
       padding: 9px 13px;
     }
-
+ 
     .rv-formula {
       font-size: 0.75rem;
       color: var(--muted);
     }
-
+ 
     .rbadge {
       padding: 3px 11px;
       border-radius: 20px;
@@ -554,31 +554,31 @@
       align-items: center;
       gap: 4px;
     }
-
+ 
     .rb-low {
       background: rgba(22, 163, 74, .18);
       border: 1px solid rgba(22, 163, 74, .4);
       color: #4ade80;
     }
-
+ 
     .rb-mod {
       background: rgba(202, 138, 4, .18);
       border: 1px solid rgba(202, 138, 4, .4);
       color: #fbbf24;
     }
-
+ 
     .rb-high {
       background: rgba(220, 38, 38, .18);
       border: 1px solid rgba(220, 38, 38, .4);
       color: #f87171;
     }
-
+ 
     .rb-crit {
       background: rgba(127, 29, 29, .4);
       border: 1px solid rgba(220, 38, 38, .55);
       color: #fca5a5;
     }
-
+ 
     .add-hrow {
       width: 100%;
       background: rgba(232, 97, 26, .08);
@@ -597,11 +597,11 @@
       transition: all .2s;
       margin-top: 6px;
     }
-
+ 
     .add-hrow:hover {
       background: rgba(232, 97, 26, .18);
     }
-
+ 
     /* ── BUTTONS ── */
     .btn-row {
       display: flex;
@@ -610,7 +610,7 @@
       margin-top: 18px;
       flex-wrap: wrap;
     }
-
+ 
     .btn {
       padding: 10px 24px;
       border-radius: 9px;
@@ -625,40 +625,40 @@
       gap: 7px;
       white-space: nowrap;
     }
-
+ 
     .btn-p {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: #fff;
       box-shadow: 0 4px 14px rgba(232, 97, 26, .38);
     }
-
+ 
     .btn-p:hover {
       transform: translateY(-1px);
       box-shadow: 0 6px 20px rgba(232, 97, 26, .52);
     }
-
+ 
     .btn-s {
       background: rgba(255, 255, 255, .05);
       border: 1px solid var(--border);
       color: var(--muted);
     }
-
+ 
     .btn-s:hover {
       color: #fff;
       border-color: rgba(255, 255, 255, .2);
     }
-
+ 
     .btn-print {
       background: linear-gradient(135deg, #1d4ed8, var(--blue2));
       color: #fff;
       box-shadow: 0 4px 14px rgba(29, 78, 216, .38);
     }
-
+ 
     .btn-print:hover {
       transform: translateY(-1px);
       box-shadow: 0 6px 20px rgba(29, 78, 216, .52);
     }
-
+ 
     /* ── PAGE TITLE ── */
     .ptitle {
       padding: 16px 0 8px;
@@ -667,18 +667,18 @@
       gap: 12px;
       flex-wrap: wrap;
     }
-
+ 
     .ptitle h2 {
       font-size: 1.15rem;
       font-weight: 900;
       color: #fff;
     }
-
+ 
     .ptitle span {
       font-size: 0.78rem;
       color: var(--muted);
     }
-
+ 
     /* ── INTRO ── */
     .intro-hero {
       background: linear-gradient(135deg, rgba(232, 97, 26, .09), rgba(37, 99, 235, .07));
@@ -688,14 +688,14 @@
       text-align: center;
       margin: 10px 0;
     }
-
+ 
     .intro-hero h2 {
       font-size: 1.7rem;
       font-weight: 900;
       color: #fff;
       margin-bottom: 8px;
     }
-
+ 
     .intro-hero .sub {
       font-size: 0.85rem;
       color: var(--muted);
@@ -703,51 +703,51 @@
       margin: 0 auto 22px;
       line-height: 1.85;
     }
-
+ 
     .feat-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 22px;
     }
-
+ 
     .feat {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 14px 10px;
     }
-
+ 
     .feat .ico {
       font-size: 1.5rem;
       margin-bottom: 5px;
     }
-
+ 
     .feat p {
       font-size: 0.7rem;
       color: var(--muted);
     }
-
+ 
     /* ── KEY TABLE ── */
     .key-table {
       border-collapse: collapse;
       width: 100%;
       font-size: 0.73rem;
     }
-
+ 
     .key-table th,
     .key-table td {
       border: 1px solid rgba(255, 255, 255, .1);
       padding: 5px 9px;
       text-align: right;
     }
-
+ 
     .key-table th {
       background: rgba(255, 255, 255, .06);
       color: var(--muted);
       font-weight: 700;
     }
-
+ 
     /* ── STATS ── */
     .stats {
       display: grid;
@@ -755,7 +755,7 @@
       gap: 12px;
       margin: 16px 0;
     }
-
+ 
     .stat {
       background: var(--card);
       border: 1px solid var(--border);
@@ -763,30 +763,30 @@
       padding: 16px;
       text-align: center;
     }
-
+ 
     .stat .n {
       font-size: 2.2rem;
       font-weight: 900;
       line-height: 1;
     }
-
+ 
     .stat .l {
       font-size: 0.72rem;
       color: var(--muted);
       margin-top: 4px;
     }
-
+ 
     /* ── MATRIX VISUAL ── */
     .mx-vis-wrap {
       overflow-x: auto;
       margin-top: 12px;
     }
-
+ 
     .mx-visual-table {
       border-collapse: collapse;
       font-size: 0.72rem;
     }
-
+ 
     .mx-visual-table th,
     .mx-visual-table td {
       border: 1px solid rgba(255, 255, 255, .12);
@@ -794,13 +794,13 @@
       text-align: center;
       min-width: 52px;
     }
-
+ 
     .mx-visual-table th {
       background: rgba(255, 255, 255, .06);
       color: var(--muted);
       font-weight: 700;
     }
-
+ 
     /* ══════════════════════════════════════════
    REPORT STYLES
 ══════════════════════════════════════════ */
@@ -812,79 +812,79 @@
       text-align: center;
       margin-bottom: 14px;
     }
-
+ 
     .report-org {
       font-size: 0.7rem;
       color: var(--muted);
       margin-bottom: 4px;
     }
-
+ 
     .report-title {
       font-size: 1.6rem;
       font-weight: 900;
       color: #fff;
       margin-bottom: 4px;
     }
-
+ 
     .report-sub {
       font-size: 0.8rem;
       color: var(--muted);
     }
-
+ 
     .meta-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
-
+ 
     .meta-cell {
       background: rgba(255, 255, 255, .03);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 9px 12px;
     }
-
+ 
     .meta-cell .lbl {
       font-size: 0.65rem;
       color: var(--muted);
       margin-bottom: 2px;
     }
-
+ 
     .meta-cell .val {
       font-size: 0.84rem;
       font-weight: 700;
     }
-
+ 
     .meta-cell.span3 {
       grid-column: span 3;
     }
-
+ 
     .concl {
       border-right: 4px solid var(--accent);
       background: rgba(232, 97, 26, .05);
       border-radius: 0 8px 8px 0;
       padding: 16px 18px;
     }
-
+ 
     .concl h3 {
       color: var(--accent2);
       font-size: 0.9rem;
       margin-bottom: 8px;
     }
-
+ 
     .concl p {
       font-size: 0.83rem;
       line-height: 1.95;
       color: var(--text);
     }
-
+ 
     /* ── RISK TABLE (exact image match) ── */
     .ra-wrap {
       overflow-x: auto;
       margin-top: 4px;
       margin-bottom: 20px;
     }
-
+ 
     /* Matrix key table */
     .rk-table {
       border-collapse: collapse;
@@ -893,7 +893,7 @@
       font-family: 'Cairo', 'Tajawal', sans-serif;
       font-size: 0.76rem;
     }
-
+ 
     .rk-table th,
     .rk-table td {
       border: 2px solid #8898aa;
@@ -901,7 +901,7 @@
       text-align: center;
       vertical-align: middle;
     }
-
+ 
     .rk-head-main {
       background: #2a4480;
       color: #fff;
@@ -909,21 +909,21 @@
       font-size: 0.82rem;
       border-color: #8898aa;
     }
-
+ 
     .rk-head-sub {
       background: #3a5cb0;
       color: #e0e8ff;
       font-weight: 700;
       font-size: 0.74rem;
     }
-
+ 
     .rk-val-cell {
       background: #1c3060;
       color: #fff;
       font-weight: 800;
       font-size: 0.8rem;
     }
-
+ 
     .rk-desc-cell {
       background: #22386e;
       color: #c8d8ff;
@@ -931,7 +931,7 @@
       text-align: right;
       padding: 4px 8px;
     }
-
+ 
     .rotate-lbl {
       writing-mode: vertical-rl;
       transform: rotate(180deg);
@@ -943,38 +943,38 @@
       padding: 6px 4px;
       white-space: nowrap;
     }
-
+ 
     /* Matrix cells */
     .mc-g {
       background: #16a34a !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .mc-y {
       background: #ca8a04 !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .mc-o {
       background: #ea580c !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .mc-r {
       background: #dc2626 !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .mc-dr {
       background: #7f1d1d !important;
       color: #fca5a5;
       font-weight: 800;
     }
-
+ 
     /* Legend cells */
     .rl-g {
       background: #16a34a;
@@ -982,25 +982,25 @@
       font-weight: 700;
       font-size: 0.72rem;
     }
-
+ 
     .rl-y {
       background: #ca8a04;
       color: #fff;
       font-weight: 700;
       font-size: 0.72rem;
     }
-
+ 
     .rl-r {
       background: #dc2626;
       color: #fff;
       font-weight: 700;
       font-size: 0.72rem;
     }
-
+ 
     .rl-e {
       background: transparent;
     }
-
+ 
     /* Hazard data table */
     .rd-table {
       border-collapse: collapse;
@@ -1011,7 +1011,7 @@
       margin-top: -2px;
       /* join visually to matrix table */
     }
-
+ 
     .rd-table th,
     .rd-table td {
       border: 2px solid #8898aa;
@@ -1019,71 +1019,71 @@
       text-align: center;
       vertical-align: middle;
     }
-
+ 
     .rd-head-main {
       background: #2a4480;
       color: #fff;
       font-weight: 800;
       font-size: 0.78rem;
     }
-
+ 
     .rd-head-sub {
       background: #3a5cb0;
       color: #e0e8ff;
       font-weight: 700;
       font-size: 0.72rem;
     }
-
+ 
     .rd-data td {
       background: #0e1b34;
       color: var(--text);
       font-size: 0.75rem;
     }
-
+ 
     .rd-data:nth-child(even) td {
       background: #0b1628;
     }
-
+ 
     .rd-data td[class*="mc-"] {
       color: #fff;
     }
-
+ 
     /* RV colored data cells */
     .dmc-g {
       background: #16a34a !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .dmc-y {
       background: #ca8a04 !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .dmc-o {
       background: #ea580c !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .dmc-r {
       background: #dc2626 !important;
       color: #fff;
       font-weight: 800;
     }
-
+ 
     .dmc-dr {
       background: #7f1d1d !important;
       color: #fca5a5;
       font-weight: 800;
     }
-
+ 
     /* ── Section divider ── */
     .ra-section-sep {
       border-top: 4px solid rgba(232, 97, 26, .6);
     }
-
+ 
     /* ── SAVE/LOAD TOAST ── */
     .toast {
       position: fixed;
@@ -1103,20 +1103,20 @@
       white-space: nowrap;
       pointer-events: none;
     }
-
+ 
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-
+ 
     .toast.error {
       background: rgba(220, 38, 38, .92);
     }
-
+ 
     .toast.info {
       background: rgba(37, 99, 235, .92);
     }
-
+ 
     /* ── SAVE INDICATOR in header ── */
     .save-indicator {
       display: flex;
@@ -1126,7 +1126,7 @@
       color: var(--muted);
       margin-right: auto;
     }
-
+ 
     .save-dot {
       width: 6px;
       height: 6px;
@@ -1135,24 +1135,24 @@
       flex-shrink: 0;
       transition: background .3s;
     }
-
+ 
     .save-dot.saved {
       background: var(--green);
       animation: pulse 2s infinite;
     }
-
+ 
     @keyframes pulse {
-
+ 
       0%,
       100% {
         opacity: 1;
       }
-
+ 
       50% {
         opacity: .4;
       }
     }
-
+ 
     /* ── SAVED DATA BANNER ── */
     .saved-banner {
       background: linear-gradient(135deg, rgba(22, 163, 74, .12), rgba(22, 163, 74, .06));
@@ -1165,30 +1165,30 @@
       gap: 12px;
       flex-wrap: wrap;
     }
-
+ 
     .saved-banner-icon {
       font-size: 1.3rem;
       flex-shrink: 0;
     }
-
+ 
     .saved-banner-text h4 {
       font-size: 0.82rem;
       font-weight: 800;
       color: #4ade80;
       margin-bottom: 2px;
     }
-
+ 
     .saved-banner-text p {
       font-size: 0.7rem;
       color: var(--muted);
     }
-
+ 
     .saved-banner-actions {
       display: flex;
       gap: 8px;
       margin-right: auto;
     }
-
+ 
     .btn-restore {
       background: rgba(22, 163, 74, .18);
       border: 1px solid rgba(22, 163, 74, .35);
@@ -1204,11 +1204,11 @@
       align-items: center;
       gap: 5px;
     }
-
+ 
     .btn-restore:hover {
       background: rgba(22, 163, 74, .32);
     }
-
+ 
     .btn-discard {
       background: rgba(220, 38, 38, .12);
       border: 1px solid rgba(220, 38, 38, .22);
@@ -1221,17 +1221,44 @@
       font-weight: 700;
       transition: all .2s;
     }
-
+ 
     .btn-discard:hover {
       background: rgba(220, 38, 38, .25);
     }
-
+ 
     /* ── SAVE BUTTON in nav (now hidden — auto-save only) ── */
+ 
+    /* ── HOME BUTTON in header ── */
+    .btn-home {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(232, 97, 26, .12);
+      border: 1px solid rgba(232, 97, 26, .28);
+      border-radius: 9px;
+      padding: 7px 14px;
+      color: var(--accent2);
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: all .25s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-home:hover {
+      background: rgba(232, 97, 26, .28);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(232, 97, 26, .28);
+    }
+    @media print { .btn-home { display: none !important; } }
+ 
     /* ── SAVE BUTTON (auto-save only — button removed from UI) ── */
     .btn-save {
       display: none !important;
     }
-
+ 
     /* ── FOOTER ── */
     footer {
       position: relative;
@@ -1240,7 +1267,7 @@
       border-top: 1px solid rgba(232, 97, 26, .2);
       padding: 16px 20px;
     }
-
+ 
     .footer-inner {
       max-width: 1300px;
       margin: 0 auto;
@@ -1250,37 +1277,37 @@
       gap: 12px;
       flex-wrap: wrap;
     }
-
+ 
     .footer-copy {
       font-size: 0.68rem;
       color: var(--muted);
     }
-
+ 
     .footer-made {
       display: flex;
       align-items: center;
       gap: 9px;
       text-decoration: none;
     }
-
+ 
     .footer-made-text {
       font-size: 0.72rem;
       font-weight: 700;
       color: var(--muted);
       transition: color .25s;
     }
-
+ 
     .footer-made:hover .footer-made-text {
       color: #fff;
     }
-
+ 
     .footer-icon-wrap {
       position: relative;
       width: 32px;
       height: 32px;
       flex-shrink: 0;
     }
-
+ 
     .footer-icon-core {
       width: 32px;
       height: 32px;
@@ -1295,7 +1322,7 @@
       position: relative;
       z-index: 1;
     }
-
+ 
     .footer-icon-ring {
       position: absolute;
       inset: -3px;
@@ -1303,7 +1330,7 @@
       border: 2px solid rgba(232, 97, 26, .5);
       animation: iconRingPulse 2.2s ease-in-out infinite;
     }
-
+ 
     .footer-icon-ring2 {
       position: absolute;
       inset: -7px;
@@ -1311,21 +1338,21 @@
       border: 1.5px solid rgba(232, 97, 26, .2);
       animation: iconRingPulse 2.2s ease-in-out infinite .5s;
     }
-
+ 
     @keyframes iconRingPulse {
-
+ 
       0%,
       100% {
         opacity: .8;
         transform: scale(1);
       }
-
+ 
       50% {
         opacity: 0;
         transform: scale(1.35);
       }
     }
-
+ 
     .footer-pulse-green {
       position: absolute;
       bottom: 0;
@@ -1338,19 +1365,19 @@
       border: 2px solid rgba(8, 14, 30, 1);
       animation: greenDot 1.8s ease-in-out infinite;
     }
-
+ 
     @keyframes greenDot {
-
+ 
       0%,
       100% {
         transform: scale(1);
       }
-
+ 
       50% {
         transform: scale(1.4);
       }
     }
-
+ 
     /* ══════════════════════════════════════════
    RESPONSIVE — Professional Mobile Design
 ══════════════════════════════════════════ */
@@ -1358,222 +1385,222 @@
       .feat-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-
+ 
       .matrix-selector {
         grid-template-columns: repeat(2, 1fr);
       }
-
+ 
       .meta-grid {
         grid-template-columns: 1fr 1fr;
       }
-
+ 
       .meta-cell.span3 {
         grid-column: span 2;
       }
-
+ 
       .stats {
         grid-template-columns: repeat(2, 1fr);
       }
-
+ 
       .fg.c3 {
         grid-template-columns: 1fr 1fr;
       }
-
+ 
       .fg.c3 .f.s3,
       .f.s2 {
         grid-column: span 2;
       }
     }
-
+ 
     @media(max-width:700px) {
       .footer-contact-card {
         padding: 12px 16px;
         gap: 12px;
       }
-
+ 
       .footer-avatar-ring {
         width: 44px;
         height: 44px;
         font-size: 18px;
       }
-
+ 
       .footer-contact-info {
         text-align: center;
       }
-
+ 
       .footer-contact-links {
         justify-content: center;
       }
-
+ 
       .footer-brand {
         flex-direction: column;
         gap: 6px;
         text-align: center;
       }
     }
-
+ 
     @media(max-width:600px) {
-
+ 
       /* ─ Header ─ */
       .header-inner {
         padding: 8px 12px;
         gap: 8px;
       }
-
+ 
       .header-text h1 {
         font-size: 0.78rem;
         line-height: 1.3;
       }
-
+ 
       .header-text p {
         display: none;
       }
-
+ 
       .header-badge {
         display: none;
       }
-
+ 
       .logo {
         width: 36px;
         height: 36px;
         font-size: 16px;
         border-radius: 9px;
       }
-
+ 
       .save-indicator {
         margin-right: 0;
         margin-left: auto;
       }
-
+ 
       /* ─ Progress ─ */
       .progress-bar {
         padding: 8px 10px 4px;
       }
-
+ 
       .step-circle {
         width: 28px;
         height: 28px;
         font-size: 0.65rem;
         border-width: 1.5px;
       }
-
+ 
       .step-circle.active {
         box-shadow: 0 0 10px rgba(232, 97, 26, .5);
       }
-
+ 
       .step-labels {
         display: none;
       }
-
+ 
       .step-line {
         height: 1.5px;
       }
-
+ 
       /* ─ Wrap ─ */
       .wrap {
         padding: 8px 10px 80px;
       }
-
+ 
       /* ─ Intro Hero ─ */
       .intro-hero {
         padding: 22px 14px 18px;
         border-radius: 14px;
       }
-
+ 
       .intro-hero h2 {
         font-size: 1.25rem;
         margin-bottom: 6px;
       }
-
+ 
       .intro-hero .sub {
         font-size: 0.76rem;
         margin-bottom: 16px;
       }
-
+ 
       .feat-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 7px;
         margin-bottom: 16px;
       }
-
+ 
       .feat {
         padding: 12px 8px;
         border-radius: 9px;
       }
-
+ 
       .feat .ico {
         font-size: 1.4rem;
         margin-bottom: 4px;
       }
-
+ 
       .feat p {
         font-size: 0.68rem;
       }
-
+ 
       .intro-hero>div[style*="display:flex"] {
         flex-direction: column;
         gap: 8px;
       }
-
+ 
       .intro-hero .btn,
       .intro-hero .btn-history {
         width: 100%;
         justify-content: center;
       }
-
+ 
       /* ─ Page title ─ */
       .ptitle {
         padding: 10px 0 6px;
       }
-
+ 
       .ptitle h2 {
         font-size: 0.92rem;
       }
-
+ 
       .ptitle span {
         font-size: 0.7rem;
       }
-
+ 
       .ptitle[style*="justify-content:space-between"] {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
       }
-
+ 
       .ptitle>div {
         width: 100%;
       }
-
+ 
       .ptitle>div button {
         flex: 1;
         justify-content: center;
       }
-
+ 
       /* ─ Cards ─ */
       .card {
         padding: 13px 12px;
         border-radius: 12px;
         margin-bottom: 10px;
       }
-
+ 
       .card-title {
         font-size: 0.8rem;
         margin-bottom: 12px;
         padding-bottom: 8px;
       }
-
+ 
       .card-icon {
         width: 28px;
         height: 28px;
         font-size: 12px;
         border-radius: 7px;
       }
-
+ 
       /* ─ Forms ─ */
       label {
         font-size: 0.72rem;
       }
-
+ 
       input,
       textarea,
       select {
@@ -1581,48 +1608,48 @@
         padding: 10px 12px;
         border-radius: 8px;
       }
-
+ 
       .fg,
       .fg.c3 {
         grid-template-columns: 1fr;
       }
-
+ 
       .f.s2,
       .f.s3 {
         grid-column: span 1;
       }
-
+ 
       /* ─ Matrix Selector ─ */
       .matrix-selector {
         grid-template-columns: repeat(2, 1fr);
         gap: 7px;
       }
-
+ 
       .mx-opt {
         padding: 13px 8px;
         border-radius: 11px;
       }
-
+ 
       .mx-num {
         font-size: 1.5rem;
       }
-
+ 
       .mx-tag {
         font-size: 0.65rem;
       }
-
+ 
       .mx-tick {
         width: 18px;
         height: 18px;
         font-size: 9px;
       }
-
+ 
       /* ─ Members ─ */
       .add-row {
         flex-direction: column;
         gap: 7px;
       }
-
+ 
       .btn-add {
         width: 100%;
         padding: 10px;
@@ -1631,56 +1658,56 @@
         text-align: center;
         justify-content: center;
       }
-
+ 
       .mtag {
         font-size: 0.73rem;
         padding: 5px 11px;
       }
-
+ 
       /* ─ Hazard row ─ */
       .hrow {
         padding: 13px 11px;
         border-radius: 11px;
         margin-bottom: 9px;
       }
-
+ 
       .hrow>div[style*="grid-template-columns:1fr 1fr"] {
         grid-template-columns: 1fr !important;
       }
-
+ 
       .hnum {
         width: 24px;
         height: 24px;
         font-size: 0.65rem;
       }
-
+ 
       .btn-rm {
         padding: 5px 10px;
         font-size: 0.7rem;
       }
-
+ 
       .rv-row {
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
         padding: 8px 11px;
       }
-
+ 
       .rv-formula {
         font-size: 0.72rem;
       }
-
+ 
       .rbadge {
         font-size: 0.72rem;
         padding: 3px 10px;
       }
-
+ 
       .add-hrow {
         padding: 13px;
         font-size: 0.8rem;
         border-radius: 9px;
       }
-
+ 
       /* ─ Buttons ─ */
       .btn-row {
         flex-direction: row;
@@ -1688,112 +1715,112 @@
         margin-top: 12px;
         flex-wrap: nowrap;
       }
-
+ 
       .btn-row .btn-s {
         flex: 0 0 auto;
         padding: 10px 14px;
       }
-
+ 
       .btn-row .btn-p {
         flex: 1;
         justify-content: center;
         padding: 10px 12px;
       }
-
+ 
       .btn-row .btn-save {
         flex: 0 0 auto;
         padding: 10px 12px;
       }
-
+ 
       .btn {
         font-size: 0.78rem;
         padding: 10px 14px;
         border-radius: 8px;
       }
-
+ 
       .btn-p {
         box-shadow: 0 3px 10px rgba(232, 97, 26, .35);
       }
-
+ 
       /* ─ Stats ─ */
       .stats {
         grid-template-columns: repeat(2, 1fr);
         gap: 7px;
       }
-
+ 
       .stat {
         padding: 13px 10px;
         border-radius: 10px;
       }
-
+ 
       .stat .n {
         font-size: 1.9rem;
       }
-
+ 
       .stat .l {
         font-size: 0.68rem;
       }
-
+ 
       /* ─ Meta Grid ─ */
       .meta-grid {
         grid-template-columns: 1fr 1fr;
       }
-
+ 
       .meta-cell.span3 {
         grid-column: span 2;
       }
-
+ 
       .meta-cell {
         padding: 8px 10px;
         border-radius: 7px;
       }
-
+ 
       .meta-cell .lbl {
         font-size: 0.62rem;
       }
-
+ 
       .meta-cell .val {
         font-size: 0.78rem;
       }
-
+ 
       /* ─ Report Header ─ */
       .report-header-box {
         padding: 16px 12px;
         border-radius: 11px;
       }
-
+ 
       .report-title {
         font-size: 1.15rem;
       }
-
+ 
       .report-org {
         font-size: 0.63rem;
       }
-
+ 
       .report-sub {
         font-size: 0.72rem;
       }
-
+ 
       /* ─ Report action bar ─ */
       .report-action-bar {
         top: 58px;
         border-radius: 10px;
       }
-
+ 
       .report-action-bar-inner {
         padding: 10px 12px;
         gap: 8px;
       }
-
+ 
       .rab-msg {
         font-size: 0.75rem;
       }
-
+ 
       .rab-btns {
         width: 100%;
         gap: 7px;
       }
-
+ 
       .rab-btns .btn,
       .rab-btns .btn-history {
         flex: 1;
@@ -1801,18 +1828,18 @@
         font-size: 0.76rem;
         padding: 9px 8px;
       }
-
+ 
       /* ─ Key table ─ */
       .key-table th,
       .key-table td {
         font-size: 0.66rem;
         padding: 4px 6px;
       }
-
+ 
       #keyTablesWrap>div>div:first-child {
         grid-template-columns: 1fr !important;
       }
-
+ 
       /* ─ Matrix visual ─ */
       .mx-visual-table th,
       .mx-visual-table td {
@@ -1820,86 +1847,86 @@
         font-size: 0.68rem;
         min-width: 42px;
       }
-
+ 
       /* ─ History modal ─ */
       .modal-overlay {
         padding: 0;
         align-items: flex-end;
       }
-
+ 
       .modal-box {
         border-radius: 20px 20px 0 0;
         max-height: 85vh;
         max-width: 100%;
       }
-
+ 
       .modal-head {
         padding: 14px 16px;
       }
-
+ 
       .modal-head h3 {
         font-size: 0.9rem;
       }
-
+ 
       .modal-body {
         padding: 10px 12px;
       }
-
+ 
       .hist-item {
         padding: 12px 12px;
         gap: 8px;
         border-radius: 10px;
       }
-
+ 
       .hist-title {
         font-size: 0.82rem;
       }
-
+ 
       .hist-sub {
         font-size: 0.62rem;
       }
-
+ 
       .hist-badge {
         font-size: 0.6rem;
         padding: 2px 7px;
       }
-
+ 
       .hist-actions {
         flex-direction: column;
         gap: 6px;
       }
-
+ 
       .hist-btn-load {
         font-size: 0.72rem;
         padding: 7px 12px;
       }
-
+ 
       .hist-btn-del {
         font-size: 0.75rem;
         padding: 7px 10px;
       }
-
+ 
       /* ─ Saved banner ─ */
       .saved-banner {
         padding: 12px 14px;
         border-radius: 10px;
         gap: 8px;
       }
-
+ 
       .saved-banner-text h4 {
         font-size: 0.78rem;
       }
-
+ 
       .saved-banner-text p {
         font-size: 0.66rem;
       }
-
+ 
       .saved-banner-actions {
         flex-direction: row;
         gap: 6px;
         width: 100%;
       }
-
+ 
       .btn-restore,
       .btn-discard {
         flex: 1;
@@ -1908,7 +1935,7 @@
         padding: 8px 10px;
         font-size: 0.73rem;
       }
-
+ 
       /* ─ Toast ─ */
       .toast {
         bottom: 16px;
@@ -1918,27 +1945,27 @@
         white-space: normal;
         text-align: center;
       }
-
+ 
       /* ─ ra-wrap / tables ─ */
       .ra-wrap {
         overflow-x: auto;
         border-radius: 8px;
       }
-
+ 
       .concl {
         padding: 12px 14px;
         border-right-width: 3px;
       }
-
+ 
       .concl h3 {
         font-size: 0.85rem;
       }
-
+ 
       .concl p {
         font-size: 0.78rem;
         line-height: 1.85;
       }
-
+ 
       /* ─ Footer ─ */
       .footer-inner {
         flex-direction: column;
@@ -1946,59 +1973,59 @@
         gap: 6px;
         text-align: center;
       }
-
+ 
       .footer-copy {
         font-size: 0.63rem;
       }
     }
-
+ 
     @media(max-width:380px) {
       .header-text h1 {
         font-size: 0.72rem;
       }
-
+ 
       .matrix-selector {
         grid-template-columns: 1fr 1fr;
       }
-
+ 
       .feat-grid {
         grid-template-columns: 1fr 1fr;
       }
-
+ 
       .stats {
         grid-template-columns: 1fr 1fr;
       }
-
+ 
       .btn {
         font-size: 0.74rem;
         padding: 9px 10px;
       }
-
+ 
       .intro-hero h2 {
         font-size: 1.1rem;
       }
-
+ 
       .wrap {
         padding: 6px 8px 80px;
       }
     }
-
+ 
     /* ══════════════════════════════════════════
    PRINT STYLES — Professional B&W Edition
 ══════════════════════════════════════════ */
     @media print {
-
+ 
       /* ── Reset & Page Setup ── */
       * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
-
+ 
       @page {
         margin: 1.2cm 1cm 2.2cm 1cm;
         size: A4 landscape;
       }
-
+ 
       /* ── Hide everything except the report ── */
       header,
       footer,
@@ -2015,36 +2042,36 @@
       .ptitle h2+* {
         display: none !important;
       }
-
+ 
       /* ── Show report screen cleanly ── */
       #sReport {
         display: block !important;
       }
-
+ 
       .ptitle {
         display: none !important;
       }
-
+ 
       body {
         background: #fff !important;
         color: #000 !important;
         font-family: 'Cairo', 'Tajawal', sans-serif;
       }
-
+ 
       body::before {
         display: none !important;
       }
-
+ 
       main {
         overflow: visible !important;
         padding: 0 !important;
       }
-
+ 
       .wrap {
         padding: 0 !important;
         max-width: 100% !important;
       }
-
+ 
       /* ── Report Header Box ── */
       .report-header-box {
         background: #fff !important;
@@ -2056,7 +2083,7 @@
         page-break-after: avoid;
         position: relative;
       }
-
+ 
       .report-header-box::before {
         content: '';
         display: block;
@@ -2064,7 +2091,7 @@
         background: #000;
         margin-bottom: 12px;
       }
-
+ 
       .report-header-box::after {
         content: '';
         display: block;
@@ -2072,22 +2099,22 @@
         background: #000;
         margin-top: 12px;
       }
-
+ 
       .report-title {
         color: #000 !important;
         font-size: 1.3rem !important;
       }
-
+ 
       .report-org {
         color: #333 !important;
         font-size: 0.72rem !important;
       }
-
+ 
       .report-sub {
         color: #444 !important;
         font-size: 0.75rem !important;
       }
-
+ 
       /* ── Cards ── */
       .card {
         background: #fff !important;
@@ -2100,7 +2127,7 @@
         page-break-inside: avoid;
         break-inside: avoid;
       }
-
+ 
       .card-title {
         color: #000 !important;
         border-bottom: 1.5px solid #bbb !important;
@@ -2108,42 +2135,42 @@
         margin-bottom: 12px !important;
         font-size: 0.85rem !important;
       }
-
+ 
       .card-icon {
         background: #333 !important;
         color: #fff !important;
       }
-
+ 
       /* ── Meta Grid (B&W) ── */
       .meta-grid {
         grid-template-columns: repeat(3, 1fr) !important;
       }
-
+ 
       .meta-cell {
         background: #f3f3f3 !important;
         border: 1px solid #bbb !important;
         border-radius: 0 !important;
       }
-
+ 
       .meta-cell .lbl {
         color: #555 !important;
         font-size: 0.65rem !important;
       }
-
+ 
       .meta-cell .val {
         color: #000 !important;
         font-size: 0.82rem !important;
       }
-
+ 
       .meta-cell.span3 {
         grid-column: span 3 !important;
       }
-
+ 
       /* ── Intro card text ── */
       .card p {
         color: #000 !important;
       }
-
+ 
       /* ── Stats — hidden (shown as table summary instead) ── */
       .stats {
         display: grid !important;
@@ -2152,30 +2179,30 @@
         page-break-inside: avoid;
         break-inside: avoid;
       }
-
+ 
       .stat {
         background: #f3f3f3 !important;
         border: 1.5px solid #888 !important;
         border-radius: 0 !important;
       }
-
+ 
       .stat .n {
         color: #000 !important;
         font-size: 1.6rem !important;
       }
-
+ 
       .stat .l {
         color: #444 !important;
       }
-
+ 
       /* ══ TABLES — Professional Print Edition ══ */
-
+ 
       /* Matrix Key Table */
       .ra-wrap {
         overflow: visible !important;
         margin: 0 !important;
       }
-
+ 
       .rk-table,
       .rd-table {
         min-width: 0 !important;
@@ -2183,7 +2210,7 @@
         border-collapse: collapse !important;
         font-size: 0.65rem !important;
       }
-
+ 
       .rk-table th,
       .rk-table td,
       .rd-table th,
@@ -2193,7 +2220,7 @@
         font-size: 0.65rem !important;
         vertical-align: middle !important;
       }
-
+ 
       /* Matrix key table headers — WHITE background, dark text */
       .rk-head-main {
         background: #fff !important;
@@ -2202,7 +2229,7 @@
         font-weight: 900 !important;
         border: 1.5px solid #333 !important;
       }
-
+ 
       .rk-head-sub {
         background: #f0f0f0 !important;
         color: #000 !important;
@@ -2210,82 +2237,82 @@
         font-weight: 700 !important;
         border: 1.5px solid #333 !important;
       }
-
+ 
       .rk-val-cell {
         background: #f8f8f8 !important;
         color: #000 !important;
         font-weight: 800 !important;
         border: 1.5px solid #333 !important;
       }
-
+ 
       .rk-desc-cell {
         background: #fff !important;
         color: #222 !important;
         font-size: 0.62rem !important;
         border: 1.5px solid #555 !important;
       }
-
+ 
       .rotate-lbl {
         background: #eee !important;
         color: #000 !important;
         font-size: 0.62rem !important;
         border: 1.5px solid #555 !important;
       }
-
+ 
       /* ══ MATRIX CELLS — FULL COLOR (not B&W) ══ */
       .mc-g {
         background: #16a34a !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .mc-y {
         background: #ca8a04 !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .mc-o {
         background: #ea580c !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .mc-r {
         background: #dc2626 !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .mc-dr {
         background: #7f1d1d !important;
         color: #fca5a5 !important;
         font-weight: 800 !important;
       }
-
+ 
       /* Legend cells — FULL COLOR */
       .rl-g {
         background: #16a34a !important;
         color: #fff !important;
         font-weight: 700 !important;
       }
-
+ 
       .rl-y {
         background: #ca8a04 !important;
         color: #fff !important;
         font-weight: 700 !important;
       }
-
+ 
       .rl-r {
         background: #dc2626 !important;
         color: #fff !important;
         font-weight: 700 !important;
       }
-
+ 
       .rl-e {
         background: transparent !important;
       }
-
+ 
       /* Hazard Data Table headers — WHITE background, dark text */
       .rd-head-main {
         background: #fff !important;
@@ -2294,7 +2321,7 @@
         font-weight: 900 !important;
         border: 1.5px solid #333 !important;
       }
-
+ 
       .rd-head-sub {
         background: #f0f0f0 !important;
         color: #000 !important;
@@ -2302,113 +2329,113 @@
         font-weight: 700 !important;
         border: 1.5px solid #333 !important;
       }
-
+ 
       /* Data rows — clean white */
       .rd-data td {
         background: #fff !important;
         color: #000 !important;
         font-size: 0.65rem !important;
       }
-
+ 
       .rd-data:nth-child(even) td {
         background: #f9f9f9 !important;
       }
-
+ 
       /* ══ RV cells in hazard table — FULL COLOR ══ */
       .dmc-g {
         background: #16a34a !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .dmc-y {
         background: #ca8a04 !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .dmc-o {
         background: #ea580c !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .dmc-r {
         background: #dc2626 !important;
         color: #fff !important;
         font-weight: 800 !important;
       }
-
+ 
       .dmc-dr {
         background: #7f1d1d !important;
         color: #fca5a5 !important;
         font-weight: 800 !important;
       }
-
+ 
       /* Orange separator */
       .ra-wrap>div[style*="gradient"] {
         background: linear-gradient(90deg, #e8611a, #f97316, #e8611a) !important;
       }
-
+ 
       /* ── Conclusion Card ── */
       .concl {
         background: #f8f8f8 !important;
         border-right: 4px solid #222 !important;
         border-radius: 0 !important;
       }
-
+ 
       .concl h3 {
         color: #222 !important;
       }
-
+ 
       .concl p {
         color: #000 !important;
         line-height: 1.9 !important;
         font-size: 0.8rem !important;
       }
-
+ 
       /* ── Page break rules ── */
       .card {
         page-break-inside: avoid;
         break-inside: avoid;
       }
-
+ 
       .card.ra-card {
         page-break-before: always;
         break-before: always;
       }
-
+ 
       #reportOut>.card:first-child {
         page-break-before: avoid;
         break-before: avoid;
       }
-
+ 
       #reportOut>.card:nth-child(2) {
         page-break-before: avoid;
         break-before: avoid;
       }
-
+ 
       /* Each section starts on its own page if needed */
       .ra-wrap {
         page-break-inside: auto;
         break-inside: auto;
       }
-
+ 
       .rk-table {
         page-break-inside: avoid;
         break-inside: avoid;
       }
-
+ 
       .rd-table {
         page-break-inside: auto;
         break-inside: auto;
       }
-
+ 
       tr {
         page-break-inside: avoid;
         break-inside: avoid;
       }
-
+ 
       /* ── Print Footer — injected via ::after on body ── */
       #sReport::after {
         content: '';
@@ -2417,7 +2444,7 @@
         background: #222;
         margin: 20px 0 8px;
       }
-
+ 
       /* Custom print footer element */
       .print-footer-bar {
         display: flex !important;
@@ -2430,28 +2457,28 @@
         color: #333;
         page-break-inside: avoid;
       }
-
+ 
       .print-footer-bar .pf-logo {
         font-weight: 900;
         font-size: 0.8rem;
         letter-spacing: 1px;
         color: #000;
       }
-
+ 
       .print-footer-bar .pf-center {
         text-align: center;
         color: #444;
         font-size: 0.62rem;
         line-height: 1.6;
       }
-
+ 
       .print-footer-bar .pf-contact {
         text-align: left;
         font-size: 0.62rem;
         color: #333;
         line-height: 1.7;
       }
-
+ 
       .print-footer-bar .pf-dot {
         display: inline-block;
         width: 5px;
@@ -2461,12 +2488,12 @@
         margin-left: 4px;
         vertical-align: middle;
       }
-
+ 
       /* Hide runtime footer (web footer) */
       footer {
         display: none !important;
       }
-
+ 
       .toast,
       .save-indicator,
       .saved-banner,
@@ -2474,7 +2501,7 @@
       .report-action-bar {
         display: none !important;
       }
-
+ 
       /* ── Report bottom note ── */
       #reportOut>div:last-child {
         color: #444 !important;
@@ -2482,7 +2509,7 @@
         border-top: 1px solid #bbb !important;
       }
     }
-
+ 
     /* ── REPORT ACTION BAR ── */
     .report-action-bar {
       position: sticky;
@@ -2495,7 +2522,7 @@
       backdrop-filter: blur(14px);
       animation: fadeUp .35s ease;
     }
-
+ 
     .report-action-bar-inner {
       display: flex;
       align-items: center;
@@ -2503,7 +2530,7 @@
       flex-wrap: wrap;
       padding: 12px 18px;
     }
-
+ 
     .rab-msg {
       flex: 1;
       font-size: 0.82rem;
@@ -2513,13 +2540,13 @@
       align-items: center;
       gap: 7px;
     }
-
+ 
     .rab-btns {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
-
+ 
     /* ── HISTORY BUTTON ── */
     .btn-history {
       background: rgba(37, 99, 235, .14);
@@ -2536,13 +2563,13 @@
       align-items: center;
       gap: 7px;
     }
-
+ 
     .btn-history:hover {
       background: rgba(37, 99, 235, .28);
       transform: translateY(-1px);
       color: #fff;
     }
-
+ 
     /* ── HISTORY MODAL ── */
     .modal-overlay {
       position: fixed;
@@ -2558,12 +2585,12 @@
       pointer-events: none;
       transition: opacity .3s;
     }
-
+ 
     .modal-overlay.open {
       opacity: 1;
       pointer-events: all;
     }
-
+ 
     .modal-box {
       background: var(--navy);
       border: 1px solid var(--border);
@@ -2577,11 +2604,11 @@
       transform: translateY(20px);
       transition: transform .3s;
     }
-
+ 
     .modal-overlay.open .modal-box {
       transform: translateY(0);
     }
-
+ 
     .modal-head {
       padding: 18px 20px;
       border-bottom: 1px solid var(--border);
@@ -2591,7 +2618,7 @@
       gap: 10px;
       flex-shrink: 0;
     }
-
+ 
     .modal-head h3 {
       font-size: 1rem;
       font-weight: 900;
@@ -2600,13 +2627,13 @@
       align-items: center;
       gap: 8px;
     }
-
+ 
     .modal-head-actions {
       display: flex;
       gap: 8px;
       align-items: center;
     }
-
+ 
     .modal-btn-clear {
       background: rgba(220, 38, 38, .12);
       border: 1px solid rgba(220, 38, 38, .22);
@@ -2619,11 +2646,11 @@
       font-weight: 700;
       transition: all .2s;
     }
-
+ 
     .modal-btn-clear:hover {
       background: rgba(220, 38, 38, .25);
     }
-
+ 
     .modal-close {
       background: rgba(255, 255, 255, .06);
       border: 1px solid var(--border);
@@ -2635,18 +2662,18 @@
       transition: all .2s;
       line-height: 1;
     }
-
+ 
     .modal-close:hover {
       color: #fff;
       background: rgba(255, 255, 255, .12);
     }
-
+ 
     .modal-body {
       overflow-y: auto;
       padding: 14px 16px;
       flex: 1;
     }
-
+ 
     .hist-item {
       background: rgba(255, 255, 255, .03);
       border: 1px solid var(--border);
@@ -2659,16 +2686,16 @@
       flex-wrap: wrap;
       transition: border-color .25s;
     }
-
+ 
     .hist-item:hover {
       border-color: rgba(232, 97, 26, .3);
     }
-
+ 
     .hist-meta {
       flex: 1;
       min-width: 0;
     }
-
+ 
     .hist-title {
       font-size: 0.88rem;
       font-weight: 800;
@@ -2678,51 +2705,51 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
+ 
     .hist-sub {
       font-size: 0.65rem;
       color: var(--muted);
       margin-bottom: 6px;
     }
-
+ 
     .hist-badges {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
     }
-
+ 
     .hist-badge {
       padding: 2px 9px;
       border-radius: 20px;
       font-size: 0.62rem;
       font-weight: 700;
     }
-
+ 
     .hist-badge.total {
       background: rgba(232, 97, 26, .15);
       color: var(--accent2);
       border: 1px solid rgba(232, 97, 26, .25);
     }
-
+ 
     .hist-badge.low {
       background: rgba(22, 163, 74, .15);
       color: #4ade80;
       border: 1px solid rgba(22, 163, 74, .25);
     }
-
+ 
     .hist-badge.high {
       background: rgba(220, 38, 38, .15);
       color: #f87171;
       border: 1px solid rgba(220, 38, 38, .25);
     }
-
+ 
     .hist-actions {
       display: flex;
       gap: 8px;
       align-items: center;
       flex-shrink: 0;
     }
-
+ 
     .hist-btn-load {
       background: rgba(37, 99, 235, .16);
       border: 1px solid rgba(59, 130, 246, .28);
@@ -2736,12 +2763,12 @@
       transition: all .2s;
       white-space: nowrap;
     }
-
+ 
     .hist-btn-load:hover {
       background: rgba(37, 99, 235, .3);
       color: #fff;
     }
-
+ 
     .hist-btn-del {
       background: rgba(220, 38, 38, .1);
       border: 1px solid rgba(220, 38, 38, .2);
@@ -2752,11 +2779,11 @@
       font-size: 0.82rem;
       transition: all .2s;
     }
-
+ 
     .hist-btn-del:hover {
       background: rgba(220, 38, 38, .25);
     }
-
+ 
     @media print {
       .modal-overlay {
         display: none !important;
@@ -2764,9 +2791,9 @@
     }
   </style>
 </head>
-
+ 
 <body>
-
+ 
   <!-- ══ HEADER ══ -->
   <header>
     <div class="header-strip"></div>
@@ -2781,12 +2808,13 @@
         <span id="saveLabel">حفظ تلقائي</span>
       </div>
       <div class="header-badge">ISO 45001 &middot; قانون العمل ١٢/٢٠٠٣</div>
+      <button class="btn-home" onclick="resetAndGoHome()" title="العودة للصفحة الرئيسية">&#127968; رئيسي</button>
     </div>
   </header>
-
+ 
   <!-- ══ TOAST ══ -->
   <div class="toast" id="toast"></div>
-
+ 
   <!-- ══ PROGRESS ══ -->
   <div class="progress-bar">
     <div class="steps">
@@ -2816,10 +2844,10 @@
       <div class="step-lbl" id="lb5">التقرير</div>
     </div>
   </div>
-
+ 
   <main>
     <div class="wrap">
-
+ 
       <!-- ════ SCREEN 1: INTRO ════ -->
       <div class="screen active" id="sIntro">
         <!-- Saved data banner (shown if data exists) -->
@@ -2834,7 +2862,7 @@
             <button class="btn-discard" onclick="discardSaved()">&#128465; حذف</button>
           </div>
         </div>
-
+ 
         <div class="intro-hero">
           <h2>&#128737; تقييم مخاطر بيئة العمل</h2>
           <p class="sub">منظومة متكاملة لتحليل وتقييم المخاطر المهنية وفق منهجية الخمس خطوات المعتمدة دولياً. ادخل
@@ -2863,13 +2891,13 @@
           </div>
         </div>
       </div>
-
+ 
       <!-- ════ SCREEN 2: INFO ════ -->
       <div class="screen" id="sInfo">
         <div class="ptitle">
           <h2>&#128221; معلومات البحث والمنشأة</h2><span>أدخل البيانات الأساسية للتقرير</span>
         </div>
-
+ 
         <div class="card">
           <div class="card-title">
             <div class="card-icon">&#128208;</div>اختر نوع مصفوفة تقييم المخاطر
@@ -2915,7 +2943,7 @@
             </div>
           </div>
         </div>
-
+ 
         <div class="card">
           <div class="card-title">
             <div class="card-icon">&#128204;</div>عنوان البحث والبيانات الأساسية
@@ -2950,7 +2978,7 @@
             </div>
           </div>
         </div>
-
+ 
         <div class="card">
           <div class="card-title">
             <div class="card-icon">&#128101;</div>فريق التقييم
@@ -2967,7 +2995,7 @@
           </div>
           <div class="member-list" id="mList"></div>
         </div>
-
+ 
         <div class="card">
           <div class="card-title">
             <div class="card-icon">&#128214;</div>مقدمة التقرير
@@ -2976,26 +3004,26 @@
               placeholder="يُعدّ تقييم المخاطر المهنية الركيزة الأساسية لأي منظومة سلامة وصحة مهنية فعّالة..."
               onblur="saveDraft()"></textarea></div>
         </div>
-
+ 
         <div class="btn-row">
           <button class="btn btn-s" onclick="goTo('sIntro',0)">&#9664; السابق</button>
           <button class="btn btn-p" onclick="valInfo()">التالي: تحديد المخاطر &#9664;</button>
         </div>
       </div>
-
+ 
       <!-- ════ SCREEN 3: HAZARDS ════ -->
       <div class="screen" id="sHazards">
         <div class="ptitle">
           <h2>&#9888; تحديد وتقييم المخاطر</h2><span>أضف مصادر الخطر وقيّم كلاً منها</span>
         </div>
-
+ 
         <div class="card">
           <div class="card-title">
             <div class="card-icon">&#128273;</div>مفتاح التقييم المستخدم
           </div>
           <div id="keyTablesWrap"></div>
         </div>
-
+ 
         <div class="card">
           <div class="card-title">
             <div class="card-icon">&#9888;</div>قائمة المخاطر
@@ -3003,13 +3031,13 @@
           <div id="hList"></div>
           <button class="add-hrow" onclick="addH()">&#10133; إضافة مصدر خطر جديد</button>
         </div>
-
+ 
         <div class="btn-row">
           <button class="btn btn-s" onclick="goTo('sInfo',1)">&#9664; السابق</button>
           <button class="btn btn-p" onclick="valHazards()">التالي: المصفوفة &#9664;</button>
         </div>
       </div>
-
+ 
       <!-- ════ SCREEN 4: MATRIX VISUAL ════ -->
       <div class="screen" id="sMatrix">
         <div class="ptitle">
@@ -3032,7 +3060,7 @@
           <button class="btn btn-p" onclick="buildReport()">توليد التقرير النهائي &#9664;</button>
         </div>
       </div>
-
+ 
       <!-- ════ SCREEN 5: REPORT ════ -->
       <div class="screen" id="sReport">
         <div class="ptitle" style="justify-content:space-between;">
@@ -3054,10 +3082,10 @@
         </div>
         <div id="reportOut"></div>
       </div>
-
+ 
     </div><!-- /wrap -->
   </main>
-
+ 
   <!-- ══ FOOTER ══ -->
   <footer>
     <div class="footer-inner">
@@ -3073,7 +3101,7 @@
       </a>
     </div>
   </footer>
-
+ 
   <!-- ══ PRINT FOOTER — shown only in print ══ -->
   <div id="printFooter" class="print-footer-bar" style="display:none;">
     <div class="pf-logo">⚠ نظام تقييم المخاطر المهنية</div>
@@ -3088,7 +3116,7 @@
       <span class="pf-dot"></span> NIOSH Egypt
     </div>
   </div>
-
+ 
   <!-- ══ HISTORY MODAL ══ -->
   <div class="modal-overlay" id="historyModal" onclick="if(event.target===this)closeHistory()">
     <div class="modal-box">
@@ -3102,7 +3130,7 @@
       <div class="modal-body" id="historyList"></div>
     </div>
   </div>
-
+ 
   <script>
     // ══════════════════════════════════════════════
     //  STATE
@@ -3112,7 +3140,7 @@
     let hazards = [];
     let hcnt = 0;
     let _resetTimer = null; // used to cancel auto-reset when opening from history
-
+ 
     // ══════════════════════════════════════════════
     //  MATRIX CONFIG
     // ══════════════════════════════════════════════
@@ -3166,7 +3194,7 @@
         ranges: '1–9 = Low · 10–25 = Moderate · 26–40 = High · 41–64 = Intolerable'
       }
     };
-
+ 
     // ══════════════════════════════════════════════
     //  MATRIX SELECTOR
     // ══════════════════════════════════════════════
@@ -3179,7 +3207,7 @@
       renderKeyTables();
       renderHazards();
     }
-
+ 
     // init matrix previews
     function initPreviews() {
       function mkGrid(rows, sz) {
@@ -3199,7 +3227,7 @@
       for (let p = 8; p >= 1; p--) { let row = []; for (let s = 1; s <= 8; s++) { const r = p * s; row.push(r <= 9 ? 0 : r <= 25 ? 1 : r <= 40 ? 2 : 3); } r8.push(row); }
       document.getElementById('prev88').innerHTML = mkGrid(r8, 8);
     }
-
+ 
     // ══════════════════════════════════════════════
     //  NAVIGATION
     // ══════════════════════════════════════════════
@@ -3226,7 +3254,7 @@
         else if (i === ai + 1) { c.classList.add('active'); lb.classList.add('active'); }
       }
     }
-
+ 
     // ══════════════════════════════════════════════
     //  MEMBERS
     // ══════════════════════════════════════════════
@@ -3242,7 +3270,7 @@
       document.getElementById('mList').innerHTML =
         members.map((m, i) => `<div class="mtag">${m}<button onclick="removeM(${i})">&#10005;</button></div>`).join('');
     }
-
+ 
     // ══════════════════════════════════════════════
     //  KEY TABLES
     // ══════════════════════════════════════════════
@@ -3275,13 +3303,13 @@
       <br><span style="font-size:0.72rem;color:var(--muted);">${cfg.ranges}</span>
     </div>`;
     }
-
+ 
     // ══════════════════════════════════════════════
     //  HAZARDS  — FIX: no full re-render on text input
     // ══════════════════════════════════════════════
     const hTypes = ['كيميائية', 'بيولوجية', 'فيزيائية', 'ميكانيكية', 'كهربائية', 'حرائق وانفجارات', 'سقوط من ارتفاع', 'ضوضاء واهتزاز', 'إجهاد حراري', 'تحميل يدوي', 'متنوعة'];
     const cMethods = ['إزالة المصدر (Elimination)', 'استبدال المادة (Substitution)', 'تحكم هندسي (Engineering Control)', 'تحكم إداري (Administrative Control)', 'معدات وقاية شخصية (PPE)'];
-
+ 
     function addH() {
       hcnt++;
       const cfg = MX[mSize];
@@ -3290,7 +3318,7 @@
       renderHazards();
     }
     function removeH(id) { hazards = hazards.filter(x => x.id !== id); renderHazards(); }
-
+ 
     // ── KEY FIX: Only re-render RV display for numeric changes; save text without re-render ──
     function upH(id, k, v) {
       const h = hazards.find(x => x.id === id);
@@ -3302,7 +3330,7 @@
       }
       // For text fields (src, effect, resp) and select (htype, ctrl) — just store, no re-render
     }
-
+ 
     function updateRVBadge(h) {
       const cfg = MX[mSize];
       const r = h.p * h.s, rl = cfg.getRv(r);
@@ -3312,7 +3340,7 @@
       if (bEl) bEl.innerHTML = `<span class="rv-formula">R = ${h.p} &times; ${h.s} = <strong style="color:#fff">${r}</strong></span><span class="rbadge ${rl.c}">&#9679; ${rl.l} (${rl.code})</span>`;
       if (aEl) aEl.innerHTML = `<span class="rv-formula">R = ${h.ap} &times; ${h.as_} = <strong style="color:#fff">${ra}</strong></span><span class="rbadge ${rla.c}">&#9679; ${rla.l} (${rla.code})</span>`;
     }
-
+ 
     function renderHazards() {
       const cfg = MX[mSize];
       const wrap = document.getElementById('hList');
@@ -3410,9 +3438,9 @@
     </div>`;
       }).join('');
     }
-
+ 
     function esc(s) { return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-
+ 
     // ══════════════════════════════════════════════
     //  VALIDATION
     // ══════════════════════════════════════════════
@@ -3429,7 +3457,7 @@
       buildMatrix();
       goTo('sMatrix', 3);
     }
-
+ 
     // ══════════════════════════════════════════════
     //  MATRIX VISUAL
     // ══════════════════════════════════════════════
@@ -3448,7 +3476,7 @@
           const match = hazards.filter(h => h.p == p && h.s == s);
           const mc = cfg.getMc(r);
           const dots = match.map(h => `<span title="${h.src || 'خطر'}" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.9);margin:1px;"></span>`).join('');
-          html += `<td class="${mc}">${r}(${rl.code})${dots ? '<br>' + dots : ''}</td>`;
+          html += `<td class="${mc}" style="line-height:1.2;vertical-align:middle;">${r}<br><span style="font-size:0.65rem;font-weight:900;letter-spacing:0.5px;">${rl.code}</span>${dots ? '<br>' + dots : ''}</td>`;
         });
         html += `</tr>`;
       });
@@ -3461,7 +3489,7 @@
     <span style="color:var(--muted);margin-right:auto;font-size:0.68rem;">${cfg.ranges}</span>
   </div>`;
       document.getElementById('matrixVis').innerHTML = html;
-
+ 
       const sumHtml = hazards.map((h, i) => {
         const r = h.p * h.s, rl = cfg.getRv(r);
         const ra = h.ap * h.as_, rla = cfg.getRv(ra);
@@ -3476,11 +3504,11 @@
       }).join('');
       document.getElementById('matrixSummary').innerHTML = sumHtml || '<p style="color:var(--muted);font-size:0.8rem;text-align:center;padding:10px;">لا توجد بيانات</p>';
     }
-
+ 
     // ══════════════════════════════════════════════
     //  BUILD REPORT — matches image format exactly
     // ══════════════════════════════════════════════
-
+ 
     // Pure render — no side effects (called by both buildReport and histLoad)
     function _buildReportHTML() {
       const cfg = MX[mSize];
@@ -3493,27 +3521,28 @@
       const lead = document.getElementById('rLead').value || '—';
       const intro = document.getElementById('rIntro').value || 'يهدف هذا التقييم إلى رصد وتحليل المخاطر المهنية في بيئة العمل ووضع تدابير السيطرة المناسبة لضمان بيئة عمل آمنة وفق المعايير الدولية.';
       const desc = document.getElementById('rDesc').value || '';
-
+ 
       const low = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'T').length;
       const mod = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'A').length;
       const high = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'M').length;
       const crit = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'I').length;
-
+ 
       const pVals = cfg.pVals;
       const sVals = cfg.sVals;
       const n = pVals.length;
       const legends = cfg.legend;
-
+ 
       // ── Build Risk Matrix key table (matching image exactly)
       // Columns: rotate-lbl | S_val | S_desc | rotate-lbl | P_val | P_desc | s1..sn | Range | Sig
       // Total cols = 2 + 1 + 2 + 1 + n + 2  (rotate merged with val cols in image)
       // Simplified: val | desc | val | desc | s1..sn | Range | Sig = n+6 cols
-      const totalCols = n + 6; // S_val, S_desc, P_val, P_desc, matrix×n, Range, Sig
-
+      const totalCols = n + 7; // S_val, S_desc, P_val, P_desc, P(matrix col), matrix×n, Range, Sig
+ 
       let matHead = `
   <tr>
     <th class="rk-head-main" colspan="2">الشدة (S)</th>
     <th class="rk-head-main" colspan="2">الاحتمالية (P)</th>
+    <th class="rk-head-main" style="min-width:32px;" rowspan="2">الاحتمالية<br><span style="font-size:0.6rem;">(P)</span></th>
     <th class="rk-head-main" colspan="${n}">الشدة S</th>
     <th class="rk-head-main" colspan="2">النتيجة R</th>
   </tr>
@@ -3526,7 +3555,7 @@
     <th class="rk-head-sub" style="min-width:60px;">Range</th>
     <th class="rk-head-sub" style="min-width:80px;">Significance</th>
   </tr>`;
-
+ 
       // Data rows: one per probability value; also show severity on same row
       let matRows = '';
       pVals.forEach((pv, ri) => {
@@ -3538,7 +3567,8 @@
       <td class="rk-desc-cell">${sv !== undefined ? cfg.sDesc[sv] : ''}</td>
       <td class="rk-val-cell">${pv}</td>
       <td class="rk-desc-cell">${cfg.pDesc[pv]}</td>
-      ${sVals.map(sv2 => { const r = pv * sv2; const mc = cfg.getMc(r); return `<td class="${mc}">${r}</td>`; }).join('')}
+      <td class="rk-val-cell" style="background:#1a2e5c;color:#93b4e8;font-weight:900;">${pv}</td>
+      ${sVals.map(sv2 => { const r = pv * sv2; const mc = cfg.getMc(r); const code = cfg.getRv(r).code; return `<td class="${mc}" style="line-height:1.2;">${r}<br><span style="font-size:0.58rem;font-weight:900;">${code}</span></td>`; }).join('')}
       <td class="${lgCls}">${leg ? leg.r : ''}</td>
       <td class="${lgCls}">${leg ? leg.l : ''}</td>
     </tr>`;
@@ -3552,7 +3582,7 @@
       <td class="${lgCls}">${leg.l}</td>
     </tr>`;
       }
-
+ 
       // ── Hazard data table (10 fixed columns matching image)
       // Source | Hazards/Effect | S_before | P_before | RV_before | Control | Responsible | S_after | P_after | RV_after
       let dataHead = `
@@ -3568,7 +3598,7 @@
     <th class="rd-head-sub">S</th><th class="rd-head-sub">P</th><th class="rd-head-sub">R.V</th>
     <th class="rd-head-sub">S</th><th class="rd-head-sub">P</th><th class="rd-head-sub">R.V</th>
   </tr>`;
-
+ 
       const minRows = Math.max(hazards.length, 3);
       let dataRows = '';
       for (let i = 0; i < minRows; i++) {
@@ -3597,10 +3627,10 @@
       </tr>`;
         }
       }
-
+ 
       // ── Format dates
       const fmtDate = d => { if (!d) return '—'; const [y, m, dy] = d.split('-'); return `${dy}/${m}/${y}`; };
-
+ 
       const reportHTML = `
   <!-- REPORT HEADER -->
   <div class="report-header-box">
@@ -3685,10 +3715,10 @@
   <div style="text-align:center;padding:14px 0;color:var(--muted);font-size:0.68rem;border-top:1px solid var(--border);margin-top:8px;">
     تم إعداد هذا التقرير وفق منهجية الخمس خطوات المعتمدة &middot; ISO 45001 &middot; قانون العمل ١٢/٢٠٠٣ &middot; تاريخ الإصدار: ${fmtDate(date) || new Date().toLocaleDateString('ar-EG')}
   </div>`;
-
+ 
       document.getElementById('reportOut').innerHTML = reportHTML;
     } // end _buildReportHTML
-
+ 
     // Reset form data and go to intro
     function resetAndGoHome() {
       mSize = 5; members = []; hazards = []; hcnt = 0;
@@ -3703,24 +3733,23 @@
       checkSavedData();
       goTo('sIntro', 0);
     }
-
-    // Called from the wizard — renders and saves only; user stays on report screen
+ 
+    // Called from the wizard — renders and saves; user uses home button to return
     function buildReport() {
       goTo('sReport', 4);
       _buildReportHTML();
-      // Show the "new report" action bar
       const bar = document.getElementById('reportActionBar');
       if (bar) bar.style.display = 'flex';
       saveReportToHistory();
-      showToast('✅ تم إنشاء التقرير وحفظه في السجل', 'success', 4000);
+      showToast('✅ تم حفظ التقرير — اضغط الرئيسية للعودة', 'success', 4000);
     }
-
+ 
     // ══════════════════════════════════════════════
     //  PRINT
     // ══════════════════════════════════════════════
     function doPrint() {
       const out = document.getElementById('reportOut');
-
+ 
       // ── If reportOut is empty, try to auto-build from current in-memory data ──
       if (!out || !out.innerHTML.trim()) {
         if (hazards.length > 0) {
@@ -3737,32 +3766,32 @@
           return;
         }
       }
-
+ 
       _executePrint();
     }
-
+ 
     // Actual print execution — called once report is guaranteed in DOM
     function _executePrint() {
       const out = document.getElementById('reportOut');
       const footer = document.getElementById('printFooter');
-
+ 
       // Force all screens hidden; force sReport visible via inline style
       // (overrides .screen{display:none} reliably across all browsers)
       document.querySelectorAll('.screen').forEach(s => {
         s.style.display = (s.id === 'sReport') ? 'block' : 'none';
       });
-
+ 
       // Move print footer into reportOut so it prints at the end
       if (footer && out) {
         footer.style.display = 'flex';
         out.appendChild(footer);
       }
-
+ 
       // Wait one animation frame so browser paints before dialog opens
       requestAnimationFrame(() => {
         window.print();
       });
-
+ 
       // Restore DOM after dialog closes
       setTimeout(() => {
         document.querySelectorAll('.screen').forEach(s => {
@@ -3774,13 +3803,13 @@
         }
       }, 1500);
     }
-
+ 
     // ══════════════════════════════════════════════
     //  LOCAL STORAGE — Auto-save on report + History
     // ══════════════════════════════════════════════
     const LS_HISTORY = 'riskHistory_v1';
     const LS_DRAFT = 'riskDraft_v1';
-
+ 
     function showToast(msg, type = 'success', dur = 3000) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -3788,7 +3817,7 @@
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), dur);
     }
-
+ 
     function setSaveState(saved) {
       const dot = document.getElementById('saveDot');
       const lbl = document.getElementById('saveLabel');
@@ -3801,7 +3830,7 @@
         lbl.textContent = 'جارٍ الحفظ...';
       }
     }
-
+ 
     function gatherFormData() {
       return {
         mSize,
@@ -3819,7 +3848,7 @@
         savedAt: new Date().toISOString()
       };
     }
-
+ 
     // Save completed report to history list and reset to intro
     function saveReportToHistory() {
       try {
@@ -3834,7 +3863,7 @@
         setSaveState(true);
       } catch (e) { /* silent fail */ }
     }
-
+ 
     // Save draft (called on navigation and field blur)
     let _saveDraftTimer = null;
     function saveDraft() {
@@ -3846,13 +3875,13 @@
         _saveDraftTimer = setTimeout(() => setSaveState(true), 600);
       } catch (e) { }
     }
-
+ 
     function saveData() {
       saveDraft();
       // silent — no toast for auto-save
       setSaveState(true);
     }
-
+ 
     // Load a saved report into form
     function loadReport(data) {
       mSize = data.mSize || 5;
@@ -3869,23 +3898,17 @@
       renderHazards();
       setSaveState(true);
     }
-
-    // Check for saved draft on page load
+ 
+    // Check for saved draft on page load — banner hidden intentionally (auto-save only)
     function checkSavedData() {
       try {
         const raw = localStorage.getItem(LS_DRAFT);
         if (!raw) return;
-        const d = JSON.parse(raw);
-        const banner = document.getElementById('savedBanner');
-        const desc = document.getElementById('savedBannerDesc');
-        const dt = new Date(d.savedAt);
-        const fmtDt = dt.toLocaleString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        desc.textContent = `"${d.title || 'مسودة'}" — ${d.facility || '—'} — آخر حفظ: ${fmtDt}`;
-        banner.style.display = 'flex';
         setSaveState(true);
+        // Banner intentionally suppressed — لا يُعرض إشعار للمسودة المحفوظة
       } catch (e) { }
     }
-
+ 
     function loadSaved() {
       try {
         const d = JSON.parse(localStorage.getItem(LS_DRAFT) || 'null');
@@ -3896,7 +3919,7 @@
         showToast('📂 تم استكمال المسودة', 'info');
       } catch (e) { showToast('❌ خطأ في التحميل', 'error'); }
     }
-
+ 
     function discardSaved() {
       if (!confirm('حذف المسودة المحفوظة؟')) return;
       localStorage.removeItem(LS_DRAFT);
@@ -3904,14 +3927,14 @@
       setSaveState(false);
       showToast('🗑 تم حذف المسودة');
     }
-
+ 
     // ── HISTORY MODAL ──────────────────────────────
     function openHistory() {
       const raw = localStorage.getItem(LS_HISTORY);
       const history = raw ? JSON.parse(raw) : [];
       const modal = document.getElementById('historyModal');
       const list = document.getElementById('historyList');
-
+ 
       if (!history.length) {
         list.innerHTML = '<p style="text-align:center;color:var(--muted);padding:30px;font-size:0.85rem;">لا توجد تقارير محفوظة بعد.<br>سيتم الحفظ تلقائياً عند إنشاء أي تقرير.</p>';
       } else {
@@ -3941,11 +3964,11 @@
       }
       modal.classList.add('open');
     }
-
+ 
     function closeHistory() {
       document.getElementById('historyModal').classList.remove('open');
     }
-
+ 
     function histLoad(i) {
       const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
       if (!history[i]) return;
@@ -3962,7 +3985,7 @@
       if (bar) bar.style.display = 'flex';
       showToast('📄 تم فتح التقرير', 'info');
     }
-
+ 
     function histDelete(i) {
       if (!confirm('حذف هذا التقرير من السجل؟')) return;
       const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
@@ -3971,14 +3994,14 @@
       openHistory(); // refresh
       showToast('🗑 تم الحذف');
     }
-
+ 
     function clearHistory() {
       if (!confirm('حذف كل السجل؟ لا يمكن التراجع.')) return;
       localStorage.removeItem(LS_HISTORY);
       openHistory();
       showToast('🗑 تم مسح السجل');
     }
-
+ 
     // ══════════════════════════════════════════════
     //  INIT
     // ══════════════════════════════════════════════
@@ -3988,5 +4011,5 @@
     checkSavedData();
   </script>
 </body>
-
+ 
 </html>
