@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
  
 <head>
@@ -3001,6 +3001,11 @@
             <button class="btn btn-p" onclick="goTo('sInfo',1)">ابدأ التقييم الآن &#9664;</button>
             <button class="btn btn-history" onclick="openHistory()">&#128196; سجل التقارير</button>
           </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+            <button class="btn-io export" onclick="exportHazards()">&#128190; تصدير البيانات (JSON)</button>
+            <button class="btn-io import" onclick="document.getElementById('importFileInputHome').click()">&#128228; استيراد بيانات</button>
+            <input type="file" id="importFileInputHome" accept=".json" onchange="importHazards(this)" style="display:none;">
+          </div>
         </div>
       </div>
  
@@ -3494,6 +3499,10 @@
           hazards.forEach(h => collapsedSet.add(h.id));
           hazards = hazards.concat(imported);
           renderHazards();
+          // إذا كان المستخدم في الصفحة الرئيسية، انتقل تلقائياً لشاشة المخاطر
+          if (!document.getElementById('sHazards').classList.contains('active')) {
+            goTo('sHazards', 2);
+          }
           showToast('✅ تم استيراد ' + imported.length + ' مصدر خطر', 'success', 3500);
         } catch(err) {
           showToast('❌ خطأ في قراءة الملف', 'error', 4000);
