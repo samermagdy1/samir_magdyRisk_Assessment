@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
  
 <head>
@@ -2789,6 +2789,59 @@
         display: none !important;
       }
     }
+
+    /* ══ MULTI-CONTROL WIDGET ══ */
+    .ctrl-widget { display:flex; flex-direction:column; gap:6px; }
+    .ctrl-option {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+    .ctrl-option.active { border-color: rgba(232,97,26,.5); }
+    .ctrl-chk-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 11px;
+      cursor: pointer;
+      background: var(--card);
+      transition: background .15s;
+      user-select: none;
+    }
+    .ctrl-chk-row:hover { background: rgba(255,255,255,.04); }
+    .ctrl-chk { width:16px; height:16px; accent-color:var(--accent2); flex-shrink:0; cursor:pointer; }
+    .ctrl-chk-label { font-size:0.75rem; font-weight:700; color:var(--text); flex:1; }
+    .ctrl-text-wrap {
+      display: none;
+      padding: 0 10px 10px;
+      background: rgba(232,97,26,.04);
+    }
+    .ctrl-option.active .ctrl-text-wrap { display: block; }
+    .ctrl-text-wrap textarea {
+      width: 100%;
+      min-height: 54px;
+      font-size: 0.74rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 7px 9px;
+      resize: vertical;
+      font-family: 'Cairo', sans-serif;
+      line-height: 1.6;
+      margin-top: 6px;
+      box-sizing: border-box;
+    }
+    .ctrl-text-wrap textarea::placeholder { color:var(--muted); font-size:0.7rem; }
+    .rp-ctrl-block { margin-bottom:5px; }
+    .rp-ctrl-title { font-size:0.72rem; font-weight:900; color:var(--accent2); margin-bottom:2px; }
+    .rp-ctrl-body { font-size:0.7rem; color:var(--text); line-height:1.7; white-space:pre-wrap; padding-right:8px; border-right:2px solid rgba(232,97,26,.3); }
+    @media print {
+      .rp-ctrl-title { color:#000 !important; }
+      .rp-ctrl-body { color:#000 !important; border-right-color:#333 !important; }
+    }
+
   </style>
 </head>
  
@@ -3314,7 +3367,7 @@
       hcnt++;
       const cfg = MX[mSize];
       const defP = cfg.pVals[0], defS = cfg.sVals[0];
-      hazards.push({ id: 'h' + hcnt, src: '', htype: '', effect: '', p: defP, s: defS, ctrl: '', resp: '', ap: defP, as_: defS });
+      hazards.push({ id: 'h' + hcnt, src: '', htype: '', effect: '', p: defP, s: defS, ctrl: [], resp: '', ap: defP, as_: defS });
       renderHazards();
     }
     function removeH(id) { hazards = hazards.filter(x => x.id !== id); renderHazards(); }
@@ -3341,6 +3394,51 @@
       if (aEl) aEl.innerHTML = `<span class="rv-formula">R = ${h.ap} &times; ${h.as_} = <strong style="color:#fff">${ra}</strong></span><span class="rbadge ${rla.c}">&#9679; ${rla.l} (${rla.code})</span>`;
     }
  
+
+    // ── ctrl array helpers ──
+    function ctrlToggle(hid, method, checked) {
+      const h = hazards.find(x => x.id === hid);
+      if (!h) return;
+      if (!Array.isArray(h.ctrl)) h.ctrl = [];
+      const idx = h.ctrl.findIndex(c => c.m === method);
+      if (checked && idx === -1) { h.ctrl.push({ m: method, t: '' }); }
+      else if (!checked && idx !== -1) { h.ctrl.splice(idx, 1); }
+      // toggle UI
+      const opt = document.getElementById('copt_' + hid + '_' + method.replace(/\s+/g,'_'));
+      if (opt) opt.classList.toggle('active', checked);
+      const tw = document.getElementById('ctw_' + hid + '_' + method.replace(/\s+/g,'_'));
+      if (tw) tw.style.display = checked ? 'block' : 'none';
+    }
+    function ctrlText(hid, method, val) {
+      const h = hazards.find(x => x.id === hid);
+      if (!h || !Array.isArray(h.ctrl)) return;
+      const item = h.ctrl.find(c => c.m === method);
+      if (item) item.t = val;
+    }
+    function ctrlHtml(hid, h) {
+      const arr = Array.isArray(h.ctrl) ? h.ctrl : (h.ctrl ? [{ m: h.ctrl, t: '' }] : []);
+      return cMethods.map(function(method) {
+        const key = method.replace(/\s+/g,'_');
+        const item = arr.find(function(c){ return c.m === method; });
+        const isActive = !!item;
+        const chk = isActive ? 'checked' : '';
+        const disp = isActive ? 'block' : 'none';
+        const activeClass = isActive ? ' active' : '';
+        const textVal = esc(item ? item.t : '');
+        return '<div class="ctrl-option' + activeClass + '" id="copt_' + hid + '_' + key + '">'
+          + '<label class="ctrl-chk-row">'
+          + '<input type="checkbox" class="ctrl-chk" ' + chk
+          + ' onchange="ctrlToggle(\'' + hid + '\',\'' + method.replace(/'/g,"\\'") + '\',this.checked)">'
+          + '<span class="ctrl-chk-label">' + method + '</span>'
+          + '</label>'
+          + '<div class="ctrl-text-wrap" id="ctw_' + hid + '_' + key + '" style="display:' + disp + '">'
+          + '<textarea placeholder="\u0623\u062f\u062e\u0644 \u062a\u0641\u0627\u0635\u064a\u0644 \u0648\u0633\u064a\u0644\u0629 \u0627\u0644\u062a\u062d\u0643\u0645 \u0647\u0630\u0647..."'
+          + ' oninput="ctrlText(\'' + hid + '\',\'' + method.replace(/'/g,"\\'") + '\',this.value)">' + textVal + '</textarea>'
+          + '</div>'
+          + '</div>';
+      }).join('');
+    }
+
     function renderHazards() {
       const cfg = MX[mSize];
       const wrap = document.getElementById('hList');
@@ -3356,7 +3454,7 @@
         const apO = cfg.pVals.map(v => `<option value="${v}" ${h.ap == v ? 'selected' : ''}>${cfg.pLabels[v]}</option>`).join('');
         const asO = cfg.sVals.map(v => `<option value="${v}" ${h.as_ == v ? 'selected' : ''}>${cfg.sLabels[v]}</option>`).join('');
         const htOpts = hTypes.map(t => `<option ${h.htype === t ? 'selected' : ''}>${t}</option>`).join('');
-        const ctOpts = cMethods.map(t => `<option value="${t}" ${h.ctrl === t ? 'selected' : ''}>${t}</option>`).join('');
+        // ctrl is now handled by ctrlHtml()
         return `
     <div class="hrow" id="hrow_${h.id}">
       <div class="hrow-hdr">
@@ -3423,11 +3521,9 @@
       </div>
  
       <div class="fg" style="margin-top:10px;">
-        <div class="f">
-          <label>وسيلة التحكم</label>
-          <select onchange="upH('${h.id}','ctrl',this.value)">
-            <option value="">اختر</option>${ctOpts}
-          </select>
+        <div class="f" style="grid-column: 1 / -1;">
+          <label>وسائل التحكم <span style="font-size:0.68rem;color:var(--muted);font-weight:400;">(اختر وسيلة أو أكثر وأضف التفاصيل)</span></label>
+          <div class="ctrl-widget">${ctrlHtml(h.id, h)}</div>
         </div>
         <div class="f">
           <label>الشخص المسؤول</label>
@@ -3614,7 +3710,11 @@
         <td>${h.s}</td>
         <td>${h.p}</td>
         <td class="${rvCls}">${r}<br><span style="font-size:0.62rem;">(${rl.code})</span></td>
-        <td style="text-align:right;font-size:0.72rem;">${h.ctrl || '—'}</td>
+        <td style="text-align:right;font-size:0.72rem;line-height:1.6;">${
+          (Array.isArray(h.ctrl) && h.ctrl.length)
+            ? h.ctrl.map(c => `<div class="rp-ctrl-block"><div class="rp-ctrl-title">${c.m}</div>${c.t ? `<div class="rp-ctrl-body">${c.t}</div>` : ''}</div>`).join('')
+            : (h.ctrl || '—')
+        }</td>
         <td style="text-align:right;font-size:0.72rem;">${h.resp || '—'}</td>
         <td>${h.as_}</td>
         <td>${h.ap}</td>
@@ -3656,8 +3756,8 @@
   <!-- INTRO CARD -->
   <div class="card">
     <div class="card-title"><div class="card-icon">&#128214;</div>مقدمة &mdash; Introduction</div>
-    <p style="font-size:0.85rem;line-height:1.95;color:var(--text);">${intro}</p>
-    ${desc ? `<p style="margin-top:9px;font-size:0.8rem;line-height:1.85;color:var(--muted);">${desc}</p>` : ''}
+    <p style="font-size:0.85rem;line-height:1.95;color:var(--text);white-space:pre-wrap;word-break:break-word;">${intro}</p>
+    ${desc ? `<p style="margin-top:9px;font-size:0.8rem;line-height:1.85;color:var(--muted);white-space:pre-wrap;word-break:break-word;">${desc}</p>` : ''}
   </div>
  
   <!-- STATS -->
@@ -3893,7 +3993,12 @@
       set('rDesc', data.desc); set('rIntro', data.intro);
       members = data.members || [];
       renderMembers();
-      hazards = (data.hazards || []).map(h => ({ ...h }));
+      hazards = (data.hazards || []).map(h => {
+        // migrate old string ctrl → array
+        if (typeof h.ctrl === 'string' && h.ctrl) h.ctrl = [{ m: h.ctrl, t: '' }];
+        if (!Array.isArray(h.ctrl)) h.ctrl = [];
+        return { ...h };
+      });
       hcnt = data.hcnt || hazards.length;
       renderHazards();
       setSaveState(true);
