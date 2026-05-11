@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
  
 <head>
@@ -2842,6 +2842,65 @@
       .rp-ctrl-body { color:#000 !important; border-right-color:#333 !important; }
     }
 
+
+    /* ── COLLAPSIBLE HAZARD CARD ── */
+    .hrow-body { overflow: hidden; }
+    .hrow-summary {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.76rem;
+      color: var(--muted);
+      padding: 2px 0 0 0;
+      flex-wrap: wrap;
+    }
+    .hrow-summary.visible { display: flex; }
+    .hrow-summary .sum-src { font-weight: 800; color: var(--text); }
+    .toggle-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 4px 10px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-family: 'Cairo', sans-serif;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .toggle-btn:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── IMPORT / EXPORT ── */
+    .io-bar {
+      display: flex;
+      gap: 9px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-io {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-io:hover { border-color: var(--accent); background: rgba(255,255,255,.04); }
+    .btn-io.export { border-color: rgba(56,189,248,.3); color: #38bdf8; }
+    .btn-io.export:hover { background: rgba(56,189,248,.07); }
+    .btn-io.import { border-color: rgba(74,222,128,.3); color: #4ade80; }
+    .btn-io.import:hover { background: rgba(74,222,128,.07); }
+    #importFileInput { display: none; }
+
   </style>
 </head>
  
@@ -3081,6 +3140,11 @@
           <div class="card-title">
             <div class="card-icon">&#9888;</div>قائمة المخاطر
           </div>
+          <div class="io-bar">
+            <button class="btn-io export" onclick="exportHazards()">&#128190; تصدير البيانات (JSON)</button>
+            <button class="btn-io import" onclick="document.getElementById('importFileInput').click()">&#128228; استيراد بيانات</button>
+            <input type="file" id="importFileInput" accept=".json" onchange="importHazards(this)">
+          </div>
           <div id="hList"></div>
           <button class="add-hrow" onclick="addH()">&#10133; إضافة مصدر خطر جديد</button>
         </div>
@@ -3192,6 +3256,7 @@
     let members = [];
     let hazards = [];
     let hcnt = 0;
+    const collapsedSet = new Set(); // tracks which hazard IDs are collapsed
     let _resetTimer = null; // used to cancel auto-reset when opening from history
  
     // ══════════════════════════════════════════════
@@ -3364,13 +3429,79 @@
     const cMethods = ['إزالة المصدر (Elimination)', 'استبدال المادة (Substitution)', 'تحكم هندسي (Engineering Control)', 'تحكم إداري (Administrative Control)', 'معدات وقاية شخصية (PPE)'];
  
     function addH() {
+      // collapse all existing cards (persist in Set)
+      hazards.forEach(h => collapsedSet.add(h.id));
       hcnt++;
       const cfg = MX[mSize];
       const defP = cfg.pVals[0], defS = cfg.sVals[0];
       hazards.push({ id: 'h' + hcnt, src: '', htype: '', effect: '', p: defP, s: defS, ctrl: [], resp: '', ap: defP, as_: defS });
       renderHazards();
+      setTimeout(() => {
+        const last = document.getElementById('hrow_h' + hcnt);
+        if (last) last.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
     }
-    function removeH(id) { hazards = hazards.filter(x => x.id !== id); renderHazards(); }
+    function removeH(id) { hazards = hazards.filter(x => x.id !== id); collapsedSet.delete(id); renderHazards(); }
+
+    function toggleHrow(id) {
+      // If currently collapsed (in Set) → expand it; if expanded → collapse it
+      const wasCollapsed = collapsedSet.has(id);
+      const isNowCollapsed = !wasCollapsed;
+
+      if (isNowCollapsed) collapsedSet.add(id);
+      else collapsedSet.delete(id);
+
+      // update body visibility for THIS card only
+      const body = document.getElementById('hbody_' + id);
+      if (body) body.style.display = isNowCollapsed ? 'none' : 'block';
+
+      // update summary visibility for THIS card only
+      const summary = document.querySelector('#hrow_' + id + ' .hrow-summary');
+      if (summary) summary.classList.toggle('visible', isNowCollapsed);
+
+      // update button label for THIS card only
+      const btn = document.getElementById('tbtn_' + id);
+      if (btn) btn.innerHTML = isNowCollapsed ? '&#9650; فتح' : '&#9660; طي';
+    }
+
+    function exportHazards() {
+      const data = { hazards: hazards, mSize: mSize, exportedAt: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'مخاطر_تقييم_' + new Date().toISOString().slice(0,10) + '.json';
+      a.click();
+      showToast('✅ تم تصدير بيانات المخاطر', 'success', 3000);
+    }
+
+    function importHazards(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          const raw = Array.isArray(data) ? data : (data.hazards || []);
+          const cfg = MX[mSize];
+          const defP = cfg.pVals[0], defS = cfg.sVals[0];
+          const imported = raw.map(h => {
+            if (typeof h.ctrl === 'string' && h.ctrl) h.ctrl = [{ m: h.ctrl, t: '' }];
+            if (!Array.isArray(h.ctrl)) h.ctrl = [];
+            hcnt++;
+            return Object.assign({ p: defP, s: defS, ap: defP, as_: defS, src: '', htype: '', effect: '', resp: '' }, h, { id: 'h' + hcnt });
+          });
+          // collapse existing (persist in Set)
+          hazards.forEach(h => collapsedSet.add(h.id));
+          hazards = hazards.concat(imported);
+          renderHazards();
+          showToast('✅ تم استيراد ' + imported.length + ' مصدر خطر', 'success', 3500);
+        } catch(err) {
+          showToast('❌ خطأ في قراءة الملف', 'error', 4000);
+        }
+        input.value = '';
+      };
+      reader.readAsText(file);
+    }
  
     // ── KEY FIX: Only re-render RV display for numeric changes; save text without re-render ──
     function upH(id, k, v) {
@@ -3458,12 +3589,25 @@
         return `
     <div class="hrow" id="hrow_${h.id}">
       <div class="hrow-hdr">
-        <div style="display:flex;align-items:center;gap:9px;">
+        <div style="display:flex;align-items:center;gap:9px;flex:1;min-width:0;">
           <div class="hnum">${i + 1}</div>
-          <span style="font-size:0.8rem;color:var(--muted);">مصدر الخطر #${i + 1}</span>
+          <div style="min-width:0;">
+            <span style="font-size:0.8rem;color:var(--muted);">مصدر الخطر #${i + 1}</span>
+            <div class="hrow-summary ${collapsedSet.has(h.id) ? 'visible' : ''}">
+              <span class="sum-src">${h.src || 'بدون عنوان'}</span>
+              ${h.htype ? `<span style="color:var(--accent);font-size:0.7rem;">· ${h.htype}</span>` : ''}
+              <span class="rbadge ${rl.c}" style="font-size:0.65rem;padding:2px 7px;">&#9679; ${rl.l} (${rl.code})</span>
+            </div>
+          </div>
         </div>
-        <button class="btn-rm" onclick="removeH('${h.id}')">&#128465; حذف</button>
+        <div style="display:flex;gap:7px;align-items:center;flex-shrink:0;">
+          <button class="toggle-btn" id="tbtn_${h.id}" onclick="toggleHrow('${h.id}')">
+            ${collapsedSet.has(h.id) ? '&#9650; فتح' : '&#9660; طي'}
+          </button>
+          <button class="btn-rm" onclick="removeH('${h.id}')">&#128465; حذف</button>
+        </div>
       </div>
+      <div class="hrow-body" id="hbody_${h.id}" style="display:${collapsedSet.has(h.id) ? 'none' : 'block'}">
       <div class="fg c3">
         <div class="f">
           <label>مصدر الخطر (Source)</label>
