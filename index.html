@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
  
 <head>
@@ -3469,16 +3469,48 @@
       if (btn) btn.innerHTML = isNowCollapsed ? '&#9650; فتح' : '&#9660; طي';
     }
 
+    // ══════════════════════════════════════════════
+    //  EXPORT — نسخة احتياطية كاملة لجميع البيانات
+    // ══════════════════════════════════════════════
     function exportHazards() {
-      const data = { hazards: hazards, mSize: mSize, exportedAt: new Date().toISOString() };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      // جمع بيانات التقرير الحالي
+      const currentReport = gatherFormData();
+
+      // جمع سجل التقارير المحفوظة
+      let history = [];
+      try { history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch(e) {}
+
+      // جمع المسودة المحفوظة
+      let draft = null;
+      try { draft = JSON.parse(localStorage.getItem(LS_DRAFT) || 'null'); } catch(e) {}
+
+      const fullBackup = {
+        _type: 'full_backup',
+        _version: '2.0',
+        exportedAt: new Date().toISOString(),
+        exportedAtAr: new Date().toLocaleString('ar-EG'),
+        currentReport,          // التقرير/المسودة الحالية المفتوحة الآن
+        history,                // سجل كل التقارير المكتملة
+        draft                   // المسودة المحفوظة (قد تكون null)
+      };
+
+      const title = currentReport.title || 'نسخة_احتياطية';
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const fileName = `نسخة_كاملة_${title}_${dateStr}.json`.replace(/\s+/g, '_');
+
+      const blob = new Blob([JSON.stringify(fullBackup, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'مخاطر_تقييم_' + new Date().toISOString().slice(0,10) + '.json';
+      a.download = fileName;
       a.click();
-      showToast('✅ تم تصدير بيانات المخاطر', 'success', 3000);
+
+      const total = history.length + (currentReport.hazards.length ? 1 : 0);
+      showToast(`✅ تم تصدير نسخة كاملة — ${history.length} تقرير + البيانات الحالية`, 'success', 4000);
     }
 
+    // ══════════════════════════════════════════════
+    //  IMPORT — استعادة نسخة احتياطية كاملة أو جزئية
+    // ══════════════════════════════════════════════
     function importHazards(input) {
       const file = input.files[0];
       if (!file) return;
@@ -3486,26 +3518,86 @@
       reader.onload = function(e) {
         try {
           const data = JSON.parse(e.target.result);
-          const raw = Array.isArray(data) ? data : (data.hazards || []);
-          const cfg = MX[mSize];
-          const defP = cfg.pVals[0], defS = cfg.sVals[0];
-          const imported = raw.map(h => {
-            if (typeof h.ctrl === 'string' && h.ctrl) h.ctrl = [{ m: h.ctrl, t: '' }];
-            if (!Array.isArray(h.ctrl)) h.ctrl = [];
-            hcnt++;
-            return Object.assign({ p: defP, s: defS, ap: defP, as_: defS, src: '', htype: '', effect: '', resp: '' }, h, { id: 'h' + hcnt });
-          });
-          // collapse existing (persist in Set)
-          hazards.forEach(h => collapsedSet.add(h.id));
-          hazards = hazards.concat(imported);
-          renderHazards();
-          // إذا كان المستخدم في الصفحة الرئيسية، انتقل تلقائياً لشاشة المخاطر
-          if (!document.getElementById('sHazards').classList.contains('active')) {
-            goTo('sHazards', 2);
+
+          // ── حالة 1: نسخة كاملة full_backup ──
+          if (data._type === 'full_backup') {
+            const confirmed = confirm(
+              `📦 نسخة احتياطية كاملة بتاريخ ${data.exportedAtAr || data.exportedAt}\n\n` +
+              `تحتوي على:\n` +
+              `• تقرير حالي: ${data.currentReport?.title || 'بدون عنوان'}\n` +
+              `• عدد التقارير في السجل: ${(data.history || []).length}\n\n` +
+              `هل تريد استعادة كل البيانات؟ سيتم استبدال البيانات الحالية.`
+            );
+            if (!confirmed) { input.value = ''; return; }
+
+            // استعادة سجل التقارير
+            if (Array.isArray(data.history) && data.history.length) {
+              localStorage.setItem(LS_HISTORY, JSON.stringify(data.history));
+            }
+
+            // استعادة التقرير الحالي
+            if (data.currentReport) {
+              loadReport(data.currentReport);
+              // حفظ كمسودة
+              localStorage.setItem(LS_DRAFT, JSON.stringify(data.currentReport));
+              setSaveState(true);
+            }
+
+            // الانتقال لشاشة البيانات إن كان هناك تقرير حالي، وإلا الرئيسية
+            const hasCurrent = data.currentReport && (
+              data.currentReport.title || (data.currentReport.hazards || []).length
+            );
+            if (hasCurrent) {
+              goTo('sInfo', 1);
+            } else {
+              goTo('sIntro', 0);
+            }
+
+            showToast(`✅ تمت الاستعادة الكاملة — ${(data.history||[]).length} تقرير في السجل`, 'success', 4500);
+
+          // ── حالة 2: ملف قديم (hazards فقط أو قائمة مصادر خطر) ──
+          } else {
+            const raw = Array.isArray(data) ? data : (data.hazards || []);
+            if (!raw.length) { showToast('⚠ الملف لا يحتوي على بيانات مخاطر', 'error', 3500); input.value=''; return; }
+
+            // إذا كان الملف يحتوي على بيانات تقرير كاملة (title, facility...)
+            const hasReportData = data.title || data.facility || data.lead;
+            if (hasReportData) {
+              const confirmed = confirm(
+                `📄 ملف تقرير: "${data.title || 'بدون عنوان'}"\n` +
+                `المنشأة: ${data.facility || '—'} · ${raw.length} مصدر خطر\n\n` +
+                `هل تريد تحميل هذا التقرير كاملاً؟`
+              );
+              if (confirmed) {
+                loadReport(data);
+                localStorage.setItem(LS_DRAFT, JSON.stringify(data));
+                setSaveState(true);
+                goTo('sHazards', 2);
+                showToast(`✅ تم تحميل التقرير — ${raw.length} مصدر خطر`, 'success', 3500);
+                input.value = ''; return;
+              }
+            }
+
+            // استيراد المخاطر فقط (إضافة للموجود)
+            const cfg = MX[mSize];
+            const defP = cfg.pVals[0], defS = cfg.sVals[0];
+            const imported = raw.map(h => {
+              if (typeof h.ctrl === 'string' && h.ctrl) h.ctrl = [{ m: h.ctrl, t: '' }];
+              if (!Array.isArray(h.ctrl)) h.ctrl = [];
+              hcnt++;
+              return Object.assign({ p: defP, s: defS, ap: defP, as_: defS, src: '', htype: '', effect: '', resp: '' }, h, { id: 'h' + hcnt });
+            });
+            hazards.forEach(h => collapsedSet.add(h.id));
+            hazards = hazards.concat(imported);
+            renderHazards();
+            if (!document.getElementById('sHazards').classList.contains('active')) {
+              goTo('sHazards', 2);
+            }
+            showToast('✅ تم استيراد ' + imported.length + ' مصدر خطر', 'success', 3500);
           }
-          showToast('✅ تم استيراد ' + imported.length + ' مصدر خطر', 'success', 3500);
+
         } catch(err) {
-          showToast('❌ خطأ في قراءة الملف', 'error', 4000);
+          showToast('❌ خطأ في قراءة الملف — تأكد من صحة الملف', 'error', 4000);
         }
         input.value = '';
       };
