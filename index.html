@@ -802,6 +802,73 @@
     }
  
     /* ══════════════════════════════════════════
+   WORK PHASE & ACTION TRACKING SECTIONS
+══════════════════════════════════════════ */
+    .work-phase-section {
+      background: rgba(37, 99, 235, .05);
+      border: 1px solid rgba(59, 130, 246, .2);
+      border-radius: 9px;
+      padding: 12px 14px 8px;
+      margin-bottom: 12px;
+    }
+
+    .work-phase-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #93c5fd;
+      margin-bottom: 9px;
+    }
+
+    .action-track-section {
+      background: rgba(22, 163, 74, .05);
+      border: 1px solid rgba(22, 163, 74, .2);
+      border-radius: 9px;
+      padding: 12px 14px 8px;
+      margin-top: 10px;
+    }
+
+    .action-track-section .work-phase-label {
+      color: #4ade80;
+    }
+
+    .phase-badge {
+      background: rgba(37, 99, 235, .18);
+      border: 1px solid rgba(59, 130, 246, .3);
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 0.65rem;
+      color: #93c5fd;
+      white-space: nowrap;
+    }
+
+    .rp-phase-tag {
+      background: rgba(37, 99, 235, .2);
+      border: 1px solid rgba(59, 130, 246, .35);
+      border-radius: 10px;
+      padding: 2px 7px;
+      font-size: 0.65rem;
+      color: #bfdbfe;
+      display: inline-block;
+    }
+
+    @media(max-width:600px) {
+      .work-phase-section .fg.c3,
+      .action-track-section .fg.c3 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .work-phase-section .fg.c3 .f:first-child,
+      .action-track-section .fg.c3 .f:first-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media(max-width:480px) {
+      .hrow-body > div[style*="grid-template-columns:1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ══════════════════════════════════════════
    REPORT STYLES
 ══════════════════════════════════════════ */
     .report-header-box {
@@ -2372,6 +2439,14 @@
         font-weight: 800 !important;
       }
  
+      /* Phase tag in print */
+      .rp-phase-tag {
+        background: #e0ecff !important;
+        border: 1px solid #888 !important;
+        color: #000 !important;
+        font-size: 0.6rem !important;
+      }
+
       /* Orange separator */
       .ra-wrap>div[style*="gradient"] {
         background: linear-gradient(90deg, #e8611a, #f97316, #e8611a) !important;
@@ -3432,6 +3507,15 @@
     // ══════════════════════════════════════════════
     const hTypes = ['كيميائية', 'بيولوجية', 'فيزيائية', 'ميكانيكية', 'كهربائية', 'حرائق وانفجارات', 'سقوط من ارتفاع', 'ضوضاء واهتزاز', 'إجهاد حراري', 'تحميل يدوي', 'متنوعة'];
     const cMethods = ['إزالة المصدر (Elimination)', 'استبدال المادة (Substitution)', 'تحكم هندسي (Engineering Control)', 'تحكم إداري (Administrative Control)', 'معدات وقاية شخصية (PPE)'];
+    // ── مراحل العمل (Work Phases) — معيار OHS الدولي ──
+    const hPhases = [
+      'إعداد وتجهيز (Setup)', 'تشغيل وإنتاج (Operation)', 'صيانة وإصلاح (Maintenance)',
+      'نظافة وترتيب (Housekeeping)', 'مناولة ونقل (Material Handling)',
+      'تحميل وتفريغ (Loading/Unloading)', 'بناء وتشييد (Construction)',
+      'أعمال كهربائية (Electrical Work)', 'أعمال على ارتفاع (Work at Height)',
+      'طوارئ وإغلاق (Emergency/Shutdown)', 'فحص وتفتيش (Inspection)', 'متنوعة (Miscellaneous)'
+    ];
+    const hStatuses = ['مفتوح 🔴', 'جاري التنفيذ 🟡', 'مغلق ✅'];
  
     function addH() {
       // collapse all existing cards (persist in Set)
@@ -3439,7 +3523,7 @@
       hcnt++;
       const cfg = MX[mSize];
       const defP = cfg.pVals[0], defS = cfg.sVals[0];
-      hazards.push({ id: 'h' + hcnt, src: '', htype: '', effect: '', p: defP, s: defS, ctrl: [], resp: '', ap: defP, as_: defS });
+      hazards.push({ id: 'h' + hcnt, src: '', htype: '', phase: '', location: '', exposed: '', effect: '', p: defP, s: defS, ctrl: [], resp: '', dueDate: '', status: 'مفتوح 🔴', ap: defP, as_: defS });
       renderHazards();
       setTimeout(() => {
         const last = document.getElementById('hrow_h' + hcnt);
@@ -3655,711 +3739,4 @@
         const isActive = !!item;
         const chk = isActive ? 'checked' : '';
         const disp = isActive ? 'block' : 'none';
-        const activeClass = isActive ? ' active' : '';
-        const textVal = esc(item ? item.t : '');
-        return '<div class="ctrl-option' + activeClass + '" id="copt_' + hid + '_' + key + '">'
-          + '<label class="ctrl-chk-row">'
-          + '<input type="checkbox" class="ctrl-chk" ' + chk
-          + ' onchange="ctrlToggle(\'' + hid + '\',\'' + method.replace(/'/g,"\\'") + '\',this.checked)">'
-          + '<span class="ctrl-chk-label">' + method + '</span>'
-          + '</label>'
-          + '<div class="ctrl-text-wrap" id="ctw_' + hid + '_' + key + '" style="display:' + disp + '">'
-          + '<textarea placeholder="\u0623\u062f\u062e\u0644 \u062a\u0641\u0627\u0635\u064a\u0644 \u0648\u0633\u064a\u0644\u0629 \u0627\u0644\u062a\u062d\u0643\u0645 \u0647\u0630\u0647..."'
-          + ' oninput="ctrlText(\'' + hid + '\',\'' + method.replace(/'/g,"\\'") + '\',this.value)">' + textVal + '</textarea>'
-          + '</div>'
-          + '</div>';
-      }).join('');
-    }
-
-    function renderHazards() {
-      const cfg = MX[mSize];
-      const wrap = document.getElementById('hList');
-      if (!hazards.length) {
-        wrap.innerHTML = '<p style="text-align:center;color:var(--muted);padding:20px;font-size:0.83rem;">لا توجد مخاطر مُضافة بعد. اضغط الزر أدناه لإضافة مصدر خطر.</p>';
-        return;
-      }
-      wrap.innerHTML = hazards.map((h, i) => {
-        const r = h.p * h.s, rl = cfg.getRv(r);
-        const ra = h.ap * h.as_, rla = cfg.getRv(ra);
-        const pO = cfg.pVals.map(v => `<option value="${v}" ${h.p == v ? 'selected' : ''}>${cfg.pLabels[v]}</option>`).join('');
-        const sO = cfg.sVals.map(v => `<option value="${v}" ${h.s == v ? 'selected' : ''}>${cfg.sLabels[v]}</option>`).join('');
-        const apO = cfg.pVals.map(v => `<option value="${v}" ${h.ap == v ? 'selected' : ''}>${cfg.pLabels[v]}</option>`).join('');
-        const asO = cfg.sVals.map(v => `<option value="${v}" ${h.as_ == v ? 'selected' : ''}>${cfg.sLabels[v]}</option>`).join('');
-        const htOpts = hTypes.map(t => `<option ${h.htype === t ? 'selected' : ''}>${t}</option>`).join('');
-        // ctrl is now handled by ctrlHtml()
-        return `
-    <div class="hrow" id="hrow_${h.id}">
-      <div class="hrow-hdr">
-        <div style="display:flex;align-items:center;gap:9px;flex:1;min-width:0;">
-          <div class="hnum">${i + 1}</div>
-          <div style="min-width:0;">
-            <span style="font-size:0.8rem;color:var(--muted);">مصدر الخطر #${i + 1}</span>
-            <div class="hrow-summary ${collapsedSet.has(h.id) ? 'visible' : ''}">
-              <span class="sum-src">${h.src || 'بدون عنوان'}</span>
-              ${h.htype ? `<span style="color:var(--accent);font-size:0.7rem;">· ${h.htype}</span>` : ''}
-              <span class="rbadge ${rl.c}" style="font-size:0.65rem;padding:2px 7px;">&#9679; ${rl.l} (${rl.code})</span>
-            </div>
-          </div>
-        </div>
-        <div style="display:flex;gap:7px;align-items:center;flex-shrink:0;">
-          <button class="toggle-btn" id="tbtn_${h.id}" onclick="toggleHrow('${h.id}')">
-            ${collapsedSet.has(h.id) ? '&#9650; فتح' : '&#9660; طي'}
-          </button>
-          <button class="btn-rm" onclick="removeH('${h.id}')">&#128465; حذف</button>
-        </div>
-      </div>
-      <div class="hrow-body" id="hbody_${h.id}" style="display:${collapsedSet.has(h.id) ? 'none' : 'block'}">
-      <div class="fg c3">
-        <div class="f">
-          <label>مصدر الخطر (Source)</label>
-          <input type="text" value="${esc(h.src)}" placeholder="ماكينة، مادة كيميائية..."
-            onchange="upH('${h.id}','src',this.value)">
-        </div>
-        <div class="f">
-          <label>نوع الخطر</label>
-          <select onchange="upH('${h.id}','htype',this.value)">
-            <option value="">اختر</option>${htOpts}
-          </select>
-        </div>
-        <div class="f">
-          <label>الأثر / الإصابة المتوقعة</label>
-          <input type="text" value="${esc(h.effect)}" placeholder="جروح، حروق، اختناق..."
-            onchange="upH('${h.id}','effect',this.value)">
-        </div>
-      </div>
- 
-      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div>
-          <div style="font-size:0.72rem;font-weight:800;color:#f87171;margin-bottom:7px;">&#128308; قبل التحكم (Before Control)</div>
-          <div class="fg">
-            <div class="f">
-              <label>الاحتمالية (P)</label>
-              <select onchange="upH('${h.id}','p',+this.value)">${pO}</select>
-            </div>
-            <div class="f">
-              <label>الشدة (S)</label>
-              <select onchange="upH('${h.id}','s',+this.value)">${sO}</select>
-            </div>
-          </div>
-          <div class="rv-row" id="rvb_${h.id}">
-            <span class="rv-formula">R = ${h.p} &times; ${h.s} = <strong style="color:#fff">${r}</strong></span>
-            <span class="rbadge ${rl.c}">&#9679; ${rl.l} (${rl.code})</span>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:0.72rem;font-weight:800;color:#4ade80;margin-bottom:7px;">&#128994; بعد التحكم (After Control)</div>
-          <div class="fg">
-            <div class="f">
-              <label>الاحتمالية (P)</label>
-              <select onchange="upH('${h.id}','ap',+this.value)">${apO}</select>
-            </div>
-            <div class="f">
-              <label>الشدة (S)</label>
-              <select onchange="upH('${h.id}','as_',+this.value)">${asO}</select>
-            </div>
-          </div>
-          <div class="rv-row" id="rva_${h.id}">
-            <span class="rv-formula">R = ${h.ap} &times; ${h.as_} = <strong style="color:#fff">${ra}</strong></span>
-            <span class="rbadge ${rla.c}">&#9679; ${rla.l} (${rla.code})</span>
-          </div>
-        </div>
-      </div>
- 
-      <div class="fg" style="margin-top:10px;">
-        <div class="f" style="grid-column: 1 / -1;">
-          <label>وسائل التحكم <span style="font-size:0.68rem;color:var(--muted);font-weight:400;">(اختر وسيلة أو أكثر وأضف التفاصيل)</span></label>
-          <div class="ctrl-widget">${ctrlHtml(h.id, h)}</div>
-        </div>
-        <div class="f">
-          <label>الشخص المسؤول</label>
-          <input type="text" value="${esc(h.resp)}" placeholder="اسم المسؤول"
-            onchange="upH('${h.id}','resp',this.value)">
-        </div>
-      </div>
-    </div>`;
-      }).join('');
-    }
- 
-    function esc(s) { return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
- 
-    // ══════════════════════════════════════════════
-    //  VALIDATION
-    // ══════════════════════════════════════════════
-    function valInfo() {
-      if (!document.getElementById('rTitle').value.trim()) { alert('يرجى إدخال عنوان البحث'); return; }
-      if (!document.getElementById('rFacility').value.trim()) { alert('يرجى إدخال اسم المنشأة'); return; }
-      if (!document.getElementById('rLead').value.trim()) { alert('يرجى إدخال اسم قائد التقييم'); return; }
-      renderKeyTables();
-      goTo('sHazards', 2);
-      if (!hazards.length) addH();
-    }
-    function valHazards() {
-      if (!hazards.length) { alert('يرجى إضافة مصدر خطر واحد على الأقل'); return; }
-      buildMatrix();
-      goTo('sMatrix', 3);
-    }
- 
-    // ══════════════════════════════════════════════
-    //  MATRIX VISUAL
-    // ══════════════════════════════════════════════
-    function buildMatrix() {
-      const cfg = MX[mSize];
-      const pVals = [...cfg.pVals].reverse();
-      const sVals = cfg.sVals;
-      let html = `<div class="mx-vis-wrap"><table class="mx-visual-table"><thead><tr>
-    <th style="text-align:center;">P \\ S</th>
-    ${sVals.map(s => `<th>${s}<br><span style="font-size:0.58rem;color:var(--muted);">${cfg.sLabels[s].replace(/[()٠-٩\d]/g, '').trim()}</span></th>`).join('')}
-  </tr></thead><tbody>`;
-      pVals.forEach(p => {
-        html += `<tr><th style="text-align:right;white-space:nowrap;">${p} – ${cfg.pLabels[p].replace(/[()٠-٩\d]/g, '').trim()}</th>`;
-        sVals.forEach(s => {
-          const r = p * s, rl = cfg.getRv(r);
-          const match = hazards.filter(h => h.p == p && h.s == s);
-          const mc = cfg.getMc(r);
-          const dots = match.map(h => `<span title="${h.src || 'خطر'}" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.9);margin:1px;"></span>`).join('');
-          html += `<td class="${mc}" style="line-height:1.2;vertical-align:middle;">${r}<br><span style="font-size:0.65rem;font-weight:900;letter-spacing:0.5px;">${rl.code}</span>${dots ? '<br>' + dots : ''}</td>`;
-        });
-        html += `</tr>`;
-      });
-      html += `</tbody></table></div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:0.75rem;">
-    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#16a34a;display:inline-block;"></span>منخفض (T)</span>
-    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#ca8a04;display:inline-block;"></span>متوسط (A)</span>
-    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#ea580c;display:inline-block;"></span>عالٍ (M)</span>
-    <span style="display:flex;align-items:center;gap:5px;"><span style="width:13px;height:13px;border-radius:3px;background:#7f1d1d;display:inline-block;"></span>حرج (I)</span>
-    <span style="color:var(--muted);margin-right:auto;font-size:0.68rem;">${cfg.ranges}</span>
-  </div>`;
-      document.getElementById('matrixVis').innerHTML = html;
- 
-      const sumHtml = hazards.map((h, i) => {
-        const r = h.p * h.s, rl = cfg.getRv(r);
-        const ra = h.ap * h.as_, rla = cfg.getRv(ra);
-        return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">
-      <div class="hnum">${i + 1}</div>
-      <div style="flex:1;min-width:120px;"><div style="font-size:0.84rem;font-weight:700;color:#fff;">${h.src || 'مصدر غير محدد'}</div><div style="font-size:0.68rem;color:var(--muted);">${h.htype || ''}</div></div>
-      <span style="font-size:0.74rem;color:var(--muted);">P=${h.p} &times; S=${h.s}</span>
-      <span class="rbadge ${rl.c}">قبل: R=${r} · ${rl.l}</span>
-      <span style="color:var(--muted);">&rarr;</span>
-      <span class="rbadge ${rla.c}">بعد: R=${ra} · ${rla.l}</span>
-    </div>`;
-      }).join('');
-      document.getElementById('matrixSummary').innerHTML = sumHtml || '<p style="color:var(--muted);font-size:0.8rem;text-align:center;padding:10px;">لا توجد بيانات</p>';
-    }
- 
-    // ══════════════════════════════════════════════
-    //  BUILD REPORT — matches image format exactly
-    // ══════════════════════════════════════════════
- 
-    // Pure render — no side effects (called by both buildReport and histLoad)
-    function _buildReportHTML() {
-      const cfg = MX[mSize];
-      const title = document.getElementById('rTitle').value || 'تقييم مخاطر بيئة العمل';
-      const indEl = document.getElementById('rIndustry');
-      const industryTxt = indEl.options[indEl.selectedIndex]?.text || '—';
-      const facility = document.getElementById('rFacility').value || '—';
-      const date = document.getElementById('rDate').value;
-      const review = document.getElementById('rReview').value;
-      const lead = document.getElementById('rLead').value || '—';
-      const intro = document.getElementById('rIntro').value || 'يهدف هذا التقييم إلى رصد وتحليل المخاطر المهنية في بيئة العمل ووضع تدابير السيطرة المناسبة لضمان بيئة عمل آمنة وفق المعايير الدولية.';
-      const desc = document.getElementById('rDesc').value || '';
- 
-      const low = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'T').length;
-      const mod = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'A').length;
-      const high = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'M').length;
-      const crit = hazards.filter(h => cfg.getRv(h.p * h.s).code === 'I').length;
- 
-      const pVals = cfg.pVals;
-      const sVals = cfg.sVals;
-      const n = pVals.length;
-      const legends = cfg.legend;
- 
-      // ── Build Risk Matrix key table (matching image exactly)
-      // Columns: rotate-lbl | S_val | S_desc | rotate-lbl | P_val | P_desc | s1..sn | Range | Sig
-      // Total cols = 2 + 1 + 2 + 1 + n + 2  (rotate merged with val cols in image)
-      // Simplified: val | desc | val | desc | s1..sn | Range | Sig = n+6 cols
-      const totalCols = n + 7; // S_val, S_desc, P_val, P_desc, P(matrix col), matrix×n, Range, Sig
- 
-      let matHead = `
-  <tr>
-    <th class="rk-head-main" colspan="2">الشدة (S)</th>
-    <th class="rk-head-main" colspan="2">الاحتمالية (P)</th>
-    <th class="rk-head-main" style="min-width:32px;" rowspan="2">الاحتمالية<br><span style="font-size:0.6rem;">(P)</span></th>
-    <th class="rk-head-main" colspan="${n}">الشدة S</th>
-    <th class="rk-head-main" colspan="2">النتيجة R</th>
-  </tr>
-  <tr>
-    <th class="rk-head-sub" style="min-width:36px;">Value</th>
-    <th class="rk-head-sub" style="min-width:120px;">الوصف</th>
-    <th class="rk-head-sub" style="min-width:36px;">Value</th>
-    <th class="rk-head-sub" style="min-width:120px;">الوصف</th>
-    ${sVals.map(v => `<th class="rk-head-sub" style="min-width:36px;">${v}</th>`).join('')}
-    <th class="rk-head-sub" style="min-width:60px;">Range</th>
-    <th class="rk-head-sub" style="min-width:80px;">Significance</th>
-  </tr>`;
- 
-      // Data rows: one per probability value; also show severity on same row
-      let matRows = '';
-      pVals.forEach((pv, ri) => {
-        const sv = sVals[ri];
-        const leg = legends[ri] || null;
-        const lgCls = leg ? (leg.cls === 'g' ? 'rl-g' : leg.cls === 'y' ? 'rl-y' : 'rl-r') : 'rl-e';
-        matRows += `<tr>
-      <td class="rk-val-cell">${sv !== undefined ? sv : ''}</td>
-      <td class="rk-desc-cell">${sv !== undefined ? cfg.sDesc[sv] : ''}</td>
-      <td class="rk-val-cell">${pv}</td>
-      <td class="rk-desc-cell">${cfg.pDesc[pv]}</td>
-      <td class="rk-val-cell" style="background:#1a2e5c;color:#93b4e8;font-weight:900;">${pv}</td>
-      ${sVals.map(sv2 => { const r = pv * sv2; const mc = cfg.getMc(r); const code = cfg.getRv(r).code; return `<td class="${mc}" style="line-height:1.2;">${r}<br><span style="font-size:0.58rem;font-weight:900;">${code}</span></td>`; }).join('')}
-      <td class="${lgCls}">${leg ? leg.r : ''}</td>
-      <td class="${lgCls}">${leg ? leg.l : ''}</td>
-    </tr>`;
-      });
-      // extra legend rows if legend has more entries than pVals
-      for (let i = pVals.length; i < legends.length; i++) {
-        const leg = legends[i];
-        const lgCls = leg.cls === 'g' ? 'rl-g' : leg.cls === 'y' ? 'rl-y' : 'rl-r';
-        matRows += `<tr><td colspan="${totalCols - 2}" style="border:0;"></td>
-      <td class="${lgCls}">${leg.r}</td>
-      <td class="${lgCls}">${leg.l}</td>
-    </tr>`;
-      }
- 
-      // ── Hazard data table (10 fixed columns matching image)
-      // Source | Hazards/Effect | S_before | P_before | RV_before | Control | Responsible | S_after | P_after | RV_after
-      let dataHead = `
-  <tr>
-    <th class="rd-head-main" rowspan="2" style="min-width:110px;">Source Of Hazard<br><span style="font-size:0.65rem;font-weight:400;">مصدر الخطر</span></th>
-    <th class="rd-head-main" rowspan="2" style="min-width:130px;">Potential Hazards / Hazard Effect<br><span style="font-size:0.65rem;font-weight:400;">الأخطار المحتملة / تأثير الخطر</span></th>
-    <th class="rd-head-main" colspan="3">Risk Evaluation (Before control measures)<br><span style="font-size:0.65rem;font-weight:400;">تقييم الخطر (قبل وسائل التحكم)</span></th>
-    <th class="rd-head-main" rowspan="2" style="min-width:110px;">Method(s) of control<br><span style="font-size:0.65rem;font-weight:400;">وسائل التحكم</span></th>
-    <th class="rd-head-main" rowspan="2" style="min-width:90px;">Responsible Person(s)<br><span style="font-size:0.65rem;font-weight:400;">الشخص المسؤول</span></th>
-    <th class="rd-head-main" colspan="3">Risk Evaluation (After control measures)<br><span style="font-size:0.65rem;font-weight:400;">تقييم الخطر (بعد وسائل التحكم)</span></th>
-  </tr>
-  <tr>
-    <th class="rd-head-sub">S</th><th class="rd-head-sub">P</th><th class="rd-head-sub">R.V</th>
-    <th class="rd-head-sub">S</th><th class="rd-head-sub">P</th><th class="rd-head-sub">R.V</th>
-  </tr>`;
- 
-      const minRows = Math.max(hazards.length, 3);
-      let dataRows = '';
-      for (let i = 0; i < minRows; i++) {
-        if (i < hazards.length) {
-          const h = hazards[i];
-          const r = h.p * h.s, rl = cfg.getRv(r);
-          const ra = h.ap * h.as_, rla = cfg.getRv(ra);
-          const rvCls = cfg.getDmc(r);
-          const rvaCls = cfg.getDmc(ra);
-          dataRows += `<tr class="rd-data">
-        <td style="text-align:right;">${h.src || '—'}</td>
-        <td style="text-align:right;">${h.effect || '—'}${h.htype ? '<br><span style="font-size:0.65rem;color:#aac;">(' + h.htype + ')</span>' : ''}</td>
-        <td>${h.s}</td>
-        <td>${h.p}</td>
-        <td class="${rvCls}">${r}<br><span style="font-size:0.62rem;">(${rl.code})</span></td>
-        <td style="text-align:right;font-size:0.72rem;line-height:1.6;">${
-          (Array.isArray(h.ctrl) && h.ctrl.length)
-            ? h.ctrl.map(c => `<div class="rp-ctrl-block"><div class="rp-ctrl-title">${c.m}</div>${c.t ? `<div class="rp-ctrl-body">${c.t}</div>` : ''}</div>`).join('')
-            : (h.ctrl || '—')
-        }</td>
-        <td style="text-align:right;font-size:0.72rem;">${h.resp || '—'}</td>
-        <td>${h.as_}</td>
-        <td>${h.ap}</td>
-        <td class="${rvaCls}">${ra}<br><span style="font-size:0.62rem;">(${rla.code})</span></td>
-      </tr>`;
-        } else {
-          dataRows += `<tr class="rd-data" style="height:44px;">
-        <td></td><td></td><td></td><td></td><td></td>
-        <td></td><td></td><td></td><td></td><td></td>
-      </tr>`;
-        }
-      }
- 
-      // ── Format dates
-      const fmtDate = d => { if (!d) return '—'; const [y, m, dy] = d.split('-'); return `${dy}/${m}/${y}`; };
- 
-      const reportHTML = `
-  <!-- REPORT HEADER -->
-  <div class="report-header-box">
-    <div class="report-org">نظام تقييم المخاطر المهنية · Occupational Risk Assessment System · NIOSH Egypt</div>
-    <div class="report-title">${title}</div>
-    <div class="report-sub">Risk Assessment Report &mdash; مصفوفة ${mSize}&times;${mSize} &mdash; ISO 45001 &middot; قانون العمل ١٢/٢٠٠٣</div>
-  </div>
- 
-  <!-- META CARD -->
-  <div class="card">
-    <div class="card-title"><div class="card-icon">&#128204;</div>بيانات التقرير</div>
-    <div class="meta-grid">
-      <div class="meta-cell"><div class="lbl">المنشأة / الموقع</div><div class="val">${facility}</div></div>
-      <div class="meta-cell"><div class="lbl">القطاع الصناعي</div><div class="val">${industryTxt}</div></div>
-      <div class="meta-cell"><div class="lbl">قائد التقييم</div><div class="val">${lead}</div></div>
-      <div class="meta-cell"><div class="lbl">تاريخ التقييم</div><div class="val">${fmtDate(date)}</div></div>
-      <div class="meta-cell"><div class="lbl">المراجعة القادمة</div><div class="val">${fmtDate(review)}</div></div>
-      <div class="meta-cell"><div class="lbl">نوع المصفوفة</div><div class="val">${mSize}&times;${mSize}</div></div>
-      ${members.length ? `<div class="meta-cell span3"><div class="lbl">أعضاء الفريق</div><div class="val">${members.join(' &middot; ')}</div></div>` : ''}
-    </div>
-  </div>
- 
-  <!-- INTRO CARD -->
-  <div class="card">
-    <div class="card-title"><div class="card-icon">&#128214;</div>مقدمة &mdash; Introduction</div>
-    <p style="font-size:0.85rem;line-height:1.95;color:var(--text);white-space:pre-wrap;word-break:break-word;">${intro}</p>
-    ${desc ? `<p style="margin-top:9px;font-size:0.8rem;line-height:1.85;color:var(--muted);white-space:pre-wrap;word-break:break-word;">${desc}</p>` : ''}
-  </div>
- 
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stat"><div class="n" style="color:var(--accent2);">${hazards.length}</div><div class="l">إجمالي المخاطر</div></div>
-    <div class="stat"><div class="n" style="color:#4ade80;">${low}</div><div class="l">منخفضة (T)</div></div>
-    <div class="stat"><div class="n" style="color:#fbbf24;">${mod}</div><div class="l">متوسطة (A)</div></div>
-    <div class="stat"><div class="n" style="color:#f87171;">${high + crit}</div><div class="l">عالية / حرجة (M/I)</div></div>
-  </div>
- 
-  <!-- MAIN RISK ASSESSMENT TABLE — matching image exactly -->
-  <div class="card" style="padding:16px;">
-    <div class="card-title"><div class="card-icon">&#128202;</div>Risk Assessment &mdash; جدول تقييم المخاطر (${mSize}&times;${mSize})</div>
- 
-    <div class="ra-wrap">
-      <!-- Part 1: Risk Matrix Key Table -->
-      <table class="rk-table">
-        <thead>${matHead}</thead>
-        <tbody>${matRows}</tbody>
-      </table>
- 
-      <!-- Separator matching image orange line -->
-      <div style="height:5px;background:linear-gradient(90deg,rgba(232,97,26,.8),rgba(232,97,26,.3),rgba(232,97,26,.8));margin:0;"></div>
- 
-      <!-- Part 2: Hazard Data Table -->
-      <table class="rd-table">
-        <thead>${dataHead}</thead>
-        <tbody>${dataRows}</tbody>
-      </table>
-    </div>
-  </div>
- 
-  <!-- CONCLUSION -->
-  <div class="card">
-    <div class="card-title"><div class="card-icon">&#127919;</div>الخلاصة والتوصيات &mdash; Conclusion &amp; Recommendations</div>
-    <div class="concl">
-      <h3>Conclusion &amp; Recommendations</h3>
-      <p>
-        بناءً على تقييم المخاطر الذي أُجري في <strong>${facility}</strong> باستخدام مصفوفة <strong>${mSize}&times;${mSize}</strong>، تبيّن وجود <strong>${hazards.length} مصدر خطر</strong> موزعة على النحو التالي:<br>
-        &bull; <span style="color:#4ade80;">خطر منخفض (T): ${low} مصدر</span> — يُكتفى باتباع التعليمات القياسية المُعلنة في الموقع.<br>
-        &bull; <span style="color:#fbbf24;">خطر متوسط (A): ${mod} مصدر</span> — تستوجب تطبيق اشتراطات السلامة وتدريب العاملين المعرضين.<br>
-        &bull; <span style="color:#f87171;">خطر عالٍ (M): ${high} مصدر</span> — تستلزم اتخاذ إجراءات وقائية إضافية عاجلة قبل مواصلة العمل.<br>
-        ${crit ? `&bull; <span style="color:#fca5a5;">خطر حرج (I): ${crit} مصدر</span> — يُوقف العمل فوراً حتى تُعالَج أسبابها الجذرية.<br>` : ''}
-        <br>
-        <strong>التوصيات الجوهرية:</strong><br>
-        &#9312; تطبيق هرم التحكم في الخطر بدءاً من الإزالة الكاملة وصولاً إلى معدات الوقاية الشخصية.<br>
-        &#9313; إجراء مراجعة دورية لهذا التقييم ${review ? 'بتاريخ ' + fmtDate(review) : 'خلال ١٢ شهراً على الأقل'}.<br>
-        &#9314; تدريب جميع العاملين على المخاطر المحددة وإجراءاتها الوقائية وخطط الطوارئ.<br>
-        &#9315; توثيق التقرير وإرساله إلى الجهة الإدارية المختصة وفق المادة ٢١٥ من قانون العمل ١٢ لسنة ٢٠٠٣.<br>
-        &#9316; إعادة تقييم المخاطر العالية والحرجة بعد تطبيق وسائل التحكم للتحقق من كفاءتها.
-      </p>
-    </div>
-  </div>
- 
-  <div style="text-align:center;padding:14px 0;color:var(--muted);font-size:0.68rem;border-top:1px solid var(--border);margin-top:8px;">
-    تم إعداد هذا التقرير وفق منهجية الخمس خطوات المعتمدة &middot; ISO 45001 &middot; قانون العمل ١٢/٢٠٠٣ &middot; تاريخ الإصدار: ${fmtDate(date) || new Date().toLocaleDateString('ar-EG')}
-  </div>`;
- 
-      document.getElementById('reportOut').innerHTML = reportHTML;
-    } // end _buildReportHTML
- 
-    // Reset form data and go to intro
-    function resetAndGoHome() {
-      mSize = 5; members = []; hazards = []; hcnt = 0;
-      selMatrix(5);
-      ['rTitle', 'rFacility', 'rIndustry', 'rReview', 'rLead', 'rDesc', 'rIntro'].forEach(id => {
-        const el = document.getElementById(id); if (el) el.value = '';
-      });
-      document.getElementById('rDate').value = new Date().toISOString().split('T')[0];
-      renderMembers(); renderHazards(); renderKeyTables();
-      document.getElementById('savedBanner').style.display = 'none';
-      setSaveState(false);
-      checkSavedData();
-      goTo('sIntro', 0);
-    }
- 
-    // Called from the wizard — renders and saves; user uses home button to return
-    function buildReport() {
-      goTo('sReport', 4);
-      _buildReportHTML();
-      const bar = document.getElementById('reportActionBar');
-      if (bar) bar.style.display = 'flex';
-      saveReportToHistory();
-      showToast('✅ تم حفظ التقرير — اضغط الرئيسية للعودة', 'success', 4000);
-    }
- 
-    // ══════════════════════════════════════════════
-    //  PRINT
-    // ══════════════════════════════════════════════
-    function doPrint() {
-      const out = document.getElementById('reportOut');
- 
-      // ── If reportOut is empty, try to auto-build from current in-memory data ──
-      if (!out || !out.innerHTML.trim()) {
-        if (hazards.length > 0) {
-          // Silently build the report first, then print
-          goTo('sReport', 4);
-          _buildReportHTML();
-          const bar = document.getElementById('reportActionBar');
-          if (bar) bar.style.display = 'flex';
-          // Delay print slightly so DOM updates
-          setTimeout(() => _executePrint(), 200);
-          return;
-        } else {
-          showToast('⚠ أضف مخاطر أولاً ثم ولّد التقرير', 'error', 3500);
-          return;
-        }
-      }
- 
-      _executePrint();
-    }
- 
-    // Actual print execution — called once report is guaranteed in DOM
-    function _executePrint() {
-      const out = document.getElementById('reportOut');
-      const footer = document.getElementById('printFooter');
- 
-      // Force all screens hidden; force sReport visible via inline style
-      // (overrides .screen{display:none} reliably across all browsers)
-      document.querySelectorAll('.screen').forEach(s => {
-        s.style.display = (s.id === 'sReport') ? 'block' : 'none';
-      });
- 
-      // Move print footer into reportOut so it prints at the end
-      if (footer && out) {
-        footer.style.display = 'flex';
-        out.appendChild(footer);
-      }
- 
-      // Wait one animation frame so browser paints before dialog opens
-      requestAnimationFrame(() => {
-        window.print();
-      });
- 
-      // Restore DOM after dialog closes
-      setTimeout(() => {
-        document.querySelectorAll('.screen').forEach(s => {
-          s.style.removeProperty('display');
-        });
-        if (footer) {
-          footer.style.display = 'none';
-          document.body.appendChild(footer);
-        }
-      }, 1500);
-    }
- 
-    // ══════════════════════════════════════════════
-    //  LOCAL STORAGE — Auto-save on report + History
-    // ══════════════════════════════════════════════
-    const LS_HISTORY = 'riskHistory_v1';
-    const LS_DRAFT = 'riskDraft_v1';
- 
-    function showToast(msg, type = 'success', dur = 3000) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast ' + (type === 'error' ? 'error' : type === 'info' ? 'info' : '');
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), dur);
-    }
- 
-    function setSaveState(saved) {
-      const dot = document.getElementById('saveDot');
-      const lbl = document.getElementById('saveLabel');
-      if (!dot || !lbl) return;
-      if (saved) {
-        dot.classList.add('saved');
-        lbl.textContent = 'تم الحفظ ✓';
-      } else {
-        dot.classList.remove('saved');
-        lbl.textContent = 'جارٍ الحفظ...';
-      }
-    }
- 
-    function gatherFormData() {
-      return {
-        mSize,
-        title: document.getElementById('rTitle').value,
-        facility: document.getElementById('rFacility').value,
-        industry: document.getElementById('rIndustry').value,
-        date: document.getElementById('rDate').value,
-        review: document.getElementById('rReview').value,
-        lead: document.getElementById('rLead').value,
-        desc: document.getElementById('rDesc').value,
-        intro: document.getElementById('rIntro').value,
-        members: [...members],
-        hazards: hazards.map(h => ({ ...h })),
-        hcnt,
-        savedAt: new Date().toISOString()
-      };
-    }
- 
-    // Save completed report to history list and reset to intro
-    function saveReportToHistory() {
-      try {
-        const data = gatherFormData();
-        const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-        // Add new entry at top, keep max 20
-        history.unshift(data);
-        if (history.length > 20) history.pop();
-        localStorage.setItem(LS_HISTORY, JSON.stringify(history));
-        // Clear draft
-        localStorage.removeItem(LS_DRAFT);
-        setSaveState(true);
-      } catch (e) { /* silent fail */ }
-    }
- 
-    // Save draft (called on navigation and field blur)
-    let _saveDraftTimer = null;
-    function saveDraft() {
-      try {
-        setSaveState(false); // show "جارٍ الحفظ..."
-        localStorage.setItem(LS_DRAFT, JSON.stringify(gatherFormData()));
-        // Debounce the "saved" confirmation
-        if (_saveDraftTimer) clearTimeout(_saveDraftTimer);
-        _saveDraftTimer = setTimeout(() => setSaveState(true), 600);
-      } catch (e) { }
-    }
- 
-    function saveData() {
-      saveDraft();
-      // silent — no toast for auto-save
-      setSaveState(true);
-    }
- 
-    // Load a saved report into form
-    function loadReport(data) {
-      mSize = data.mSize || 5;
-      selMatrix(mSize);
-      const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
-      set('rTitle', data.title); set('rFacility', data.facility);
-      set('rIndustry', data.industry); set('rDate', data.date);
-      set('rReview', data.review); set('rLead', data.lead);
-      set('rDesc', data.desc); set('rIntro', data.intro);
-      members = data.members || [];
-      renderMembers();
-      hazards = (data.hazards || []).map(h => {
-        // migrate old string ctrl → array
-        if (typeof h.ctrl === 'string' && h.ctrl) h.ctrl = [{ m: h.ctrl, t: '' }];
-        if (!Array.isArray(h.ctrl)) h.ctrl = [];
-        return { ...h };
-      });
-      hcnt = data.hcnt || hazards.length;
-      renderHazards();
-      setSaveState(true);
-    }
- 
-    // Check for saved draft on page load — banner hidden intentionally (auto-save only)
-    function checkSavedData() {
-      try {
-        const raw = localStorage.getItem(LS_DRAFT);
-        if (!raw) return;
-        setSaveState(true);
-        // Banner intentionally suppressed — لا يُعرض إشعار للمسودة المحفوظة
-      } catch (e) { }
-    }
- 
-    function loadSaved() {
-      try {
-        const d = JSON.parse(localStorage.getItem(LS_DRAFT) || 'null');
-        if (!d) return;
-        loadReport(d);
-        document.getElementById('savedBanner').style.display = 'none';
-        goTo('sInfo', 1);
-        showToast('📂 تم استكمال المسودة', 'info');
-      } catch (e) { showToast('❌ خطأ في التحميل', 'error'); }
-    }
- 
-    function discardSaved() {
-      if (!confirm('حذف المسودة المحفوظة؟')) return;
-      localStorage.removeItem(LS_DRAFT);
-      document.getElementById('savedBanner').style.display = 'none';
-      setSaveState(false);
-      showToast('🗑 تم حذف المسودة');
-    }
- 
-    // ── HISTORY MODAL ──────────────────────────────
-    function openHistory() {
-      const raw = localStorage.getItem(LS_HISTORY);
-      const history = raw ? JSON.parse(raw) : [];
-      const modal = document.getElementById('historyModal');
-      const list = document.getElementById('historyList');
- 
-      if (!history.length) {
-        list.innerHTML = '<p style="text-align:center;color:var(--muted);padding:30px;font-size:0.85rem;">لا توجد تقارير محفوظة بعد.<br>سيتم الحفظ تلقائياً عند إنشاء أي تقرير.</p>';
-      } else {
-        list.innerHTML = history.map((d, i) => {
-          const dt = new Date(d.savedAt);
-          const fmtDt = dt.toLocaleString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-          const cfg = MX[d.mSize || 5];
-          const total = (d.hazards || []).length;
-          const low = (d.hazards || []).filter(h => cfg.getRv(h.p * h.s).code === 'T').length;
-          const high = (d.hazards || []).filter(h => ['M', 'I'].includes(cfg.getRv(h.p * h.s).code)).length;
-          return `<div class="hist-item">
-        <div class="hist-meta">
-          <div class="hist-title">${d.title || 'تقرير غير مسمى'}</div>
-          <div class="hist-sub">${d.facility || '—'} · ${d.mSize || 5}×${d.mSize || 5} · ${fmtDt}</div>
-          <div class="hist-badges">
-            <span class="hist-badge total">${total} خطر</span>
-            <span class="hist-badge low">${low} منخفض</span>
-            <span class="hist-badge high">${high} عالٍ/حرج</span>
-          </div>
-        </div>
-        <div class="hist-actions">
-          <button class="hist-btn-load" onclick="histLoad(${i})">📂 فتح</button>
-          <button class="hist-btn-del"  onclick="histDelete(${i})">🗑</button>
-        </div>
-      </div>`;
-        }).join('');
-      }
-      modal.classList.add('open');
-    }
- 
-    function closeHistory() {
-      document.getElementById('historyModal').classList.remove('open');
-    }
- 
-    function histLoad(i) {
-      const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-      if (!history[i]) return;
-      // Cancel any pending auto-reset timer
-      if (_resetTimer) { clearTimeout(_resetTimer); _resetTimer = null; }
-      loadReport(history[i]);
-      closeHistory();
-      document.getElementById('savedBanner').style.display = 'none';
-      // Go straight to the final report
-      goTo('sReport', 4);
-      _buildReportHTML();
-      // Show the action bar so user can start a new report or edit
-      const bar = document.getElementById('reportActionBar');
-      if (bar) bar.style.display = 'flex';
-      showToast('📄 تم فتح التقرير', 'info');
-    }
- 
-    function histDelete(i) {
-      if (!confirm('حذف هذا التقرير من السجل؟')) return;
-      const history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
-      history.splice(i, 1);
-      localStorage.setItem(LS_HISTORY, JSON.stringify(history));
-      openHistory(); // refresh
-      showToast('🗑 تم الحذف');
-    }
- 
-    function clearHistory() {
-      if (!confirm('حذف كل السجل؟ لا يمكن التراجع.')) return;
-      localStorage.removeItem(LS_HISTORY);
-      openHistory();
-      showToast('🗑 تم مسح السجل');
-    }
- 
-    // ══════════════════════════════════════════════
-    //  INIT
-    // ══════════════════════════════════════════════
-    document.getElementById('rDate').value = new Date().toISOString().split('T')[0];
-    initPreviews();
-    renderKeyTables();
-    checkSavedData();
-  </script>
-</body>
- 
-</html>
+        const activeClass = isActive ? ' act
